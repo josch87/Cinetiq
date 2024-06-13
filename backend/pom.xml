@@ -15,10 +15,8 @@
     <description>backend</description>
     <properties>
         <java.version>22</java.version>
-        <properties>
-            <sonar.organization>aljoscha</sonar.organization>
-            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        </properties>
+        <sonar.organization>aljoscha</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
