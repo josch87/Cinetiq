@@ -2,6 +2,15 @@ import { Box, Button, Flex, Image, VStack } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
 
 export default function LoginPage() {
+  function login() {
+    const host =
+      window.location.host === "localhost:5173"
+        ? "http://localhost:8080"
+        : window.location.origin;
+
+    window.open(host + "/oauth2/authorization/github", "_self");
+  }
+
   return (
     <Flex height="100vh">
       <Box width="100%" bg="gray.200">
@@ -26,7 +35,12 @@ export default function LoginPage() {
             alt="Logo of Cinetiq"
             boxSize="200px"
           />
-          <Button leftIcon={<FaGithub />} colorScheme="teal" variant="outline">
+          <Button
+            leftIcon={<FaGithub />}
+            colorScheme="teal"
+            variant="outline"
+            onClick={login}
+          >
             Login with GitHub
           </Button>
         </VStack>
