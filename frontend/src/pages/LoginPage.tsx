@@ -1,7 +1,12 @@
 import { Box, Button, Flex, Image, VStack } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
+import { Outlet } from "react-router-dom";
 
-export default function LoginPage() {
+type LoginPageProps = {
+  user: string | null | undefined;
+};
+
+export default function LoginPage({ user }: LoginPageProps) {
   function login() {
     const host =
       window.location.host === "localhost:5173"
@@ -11,7 +16,13 @@ export default function LoginPage() {
     window.open(host + "/oauth2/authorization/github", "_self");
   }
 
-  return (
+  if (user === undefined) {
+    return <div>Loading</div>;
+  }
+
+  return user ? (
+    <Outlet />
+  ) : (
     <Flex height="100vh">
       <Box width="100%" bg="gray.200">
         <Image
