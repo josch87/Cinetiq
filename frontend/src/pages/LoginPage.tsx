@@ -2,21 +2,13 @@ import { Box, Button, Flex, Image, VStack } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
 import { Outlet } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
+import { login } from "../services/userService.ts";
 
 type LoginPageProps = {
   user: string | null | undefined;
 };
 
 export default function LoginPage({ user }: Readonly<LoginPageProps>) {
-  function login() {
-    const host =
-      window.location.host === "localhost:5173"
-        ? "http://localhost:8080"
-        : window.location.origin;
-
-    window.open(host + "/oauth2/authorization/github", "_self");
-  }
-
   if (user === undefined) {
     return <LoadingSpinner />;
   }
