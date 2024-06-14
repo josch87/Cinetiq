@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
 import { Outlet } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
@@ -33,21 +33,19 @@ export default function LoginPage({ user }: Readonly<LoginPageProps>) {
         justifyContent="center"
         alignItems="center"
       >
-        <VStack spacing={400}>
-          <Image
-            src="logo/login-logo.jpeg"
-            alt="Logo of Cinetiq"
-            boxSize="200px"
-          />
-          <Button
-            leftIcon={<FaGithub />}
-            colorScheme="teal"
-            variant="outline"
-            onClick={login}
-          >
-            Login with GitHub
-          </Button>
-        </VStack>
+        <Image
+          src="logo/login-logo.jpeg"
+          alt="Logo of Cinetiq"
+          boxSize="150px"
+        />
+        <Button
+          leftIcon={<FaGithub />}
+          colorScheme="teal"
+          variant="outline"
+          onClick={login}
+        >
+          Login with GitHub
+        </Button>
       </Flex>
     </Flex>
   );
