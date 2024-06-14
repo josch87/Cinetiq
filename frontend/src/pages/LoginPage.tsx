@@ -3,9 +3,10 @@ import { FaGithub } from "react-icons/fa6";
 import { Outlet } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
 import { login } from "../services/userService.ts";
+import { githubUserType } from "../model/userModel.ts";
 
 type LoginPageProps = {
-  user: string | null | undefined;
+  user: githubUserType | null | undefined;
 };
 
 export default function LoginPage({ user }: Readonly<LoginPageProps>) {
