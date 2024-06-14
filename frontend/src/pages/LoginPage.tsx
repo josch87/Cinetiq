@@ -30,7 +30,7 @@ export default function LoginPage({ user }: Readonly<LoginPageProps>) {
         width="500px"
         bg="gray.50"
         direction="column"
-        justifyContent="center"
+        justifyContent="space-around"
         alignItems="center"
       >
         <Image
