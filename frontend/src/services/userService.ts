@@ -30,10 +30,10 @@ export const loadUser = (): Promise<githubUserType | null> => {
     });
 };
 
-export async function authCheck(action: () => void) {
+export async function authCheck(action: () => Promise<void>) {
   const user = await loadUser();
   if (!user) {
-    console.error("User is not authenticated!!");
+    console.error("User is not authenticated!");
     throw new Error("User is not authenticated!");
   }
   await action();
