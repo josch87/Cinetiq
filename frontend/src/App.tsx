@@ -1,5 +1,5 @@
 import "./App.css";
-import LoginPage from "./pages/LoginPage.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import { useEffect, useState } from "react";
