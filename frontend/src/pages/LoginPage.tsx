@@ -1,22 +1,21 @@
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
-import { Outlet } from "react-router-dom";
-import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
-import { login } from "../services/userService.ts";
-import { githubUserType } from "../model/userModel.ts";
+import { isLoggedIn, login } from "../services/userService.ts";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-type LoginPageProps = {
-  user: githubUserType | null | undefined;
-};
+export default function LoginPage() {
+  const navigate = useNavigate();
 
-export default function LoginPage({ user }: Readonly<LoginPageProps>) {
-  if (user === undefined) {
-    return <LoadingSpinner />;
-  }
+  useEffect(() => {
+    isLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn) {
+        navigate("/dashboard");
+      }
+    });
+  }, [navigate]);
 
-  return user ? (
-    <Outlet />
-  ) : (
+  return (
     <Flex height="100vh">
       <Box width="100%" bg="gray.200">
         <Image

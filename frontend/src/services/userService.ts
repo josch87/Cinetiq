@@ -38,3 +38,12 @@ export async function authCheck(action: () => Promise<void>) {
   }
   await action();
 }
+
+export async function isLoggedIn(): Promise<boolean> {
+  try {
+    await authCheck(async () => {});
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
