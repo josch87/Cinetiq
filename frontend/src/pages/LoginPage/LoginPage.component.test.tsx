@@ -3,6 +3,18 @@ import "@testing-library/jest-dom";
 import LoginPage from "./LoginPage.tsx";
 import { MemoryRouter } from "react-router-dom";
 
+test("LoginPage renders the logo of Cinetiq", () => {
+  render(
+    <MemoryRouter>
+      <LoginPage />
+    </MemoryRouter>
+  );
+  const logo = screen.getByRole("img", {
+    name: /logo of cinetiq/i,
+  });
+  expect(logo).toBeInTheDocument();
+});
+
 test("LoginPage renders a button to login with GitHub", () => {
   render(
     <MemoryRouter>
