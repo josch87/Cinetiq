@@ -3,6 +3,10 @@ import "@testing-library/jest-dom";
 import LoginPage from "./LoginPage.tsx";
 import { MemoryRouter } from "react-router-dom";
 
+jest.mock("../../services/userService.ts", () => ({
+  isLoggedIn: jest.fn().mockResolvedValue(false),
+}));
+
 test("LoginPage renders the logo of Cinetiq", () => {
   render(
     <MemoryRouter>
