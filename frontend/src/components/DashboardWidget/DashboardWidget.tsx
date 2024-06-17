@@ -1,14 +1,21 @@
-import { Box } from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 type DashboardWidgetProps = {
   children: ReactNode;
+  heading: string;
 };
 
-export default function DashboardWidget({ children }: DashboardWidgetProps) {
+export default function DashboardWidget({
+  children,
+  heading,
+}: DashboardWidgetProps) {
   return (
-    <Box border="1px solid" borderColor="gray.400" rounded="lg" p={4}>
-      {children}
-    </Box>
+    <Card>
+      <CardHeader>
+        <Heading size="md">{heading}</Heading>
+      </CardHeader>
+      <CardBody>{children}</CardBody>
+    </Card>
   );
 }
