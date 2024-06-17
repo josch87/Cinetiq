@@ -59,7 +59,7 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
           <Box />
           <HStack spacing="3" justify="space-between">
             <HStack spacing="3">
-              <Avatar boxSize="10" src={user.avatarUrl} />
+              <Avatar boxSize="10" src={user.avatarUrl} name={user.name} />
               <Box>
                 <Text textStyle="sm" fontWeight="medium">
                   {user.name}
