@@ -10,8 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { FiChevronDown } from "react-icons/fi";
 import { FaFilm } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+
+const data = [{ id: 1, title: "Content Filter", path: "/content-filter" }];
 
 export const ContentCollapse = () => {
+  const navigate = useNavigate();
+
   const { isOpen, onToggle } = useDisclosure();
   return (
     <Box>
@@ -29,9 +34,16 @@ export const ContentCollapse = () => {
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing="1" alignItems="stretch" ps="8" py="1">
-          {["Content Filter"].map((item) => (
-            <Button key={item} variant="tertiary" justifyContent="start">
-              {item}
+          {data.map((item) => (
+            <Button
+              key={item.id}
+              variant="tertiary"
+              justifyContent="start"
+              onClick={() => {
+                navigate(item.path);
+              }}
+            >
+              {item.title}
             </Button>
           ))}
         </Stack>
