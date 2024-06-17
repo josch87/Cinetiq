@@ -46,7 +46,7 @@ export default function DefaultPageTemplate({
                   <Heading size={{ base: "sm", md: "lg" }} fontWeight="medium">
                     {pageTitle}
                   </Heading>
-                  <Text color="fg.muted" fontSize={{ base: "sm", md: "md" }}>
+                  <Text color="fg.muted" fontSize={{ base: "xs", md: "sm" }}>
                     {pageSubtitle}
                   </Text>
                 </Stack>
