@@ -1,6 +1,6 @@
 import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../model/userModel.ts";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 import DashboardWidget from "../components/DashboardWidget/DashboardWidget.tsx";
 
 type DashboardPageProps = {
@@ -23,11 +23,21 @@ export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
         gap={4}
       >
         <GridItem w="100%" h="10">
-          <DashboardWidget />
+          <DashboardWidget>
+            <Text pb={2} fontSize="lg">
+              Welcome to the Film Festival Organizer!
+            </Text>
+            <Text>
+              We're excited to have you on board. Our platform is designed to
+              help you efficiently manage and coordinate all aspects of our film
+              festivals. Whether you're scheduling screenings, handling
+              submissions, or communicating with participants, we've got you
+              covered. Let's work together to create an amazing festival
+              experience. Happy organizing!
+            </Text>
+          </DashboardWidget>
         </GridItem>
-        <GridItem w="100%" h="10">
-          test4
-        </GridItem>
+        <GridItem w="100%" h="10"></GridItem>
       </Grid>
     </DefaultPageTemplate>
   );
