@@ -9,7 +9,7 @@ type DashboardWidgetProps = {
 export default function DashboardWidget({
   children,
   heading,
-}: DashboardWidgetProps) {
+}: Readonly<DashboardWidgetProps>) {
   return (
     <Card>
       <CardHeader>
