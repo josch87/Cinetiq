@@ -5,7 +5,9 @@ type ContentFilterPageProps = {
   user: githubUserType | null | undefined;
 };
 
-export default function ContentFilterPage({ user }: ContentFilterPageProps) {
+export default function ContentFilterPage({
+  user,
+}: Readonly<ContentFilterPageProps>) {
   return (
     <DefaultPageTemplate
       pageTitle="Content Filter"

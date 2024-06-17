@@ -5,7 +5,7 @@ type DashboardPageProps = {
   user: githubUserType | null | undefined;
 };
 
-export default function DashboardPage({ user }: DashboardPageProps) {
+export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
   return (
     <DefaultPageTemplate
       pageTitle="Dashboard"

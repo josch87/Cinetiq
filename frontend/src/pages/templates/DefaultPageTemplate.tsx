@@ -24,7 +24,7 @@ export default function DefaultPageTemplate({
   pageTitle,
   pageSubtitle,
   user,
-}: DefaultPageTemplateProps) {
+}: Readonly<DefaultPageTemplateProps>) {
   if (!user) {
     return <LoadingSpinner />;
   }

@@ -28,7 +28,9 @@ type NavigationSidebarProps = {
   user: githubUserType;
 };
 
-export default function NavigationSidebar({ user }: NavigationSidebarProps) {
+export default function NavigationSidebar({
+  user,
+}: Readonly<NavigationSidebarProps>) {
   const navigate = useNavigate();
 
   return (
