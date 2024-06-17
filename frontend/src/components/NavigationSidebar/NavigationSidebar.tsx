@@ -19,24 +19,29 @@ import {
 import {
   FiBookmark,
   FiClock,
-  FiGrid,
   FiHelpCircle,
-  FiPieChart,
   FiSearch,
   FiSettings,
 } from "react-icons/fi";
 import { Logo } from "../Logo/Logo.tsx";
-import { DocumentCollapse } from "./DocumentCollapse.tsx";
+import { ContentCollapse } from "./ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
 import { githubUserType } from "../../model/userModel.ts";
-import { FaArrowRightFromBracket, FaEllipsisVertical } from "react-icons/fa6";
+import {
+  FaArrowRightFromBracket,
+  FaBorderAll,
+  FaEllipsisVertical,
+} from "react-icons/fa6";
 import { logout } from "../../services/userService.ts";
+import { useNavigate } from "react-router-dom";
 
 type NavigationSidebarProps = {
   user: githubUserType;
 };
 
 export default function NavigationSidebar({ user }: NavigationSidebarProps) {
+  const navigate = useNavigate();
+
   return (
     <Flex as="section" minH="100vh">
       <Stack
@@ -57,9 +62,13 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
             <Input placeholder="Search" />
           </InputGroup>
           <Stack spacing="1">
-            <SidebarButton leftIcon={<FiGrid />}>Dashboard</SidebarButton>
-            <SidebarButton leftIcon={<FiPieChart />}>Analysis</SidebarButton>
-            <DocumentCollapse />
+            <SidebarButton
+              leftIcon={<FaBorderAll />}
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </SidebarButton>
+            <ContentCollapse />
             <SidebarButton leftIcon={<FiClock />}>History</SidebarButton>
             <SidebarButton leftIcon={<FiBookmark />}>Favorites</SidebarButton>
           </Stack>

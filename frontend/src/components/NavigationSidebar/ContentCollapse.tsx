@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FiChevronDown, FiFile } from "react-icons/fi";
 
-export const DocumentCollapse = () => {
+export const ContentCollapse = () => {
   const { isOpen, onToggle } = useDisclosure();
   return (
     <Box>
@@ -22,7 +22,7 @@ export const DocumentCollapse = () => {
       >
         <HStack spacing="3">
           <Icon as={FiFile} />
-          <Text as="span">Documents</Text>
+          <Text as="span">Content</Text>
         </HStack>
         <PopoverIcon isOpen={isOpen} />
       </Button>
