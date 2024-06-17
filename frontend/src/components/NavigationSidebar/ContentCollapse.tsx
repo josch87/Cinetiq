@@ -8,7 +8,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FiChevronDown, FiFile } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
+import { FaFilm } from "react-icons/fa6";
 
 export const ContentCollapse = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -21,14 +22,14 @@ export const ContentCollapse = () => {
         width="full"
       >
         <HStack spacing="3">
-          <Icon as={FiFile} />
+          <Icon as={FaFilm} />
           <Text as="span">Content</Text>
         </HStack>
         <PopoverIcon isOpen={isOpen} />
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing="1" alignItems="stretch" ps="8" py="1">
-          {["Resumes", "Cover Letter", "Personal", "Education"].map((item) => (
+          {["Content Filter", "Add content"].map((item) => (
             <Button key={item} variant="tertiary" justifyContent="start">
               {item}
             </Button>
