@@ -27,14 +27,15 @@ export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
             <Text pb={2} fontSize="lg">
               Welcome to the Film Festival Organizer!
             </Text>
-            <Text>
+            <Text pb={2}>
               We're excited to have you on board. Our platform is designed to
               help you efficiently manage and coordinate all aspects of our film
               festivals. Whether you're scheduling screenings, handling
               submissions, or communicating with participants, we've got you
               covered. Let's work together to create an amazing festival
-              experience. Happy organizing!
+              experience.
             </Text>
+            <Text>Happy organizing!</Text>
           </DashboardWidget>
         </GridItem>
         <GridItem w="100%" h="10"></GridItem>
