@@ -29,7 +29,8 @@ import { Logo } from "../Logo/Logo.tsx";
 import { DocumentCollapse } from "./DocumentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
 import { githubUserType } from "../../model/userModel.ts";
-import { FaEllipsisVertical } from "react-icons/fa6";
+import { FaArrowRightFromBracket, FaEllipsisVertical } from "react-icons/fa6";
+import { logout } from "../../services/userService.ts";
 
 type NavigationSidebarProps = {
   user: githubUserType;
@@ -91,14 +92,11 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
                 aria-label="Open Menu"
               />
               <MenuList>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem icon={<FaArrowRightFromBracket />} onClick={logout}>
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
-            <IconButton
-              variant="tertiary"
-              icon={<FaEllipsisVertical />}
-              aria-label="Open Menu"
-            />
           </HStack>
         </Stack>
       </Stack>
