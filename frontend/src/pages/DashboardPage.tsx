@@ -6,5 +6,13 @@ type DashboardPageProps = {
 };
 
 export default function DashboardPage({ user }: DashboardPageProps) {
-  return <DefaultPageTemplate user={user}>Dashboard</DefaultPageTemplate>;
+  return (
+    <DefaultPageTemplate
+      pageTitle="Dashboard"
+      pageSubtitle="Quick access and overview of all festival data"
+      user={user}
+    >
+      Dashboard Content
+    </DefaultPageTemplate>
+  );
 }
