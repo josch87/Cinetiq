@@ -23,7 +23,6 @@ import {
   FiSearch,
   FiSettings,
 } from "react-icons/fi";
-import { Logo } from "../Logo/Logo.tsx";
 import { ContentCollapse } from "./ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
 import { githubUserType } from "../../model/userModel.ts";
@@ -34,6 +33,7 @@ import {
 } from "react-icons/fa6";
 import { logout } from "../../services/userService.ts";
 import { useNavigate } from "react-router-dom";
+import Logo from "../Logo/Logo.tsx";
 
 type NavigationSidebarProps = {
   user: githubUserType;
@@ -54,7 +54,7 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
         justifyContent="space-between"
       >
         <Stack spacing="8">
-          <Logo alignSelf="start" />
+          <Logo />
           <InputGroup>
             <InputLeftElement>
               <Icon as={FiSearch} color="fg.muted" fontSize="lg" />
