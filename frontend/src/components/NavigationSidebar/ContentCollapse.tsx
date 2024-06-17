@@ -29,7 +29,7 @@ export const ContentCollapse = () => {
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing="1" alignItems="stretch" ps="8" py="1">
-          {["Content Filter", "Add content"].map((item) => (
+          {["Content Filter"].map((item) => (
             <Button key={item} variant="tertiary" justifyContent="start">
               {item}
             </Button>

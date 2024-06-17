@@ -3,11 +3,7 @@ import {
   Box,
   Flex,
   HStack,
-  Icon,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Menu,
   MenuButton,
   MenuItem,
@@ -16,13 +12,6 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import {
-  FiBookmark,
-  FiClock,
-  FiHelpCircle,
-  FiSearch,
-  FiSettings,
-} from "react-icons/fi";
 import { ContentCollapse } from "./ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
 import { githubUserType } from "../../model/userModel.ts";
@@ -55,12 +44,7 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
       >
         <Stack spacing="8">
           <Logo />
-          <InputGroup>
-            <InputLeftElement>
-              <Icon as={FiSearch} color="fg.muted" fontSize="lg" />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
+
           <Stack spacing="1">
             <SidebarButton
               leftIcon={<FaBorderAll />}
@@ -69,18 +53,10 @@ export default function NavigationSidebar({ user }: NavigationSidebarProps) {
               Dashboard
             </SidebarButton>
             <ContentCollapse />
-            <SidebarButton leftIcon={<FiClock />}>History</SidebarButton>
-            <SidebarButton leftIcon={<FiBookmark />}>Favorites</SidebarButton>
           </Stack>
         </Stack>
         <Stack spacing="4" divider={<StackDivider />}>
           <Box />
-          <Stack spacing="1">
-            <SidebarButton leftIcon={<FiHelpCircle />}>
-              Help Center
-            </SidebarButton>
-            <SidebarButton leftIcon={<FiSettings />}>Settings</SidebarButton>
-          </Stack>
           <HStack spacing="3" justify="space-between">
             <HStack spacing="3">
               <Avatar boxSize="10" src={user.avatarUrl} />
