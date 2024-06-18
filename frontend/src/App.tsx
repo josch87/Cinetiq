@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { loadUser } from "./services/userService.ts";
 import { githubUserType } from "./model/userModel.ts";
 import ProtectedRoutes from "./pages/ProtectedRoutes.tsx";
+import ContentFilterPage from "./pages/ContentFilterPage.tsx";
 
 function App() {
   const [user, setUser] = useState<githubUserType | null | undefined>(
@@ -20,7 +21,11 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route element={<ProtectedRoutes user={user} />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<DashboardPage user={user} />} />
+        <Route
+          path="/content-filter"
+          element={<ContentFilterPage user={user} />}
+        />
       </Route>
     </Routes>
   );

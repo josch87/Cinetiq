@@ -1,18 +1,20 @@
 import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../model/userModel.ts";
 
-type DashboardPageProps = {
+type ContentFilterPageProps = {
   user: githubUserType | null | undefined;
 };
 
-export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
+export default function ContentFilterPage({
+  user,
+}: Readonly<ContentFilterPageProps>) {
   return (
     <DefaultPageTemplate
-      pageTitle="Dashboard"
-      pageSubtitle="Quick access and overview of all festival data"
+      pageTitle="Content Filter"
+      pageSubtitle="Show and filter all content"
       user={user}
     >
-      Dashboard Content
+      Content content
     </DefaultPageTemplate>
   );
 }
