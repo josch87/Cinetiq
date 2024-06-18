@@ -15,7 +15,7 @@ test("DashboardWidget renders a heading", () => {
   expect(heading).toBeInTheDocument();
 });
 
-test("DashboardWidget renders it's children", () => {
+test("DashboardWidget renders its children", () => {
   render(
     <DashboardWidget heading="How to rule the world">
       <p>Ruling the world is not easy.</p>
