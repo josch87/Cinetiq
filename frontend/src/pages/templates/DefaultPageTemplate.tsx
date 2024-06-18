@@ -34,7 +34,7 @@ export default function DefaultPageTemplate({
       <Flex h="full" id="app-container">
         <NavigationSidebar user={user} />
         <Flex direction="column" width="100%">
-          <Flex borderBottomWidth="1px">
+          <Flex as="header" borderBottomWidth="1px">
             <Box
               as="section"
               bg="bg.surface"
@@ -53,7 +53,7 @@ export default function DefaultPageTemplate({
               </Container>
             </Box>
           </Flex>
-          <Box bg={mode("gray.50", "gray.800")} flex="1" p="4">
+          <Box as="main" bg={mode("gray.50", "gray.800")} flex="1" p="4">
             {children}
           </Box>
         </Flex>
