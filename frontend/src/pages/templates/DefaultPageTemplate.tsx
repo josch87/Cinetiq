@@ -43,7 +43,11 @@ export default function DefaultPageTemplate({
             >
               <Container>
                 <Stack spacing="1">
-                  <Heading size={{ base: "sm", md: "lg" }} fontWeight="medium">
+                  <Heading
+                    as="h1"
+                    size={{ base: "sm", md: "lg" }}
+                    fontWeight="medium"
+                  >
                     {pageTitle}
                   </Heading>
                   <Text color="fg.muted" fontSize={{ base: "xs", md: "sm" }}>
