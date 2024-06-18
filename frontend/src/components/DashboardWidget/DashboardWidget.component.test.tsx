@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import DashboardWidget from "./DashboardWidget.tsx";
 
-test("DashboardWidget is rendering a heading", () => {
+test("DashboardWidget renders a heading", () => {
   render(
     <DashboardWidget heading="How to rule the world">
       <p>Ruling the world is not easy.</p>
@@ -15,7 +15,7 @@ test("DashboardWidget is rendering a heading", () => {
   expect(heading).toBeInTheDocument();
 });
 
-test("DashboardWidget is rendering it's children", () => {
+test("DashboardWidget renders it's children", () => {
   render(
     <DashboardWidget heading="How to rule the world">
       <p>Ruling the world is not easy.</p>
