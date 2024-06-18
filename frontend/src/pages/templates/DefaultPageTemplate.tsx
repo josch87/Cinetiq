@@ -54,14 +54,7 @@ export default function DefaultPageTemplate({
             </Box>
           </Flex>
           <Box bg={mode("gray.50", "gray.800")} flex="1" p="4">
-            <Box
-              w="full"
-              h="full"
-              rounded="lg"
-              color={mode("gray.800", "gray.800")}
-            >
-              {children}
-            </Box>
+            {children}
           </Box>
         </Flex>
       </Flex>
