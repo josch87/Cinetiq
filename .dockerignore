@@ -1,0 +1,7 @@
+.idea
+.run
+.git
+.dockerignore
+Dockerfile
+*.log
+backend/src/main/resources/application-*.properties
