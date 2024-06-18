@@ -14,14 +14,8 @@ export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
       pageSubtitle="Quick access and overview of all festival data"
       user={user}
     >
-      <Grid
-        templateAreas={`"main side"
-                        "main side"
-                        "main side"`}
-        gridTemplateColumns={"2fr 1fr"}
-        gap={4}
-      >
-        <GridItem w="100%" h="10">
+      <Grid gridTemplateColumns={"2fr 1fr"} gap={4}>
+        <GridItem>
           <DashboardWidget heading="Welcome to the Film Festival Organizer!">
             <Text pb={2}>
               We're excited to have you on board. Our platform is designed to
