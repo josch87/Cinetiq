@@ -1,7 +1,25 @@
 package com.aljoschazoeller.backend.api;
 
-public record ApiResponse<T>(
-        ResponseInfo info,
-        T data
-) {
+import java.util.Collection;
+
+public class ApiResponse<T> {
+        private ResponseInfo info;
+        private T data;
+
+    public ApiResponse(T data) {
+        if (data instanceof Collection<?>) {
+            this.info = new ResponseInfo(((Collection<?>) data).size());
+        } else {
+            this.info = new ResponseInfo(1);
+        }
+        this.data = data;
+    }
+
+    public ResponseInfo getInfo() {
+        return info;
+    }
+
+    public T getData() {
+        return data;
+    }
 }
