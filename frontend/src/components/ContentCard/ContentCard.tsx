@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
+import { Card, CardHeader, Heading } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
 
 type ContentCardProps = {
@@ -9,11 +9,9 @@ export default function ContentCard({ content }: ContentCardProps) {
   return (
     <Card>
       <CardHeader display="flex" justifyContent="space-between">
-        <Heading>{content.title}</Heading>
+        <Heading>{content.originalTitle}</Heading>
         {content.edition}. edition
       </CardHeader>
-
-      <CardBody>Content</CardBody>
     </Card>
   );
 }

@@ -1,5 +1,11 @@
+import { appUserType } from "./userModel.ts";
+
 export type contentType = {
   id: string;
-  title: string;
+  originalTitle: string;
+  englishTitle: string;
+  germanTitle: string;
+  createdBy: appUserType;
+  createdAt: Date;
   edition: number;
 };

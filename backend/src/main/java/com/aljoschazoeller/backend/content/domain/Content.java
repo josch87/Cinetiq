@@ -12,6 +12,7 @@ public record Content(
         @Id
         String id,
         ContentType contentType,
+        String originalTitle,
         String englishTitle,
         String germanTitle,
         @DBRef

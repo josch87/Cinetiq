@@ -44,6 +44,7 @@ public class ContentController {
         Content contentToSave = new Content(
                 null,
                 body.contentType(),
+                body.originalTitle(),
                 body.englishTitle(),
                 body.germanTitle(),
                 appUser,
