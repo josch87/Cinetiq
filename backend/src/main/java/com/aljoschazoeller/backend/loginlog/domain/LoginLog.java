@@ -13,6 +13,8 @@ public record LoginLog(
         String id,
         @DBRef
         AppUser appUser,
-        Instant createdAt
+        Instant createdAt,
+        String ipAddress,
+        String browserInfo
 ) {
 }

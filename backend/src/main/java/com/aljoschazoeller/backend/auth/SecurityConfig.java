@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.auth;
 import com.aljoschazoeller.backend.loginlog.LoginLogService;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +50,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request) {
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
         return userRequest -> {
@@ -57,10 +59,10 @@ public class SecurityConfig {
             AppUser appUser;
             try {
                 appUser = userService.findByGithubId(oAuth2User.getName());
-                loginLogService.logLogin(appUser);
+                loginLogService.logLogin(appUser, getIpAddress(request), getBrowserInfo(request));
             } catch (NoSuchElementException exception) {
                 appUser = userService.register(oAuth2User);
-                loginLogService.logLogin(appUser);
+                loginLogService.logLogin(appUser, getIpAddress(request), getBrowserInfo(request));
             }
 
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
@@ -68,5 +70,19 @@ public class SecurityConfig {
 
             return new DefaultOAuth2User(null, attributes, "id");
         };
+    }
+
+    private String getIpAddress(HttpServletRequest request) {
+        String xForwardedForHeader = request.getHeader("X-Forwarded-For");
+        if (xForwardedForHeader == null) {
+            return request.getRemoteAddr();
+        } else {
+            // As it's possible to have multiple IP addresses, return first, if present
+            return new StringTokenizer(xForwardedForHeader, ",").nextToken().trim();
+        }
+    }
+
+    private String getBrowserInfo(HttpServletRequest request) {
+        return request.getHeader("User-Agent");
     }
 }
