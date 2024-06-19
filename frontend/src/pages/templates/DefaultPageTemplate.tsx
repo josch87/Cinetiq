@@ -34,7 +34,7 @@ export default function DefaultPageTemplate({
       <Flex h="full" id="app-container">
         <NavigationSidebar user={user} />
         <Flex direction="column" width="100%">
-          <Flex borderBottomWidth="1px">
+          <Flex as="header" borderBottomWidth="1px">
             <Box
               as="section"
               bg="bg.surface"
@@ -43,26 +43,22 @@ export default function DefaultPageTemplate({
             >
               <Container>
                 <Stack spacing="1">
-                  <Heading size={{ base: "sm", md: "lg" }} fontWeight="medium">
+                  <Heading
+                    as="h1"
+                    size={{ base: "sm", md: "lg" }}
+                    fontWeight="medium"
+                  >
                     {pageTitle}
                   </Heading>
-                  <Text color="fg.muted" fontSize={{ base: "sm", md: "md" }}>
+                  <Text color="fg.muted" fontSize={{ base: "xs", md: "sm" }}>
                     {pageSubtitle}
                   </Text>
                 </Stack>
               </Container>
             </Box>
           </Flex>
-          <Box bg={mode("white", "gray.800")} flex="1" p="4">
-            <Box
-              w="full"
-              h="full"
-              rounded="lg"
-              border="3px dashed currentColor"
-              color={mode("gray.200", "gray.700")}
-            >
-              {children}
-            </Box>
+          <Box as="main" bg={mode("gray.50", "gray.800")} flex="1" p="4">
+            {children}
           </Box>
         </Flex>
       </Flex>
