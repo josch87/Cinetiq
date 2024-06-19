@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.content;
 import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.NewContentDTO;
+import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +33,15 @@ public class ContentController {
     @PostMapping
     public Content createContent(Principal principal, @RequestBody NewContentDTO body) {
         Instant currentTime = Instant.now();
+
+        if (principal == null) {
+            throw new UnauthorizedRequestException("Unauthorized request. Authentication is required in order to create new content.");
+        }
+
         String githubId = principal.getName();
         AppUser appUser = userService.findByGithubId(githubId);
 
-        Content contentToSave = new Content(null, body.titles(), appUser, currentTime);
+        Content contentToSave = new Content(null, body.englishTitle(), body.germanTitle(), appUser, currentTime);
         return contentService.createContent(contentToSave);
     }
 }
