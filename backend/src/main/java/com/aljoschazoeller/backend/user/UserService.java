@@ -26,13 +26,13 @@ public class UserService {
     }
 
     public AppUser register(OAuth2User oAuth2User) {
-        AppUser appUserToSafe = new AppUser(
+        AppUser appUserToSave = new AppUser(
                 null,
                 oAuth2User.getAttributes().get("id").toString(),
                 oAuth2User.getAttributes(),
                 Instant.now()
         );
 
-        return userRepository.save(appUserToSafe);
+        return userRepository.save(appUserToSave);
     }
 }
