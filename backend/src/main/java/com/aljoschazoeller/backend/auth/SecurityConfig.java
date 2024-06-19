@@ -1,5 +1,6 @@
 package com.aljoschazoeller.backend.auth;
 
+import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
 import com.aljoschazoeller.backend.loginlog.LoginLogService;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
@@ -22,7 +23,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 @Configuration
@@ -60,7 +60,7 @@ public class SecurityConfig {
             try {
                 appUser = userService.findByGithubId(oAuth2User.getName());
                 loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
-            } catch (NoSuchElementException exception) {
+            } catch (UserNotFoundException exception) {
                 appUser = userService.register(oAuth2User);
                 loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
             }

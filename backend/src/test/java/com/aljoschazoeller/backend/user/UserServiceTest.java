@@ -1,5 +1,6 @@
 package com.aljoschazoeller.backend.user;
 
+import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -7,7 +8,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +25,7 @@ class UserServiceTest {
         //WHEN
 
         //THEN
-        assertThrows(NoSuchElementException.class, () -> userService.findByGithubId("nonexistentId"));
+        assertThrows(UserNotFoundException.class, () -> userService.findByGithubId("nonexistentId"));
     }
 
     @Test
