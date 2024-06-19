@@ -1,5 +1,6 @@
 package com.aljoschazoeller.backend.auth;
 
+import com.aljoschazoeller.backend.loginlog.LoginLogService;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService) {
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
         return userRequest -> {
@@ -56,8 +57,10 @@ public class SecurityConfig {
             AppUser appUser;
             try {
                 appUser = userService.findByGithubId(oAuth2User.getName());
+                loginLogService.logLogin(appUser);
             } catch (NoSuchElementException exception) {
                 appUser = userService.register(oAuth2User);
+                loginLogService.logLogin(appUser);
             }
 
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
