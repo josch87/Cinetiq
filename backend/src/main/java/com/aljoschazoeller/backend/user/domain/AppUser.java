@@ -10,6 +10,7 @@ public record AppUser(
         @Id
         String id,
         String githubId,
+        Object githubUserProfile, // Profile during first signup
         Instant createdAt
 ) {
 }

@@ -29,6 +29,7 @@ public class UserService {
         AppUser appUserToSafe = new AppUser(
                 null,
                 oAuth2User.getAttributes().get("id").toString(),
+                oAuth2User.getAttributes(),
                 Instant.now()
         );
 
