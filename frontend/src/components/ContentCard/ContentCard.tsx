@@ -8,9 +8,10 @@ type ContentCardProps = {
 export default function ContentCard({ content }: ContentCardProps) {
   return (
     <Card>
-      <CardHeader display="flex" justifyContent="space-between">
-        <Heading>{content.originalTitle}</Heading>
-        {content.edition}. edition
+      <CardHeader>
+        <Heading size="md">
+          {content.englishTitle ?? content.germanTitle ?? content.originalTitle}
+        </Heading>
       </CardHeader>
     </Card>
   );
