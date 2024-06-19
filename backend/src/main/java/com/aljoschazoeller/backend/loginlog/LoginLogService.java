@@ -15,13 +15,13 @@ public class LoginLogService {
         this.loginLogRepository = loginLogRepository;
     }
 
-    public void logLogin(AppUser appUser, String ipAddress, String browserInfo) {
+    public void logLogin(AppUser appUser, String ipAddress, String userAgent) {
         LoginLog loginLogToSave = new LoginLog(
                 null,
                 appUser,
                 Instant.now(),
                 ipAddress,
-                browserInfo
+                userAgent
         );
 
         loginLogRepository.save(loginLogToSave);

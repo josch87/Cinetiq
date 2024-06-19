@@ -59,10 +59,10 @@ public class SecurityConfig {
             AppUser appUser;
             try {
                 appUser = userService.findByGithubId(oAuth2User.getName());
-                loginLogService.logLogin(appUser, getIpAddress(request), getBrowserInfo(request));
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
             } catch (NoSuchElementException exception) {
                 appUser = userService.register(oAuth2User);
-                loginLogService.logLogin(appUser, getIpAddress(request), getBrowserInfo(request));
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
             }
 
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
@@ -82,7 +82,7 @@ public class SecurityConfig {
         }
     }
 
-    private String getBrowserInfo(HttpServletRequest request) {
+    private String getUserAgent(HttpServletRequest request) {
         return request.getHeader("User-Agent");
     }
 }

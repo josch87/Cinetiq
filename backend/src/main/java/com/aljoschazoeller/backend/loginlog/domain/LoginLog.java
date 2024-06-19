@@ -15,6 +15,6 @@ public record LoginLog(
         AppUser appUser,
         Instant createdAt,
         String ipAddress,
-        String browserInfo
+        String userAgent
 ) {
 }
