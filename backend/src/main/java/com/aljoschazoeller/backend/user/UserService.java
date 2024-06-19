@@ -15,11 +15,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public AppUser findById(String id) {
-        return userRepository.findById(id)
-                .orElseThrow();
-    }
-
     public AppUser findByGithubId(String githubId) {
         return userRepository.findAppUserByGithubId(githubId)
                 .orElseThrow();
