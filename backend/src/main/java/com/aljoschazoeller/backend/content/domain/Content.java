@@ -11,6 +11,7 @@ import java.time.Instant;
 public record Content(
         @Id
         String id,
+        ContentType contentType,
         String englishTitle,
         String germanTitle,
         @DBRef

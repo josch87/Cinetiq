@@ -41,7 +41,13 @@ public class ContentController {
         String githubId = principal.getName();
         AppUser appUser = userService.findByGithubId(githubId);
 
-        Content contentToSave = new Content(null, body.englishTitle(), body.germanTitle(), appUser, currentTime);
+        Content contentToSave = new Content(
+                null,
+                body.contentType(),
+                body.englishTitle(),
+                body.germanTitle(),
+                appUser,
+                currentTime);
         return contentService.createContent(contentToSave);
     }
 }
