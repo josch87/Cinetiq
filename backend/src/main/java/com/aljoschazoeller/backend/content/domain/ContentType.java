@@ -2,7 +2,8 @@ package com.aljoschazoeller.backend.content.domain;
 
 public enum ContentType {
     MOVIE("movie"),
-    SERIES("series");
+    SERIES("series"),
+    EXHIBITION("exhibition");
 
     private final String value;
 
