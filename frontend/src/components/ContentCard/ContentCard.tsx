@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
 import { FaFilm, FaVideo } from "react-icons/fa6";
+import ContentCardTitle from "./ContentCardTitle.tsx";
 
 type ContentCardProps = {
   content: contentType;
@@ -36,7 +37,7 @@ export default function ContentCard({ content }: ContentCardProps) {
           </Tooltip>
         )}
         <Heading size="md">
-          {content.englishTitle ?? content.germanTitle ?? content.originalTitle}
+          <ContentCardTitle content={content} />
         </Heading>
       </CardHeader>
     </Card>
