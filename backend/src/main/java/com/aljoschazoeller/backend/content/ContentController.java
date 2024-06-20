@@ -6,6 +6,7 @@ import com.aljoschazoeller.backend.content.domain.NewContentDTO;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,6 +32,7 @@ public class ContentController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Content createContent(Principal principal, @RequestBody NewContentDTO body) {
         Instant currentTime = Instant.now();
 

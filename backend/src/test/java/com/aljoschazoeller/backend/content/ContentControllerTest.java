@@ -60,7 +60,7 @@ class ContentControllerTest {
                 "appUser-id-1",
                 "user",
                 null,
-                Instant.parse("2024-06-20T15:10:05.00Z"));
+                Instant.parse("2024-06-20T15:10:05.022Z"));
 
         userRepository.save(user);
 
@@ -106,6 +106,61 @@ class ContentControllerTest {
     }
 
     @Test
-    void createContent() {
+    void createContentTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
+        mockMvc.perform(post("/api/content")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "contentType": "MOVIE",
+                                    "originalTitle": "Original Title",
+                                    "englishTitle": "English Title",
+                                    "germanTitle": "German Title"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string(""));
     }
+
+    @Test
+    @WithMockUser
+    @DirtiesContext
+    void createContentTest_whenAuthenticated_thenSaveContentInDatabase() throws Exception {
+        AppUser user = new AppUser(
+                "appUser-id-1",
+                "user",
+                null,
+                Instant.parse("2024-06-20T15:10:05.022Z"));
+
+        userRepository.save(user);
+
+        mockMvc.perform(post("/api/content")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                                    "contentType": "MOVIE",
+                                    "originalTitle": "Original Title",
+                                    "englishTitle": "English Title",
+                                    "germanTitle": "German Title"
+                                }
+                        """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "contentType": "MOVIE",
+                            "originalTitle": "Original Title",
+                            "englishTitle": "English Title",
+                            "germanTitle": "German Title",
+                            "createdBy": {
+                                "id": "appUser-id-1",
+                                "githubId": "user",
+                                "createdAt": "2024-06-20T15:10:05.022Z"
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.createdAt").exists());
+
+    }
+
+
 }
