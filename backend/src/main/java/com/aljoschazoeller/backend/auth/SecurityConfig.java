@@ -1,5 +1,10 @@
 package com.aljoschazoeller.backend.auth;
 
+import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
+import com.aljoschazoeller.backend.loginlog.LoginLogService;
+import com.aljoschazoeller.backend.user.UserService;
+import com.aljoschazoeller.backend.user.domain.AppUser;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +13,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 @Configuration
 @EnableWebSecurity
@@ -35,4 +49,40 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request) {
+        DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
+
+        return userRequest -> {
+            OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
+
+            AppUser appUser;
+            try {
+                appUser = userService.findByGithubId(oAuth2User.getName());
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
+            } catch (UserNotFoundException exception) {
+                appUser = userService.register(oAuth2User);
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
+            }
+
+            Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
+            attributes.put("appUser", appUser);
+
+            return new DefaultOAuth2User(null, attributes, "id");
+        };
+    }
+
+    private String getIpAddress(HttpServletRequest request) {
+        String xForwardedForHeader = request.getHeader("X-Forwarded-For");
+        if (xForwardedForHeader == null) {
+            return request.getRemoteAddr();
+        } else {
+            // As it's possible to have multiple IP addresses, return first, if present
+            return new StringTokenizer(xForwardedForHeader, ",").nextToken().trim();
+        }
+    }
+
+    private String getUserAgent(HttpServletRequest request) {
+        return request.getHeader("User-Agent");
+    }
 }
