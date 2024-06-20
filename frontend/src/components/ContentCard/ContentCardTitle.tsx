@@ -5,7 +5,9 @@ type ContentCardTitleProps = {
   content: contentType;
 };
 
-export default function ContentCardTitle({ content }: ContentCardTitleProps) {
+export default function ContentCardTitle({
+  content,
+}: Readonly<ContentCardTitleProps>) {
   if (content.englishTitle) {
     return (
       <Tooltip hasArrow label="English title">

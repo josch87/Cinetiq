@@ -9,7 +9,7 @@ type ContentCardTypeIconProps = {
 
 export default function ContentCardTypeIcon({
   contentType,
-}: ContentCardTypeIconProps) {
+}: Readonly<ContentCardTypeIconProps>) {
   if (contentType === "MOVIE") {
     return (
       <Tooltip label="Movie">

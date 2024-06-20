@@ -7,7 +7,7 @@ type ContentCardProps = {
   content: contentType;
 };
 
-export default function ContentCard({ content }: ContentCardProps) {
+export default function ContentCard({ content }: Readonly<ContentCardProps>) {
   return (
     <Card>
       <CardHeader

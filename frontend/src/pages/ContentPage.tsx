@@ -8,9 +8,9 @@ import {
 import { Container, Flex, Skeleton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../services/contentService.ts";
-import ContentResultHeader from "../components/ContentResultHeader.tsx";
+import ContentResultHeader from "../components/ContentResult/ContentResultHeader.tsx";
 import NoData from "../components/NoData/NoData.tsx";
-import ContentResultBody from "../components/ContentResultBody.tsx";
+import ContentResultBody from "../components/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../components/ContentCard/ContentCard.tsx";
 
 type ContentPageProps = {
