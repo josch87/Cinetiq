@@ -1,12 +1,12 @@
 import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../model/userModel.ts";
-import ContentCard from "../components/ContentCard/ContentCard.tsx";
 import { contentType, infoType } from "../model/contentModel.ts";
-import { Container, Flex } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../services/contentService.ts";
-import ContentFilterResultHeader from "../components/ContentFilterResultHeader.tsx";
+import ContentResultHeader from "../components/ContentResultHeader.tsx";
 import NoData from "../components/NoData/NoData.tsx";
+import ContentResultBody from "../components/ContentResultBody.tsx";
 
 type ContentPageProps = {
   user: githubUserType | null | undefined;
@@ -37,13 +37,8 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         </Container>
       ) : (
         <>
-          {" "}
-          <ContentFilterResultHeader info={info} />
-          <Flex flexDirection="column" gap={4}>
-            {content.map((content) => {
-              return <ContentCard key={content.id} content={content} />;
-            })}
-          </Flex>
+          <ContentResultHeader info={info} />
+          <ContentResultBody content={content} />
         </>
       )}
     </DefaultPageTemplate>

@@ -9,7 +9,7 @@ function pluralizeResults(count: number) {
   return `${count} ${count === 1 ? "result" : "results"}`;
 }
 
-export default function ContentFilterResultHeader({
+export default function ContentResultHeader({
   info,
 }: ContentFilterResultHeaderProps) {
   return (
