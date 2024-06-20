@@ -79,7 +79,7 @@ class ContentControllerTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        Content savedContent = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
 
         mockMvc.perform(get("/api/content"))
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class ContentControllerTest {
                             ]
                         }
                         """))
-                .andExpect(jsonPath("$.data[0].id").value(content.id()))
+                .andExpect(jsonPath("$.data[0].id").value(savedContent.id()))
                 .andExpect(jsonPath("$.data[0].createdAt").exists());
     }
 
@@ -133,7 +133,7 @@ class ContentControllerTest {
 
         userRepository.save(user);
 
-        mockMvc.perform(post("/api/content")
+        MvcResult result = mockMvc.perform(post("/api/content")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {
@@ -158,7 +158,38 @@ class ContentControllerTest {
                         }
                         """))
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.createdAt").exists());
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        Content savedContent = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        
+        mockMvc.perform(get("/api/content"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": 1
+                            },
+                            "data": [
+                                {
+                                    "contentType": "MOVIE",
+                                    "originalTitle": "Original Title",
+                                    "englishTitle": "English Title",
+                                    "germanTitle": "German Title",
+                                    "createdBy": {
+                                        "id": "appUser-id-1",
+                                        "githubId": "user",
+                                        "createdAt": "2024-06-20T15:10:05.022Z"
+                                    }
+                                }
+                            ]
+                        }
+                        """))
+                .andExpect(jsonPath("$.data[0].id").value(savedContent.id()))
+                .andExpect(jsonPath("$.data[0].createdAt").exists());
 
     }
 
