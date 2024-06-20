@@ -1,6 +1,7 @@
 import { Box, Icon, Tooltip } from "@chakra-ui/react";
-import { FaFilm, FaShop, FaVideo } from "react-icons/fa6";
+import { FaFilm, FaTv } from "react-icons/fa6";
 import { contentTypeEnum } from "../../model/contentModel.ts";
+import { FaPaintBrush } from "react-icons/fa";
 
 type ContentCardTypeIconProps = {
   contentType: contentTypeEnum;
@@ -23,7 +24,7 @@ export default function ContentCardTypeIcon({
     return (
       <Tooltip label="Series">
         <Box display="flex">
-          <Icon as={FaVideo} />
+          <Icon as={FaTv} />
         </Box>
       </Tooltip>
     );
@@ -33,7 +34,7 @@ export default function ContentCardTypeIcon({
     return (
       <Tooltip label="Exhibition">
         <Box display="flex">
-          <Icon as={FaShop} />
+          <Icon as={FaPaintBrush} />
         </Box>
       </Tooltip>
     );

@@ -7,13 +7,11 @@ import { useEffect, useState } from "react";
 import { getContent } from "../services/contentService.ts";
 import ContentFilterResultHeader from "../components/ContentFilterResultHeader.tsx";
 
-type ContentFilterPageProps = {
+type ContentPageProps = {
   user: githubUserType | null | undefined;
 };
 
-export default function ContentFilterPage({
-  user,
-}: Readonly<ContentFilterPageProps>) {
+export default function ContentPage({ user }: Readonly<ContentPageProps>) {
   const [info, setInfo] = useState<infoType>({ count: 0 });
   const [content, setContent] = useState<contentType[]>([]);
 
@@ -28,8 +26,8 @@ export default function ContentFilterPage({
 
   return (
     <DefaultPageTemplate
-      pageTitle="Content Filter"
-      pageSubtitle="Show and filter all content"
+      pageTitle="Content"
+      pageSubtitle="Display all content"
       user={user}
     >
       <ContentFilterResultHeader info={info} />
