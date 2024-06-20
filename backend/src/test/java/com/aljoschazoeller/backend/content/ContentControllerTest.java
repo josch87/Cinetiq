@@ -4,6 +4,7 @@ import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.user.UserRepository;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -77,6 +78,7 @@ class ContentControllerTest {
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
 
         mockMvc.perform(get("/api/content"))
@@ -93,13 +95,14 @@ class ContentControllerTest {
                                     "englishTitle": "English Title",
                                     "germanTitle": "German Title",
                                     "createdBy": {
-                                        "id": "user",
+                                        "id": "appUser-id-1"
                                     }
                                 }
                             ]
                         }
                         """))
-                .andExpect(jsonPath("$.data[0].id").value(content.id()));
+                .andExpect(jsonPath("$.data[0].id").value(content.id()))
+                .andExpect(jsonPath("$.data[0].createdAt").exists());
     }
 
     @Test
