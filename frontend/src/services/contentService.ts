@@ -1,10 +1,16 @@
 import axios from "axios";
-import { contentType } from "../model/contentModel.ts";
+import { contentType, infoType } from "../model/contentModel.ts";
 
-export function getContent(): Promise<contentType[] | null> {
+export function getContent(): Promise<{
+  info: infoType;
+  content: contentType[];
+} | null> {
   return axios
     .get("/api/content")
-    .then((response) => processContent(response.data.data))
+    .then((response) => {
+      const content = processContent(response.data.data);
+      return { info: response.data.info, content };
+    })
     .catch((error) => {
       console.error(error.message);
       return null;

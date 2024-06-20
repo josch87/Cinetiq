@@ -9,3 +9,7 @@ export type contentType = {
   createdBy: appUserType;
   createdAt: Date;
 };
+
+export type infoType = {
+  count: number;
+};
