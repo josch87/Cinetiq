@@ -14,7 +14,7 @@ export default function ContentCardTypeIcon({
     return (
       <Tooltip label="Movie">
         <Box display="flex">
-          <Icon as={FaFilm} />
+          <Icon as={FaFilm} data-testid="svg-icon-contenttype-movie" />
         </Box>
       </Tooltip>
     );
@@ -24,7 +24,7 @@ export default function ContentCardTypeIcon({
     return (
       <Tooltip label="Series">
         <Box display="flex">
-          <Icon as={FaTv} />
+          <Icon as={FaTv} data-testid="svg-icon-contenttype-series" />
         </Box>
       </Tooltip>
     );
@@ -34,7 +34,10 @@ export default function ContentCardTypeIcon({
     return (
       <Tooltip label="Exhibition">
         <Box display="flex">
-          <Icon as={FaPaintBrush} />
+          <Icon
+            as={FaPaintBrush}
+            data-testid="svg-icon-contenttype-exhibition"
+          />
         </Box>
       </Tooltip>
     );
@@ -45,7 +48,7 @@ export default function ContentCardTypeIcon({
   return (
     <Tooltip label="Unknown content type">
       <Box display="flex">
-        <Icon />
+        <Icon data-testid="svg-icon-contenttype-unknown" />
       </Box>
     </Tooltip>
   );
