@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
-import { isLoggedIn, login } from "../../services/userService.ts";
+import { isLoggedIn, login } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
