@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import ContentCard from "./ContentCard.tsx";
 import { contentType } from "../../model/contentModel.ts";
 import { userEvent } from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 
 const contentMovie: contentType = {
   id: "1",
@@ -47,43 +48,71 @@ const contentSeries: contentType = {
 };
 
 test("ContentCard renders the english title of the content", () => {
-  render(<ContentCard content={contentMovie} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentMovie} />
+    </MemoryRouter>
+  );
   const title = screen.getByText(/english title/i);
   expect(title).toBeInTheDocument();
 });
 
 test("ContentCard renders the german title of the content", () => {
-  render(<ContentCard content={contentExhibition} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentExhibition} />
+    </MemoryRouter>
+  );
   const title = screen.getByText(/german title/i);
   expect(title).toBeInTheDocument();
 });
 
 test("ContentCard renders the original title of the content", () => {
-  render(<ContentCard content={contentSeries} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentSeries} />
+    </MemoryRouter>
+  );
   const title = screen.getByText(/original title/i);
   expect(title).toBeInTheDocument();
 });
 
 test("ContentCard renders a svg icon for the content type 'movie'", () => {
-  render(<ContentCard content={contentMovie} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentMovie} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-movie");
   expect(svgIcon).toBeInTheDocument();
 });
 
 test("ContentCard renders a svg icon for the content type 'series'", () => {
-  render(<ContentCard content={contentSeries} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentSeries} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-series");
   expect(svgIcon).toBeInTheDocument();
 });
 
 test("ContentCard renders a svg icon for the content type 'exhibition'", () => {
-  render(<ContentCard content={contentExhibition} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentExhibition} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-exhibition");
   expect(svgIcon).toBeInTheDocument();
 });
 
 test("ContentCard renders a tooltip for the content type 'movie' on icon hover", async () => {
-  render(<ContentCard content={contentMovie} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentMovie} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-movie");
   await userEvent.hover(svgIcon);
   const tooltipElement = screen.getByText(/movie/i);
@@ -91,7 +120,11 @@ test("ContentCard renders a tooltip for the content type 'movie' on icon hover",
 });
 
 test("ContentCard renders a tooltip for the content type 'Series' on icon hover", async () => {
-  render(<ContentCard content={contentSeries} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentSeries} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-series");
   await userEvent.hover(svgIcon);
   const tooltipElement = screen.getByText(/series/i);
@@ -99,7 +132,11 @@ test("ContentCard renders a tooltip for the content type 'Series' on icon hover"
 });
 
 test("ContentCard renders a tooltip for the content type 'Exhibition' on icon hover", async () => {
-  render(<ContentCard content={contentExhibition} />);
+  render(
+    <MemoryRouter>
+      <ContentCard content={contentExhibition} />
+    </MemoryRouter>
+  );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-exhibition");
   await userEvent.hover(svgIcon);
   const tooltipElement = screen.getByText(/exhibition/i);
