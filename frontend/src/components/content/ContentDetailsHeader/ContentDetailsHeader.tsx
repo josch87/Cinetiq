@@ -1,7 +1,8 @@
-import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Stack, Text } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
+import ContentDetailsActions from "../ContentDetailsActions/ContentDetailsActions.tsx";
 
 type ContentDetailsHeaderProps = {
   content: contentType;
@@ -37,7 +38,7 @@ export default function ContentDetailsHeader({
               experience.
             </Text>
           </Stack>
-          <Button>Download</Button>
+          <ContentDetailsActions />
         </Stack>
       </Box>
     </Box>
