@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { contentType, infoType } from "../../model/contentModel.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
+import ContentDetailsHeader from "../../components/ContentDetailsHeader/ContentDetailsHeader.tsx";
 
 type ContentDetailsPageProps = {
   user: githubUserType | null | undefined;
@@ -40,13 +41,16 @@ export default function ContentDetailsPage({
     }
   }, [id]);
 
-  return (
-    <DefaultPageTemplate
-      pageTitle={"Content Details"}
-      pageSubtitle="Display details of the content"
-      user={user}
-    >
-      {content?.originalTitle} {id}
-    </DefaultPageTemplate>
-  );
+  if (content) {
+    return (
+      <DefaultPageTemplate
+        pageTitle={"Content Details"}
+        pageSubtitle="Display details of the content"
+        user={user}
+      >
+        <ContentDetailsHeader content={content} />
+        {content?.originalTitle} {id} {info?.count}
+      </DefaultPageTemplate>
+    );
+  }
 }
