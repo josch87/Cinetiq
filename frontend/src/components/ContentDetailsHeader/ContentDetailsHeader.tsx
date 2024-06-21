@@ -1,5 +1,6 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
+import ContentCardTypeIcon from "../ContentCard/ContentCardTypeIcon.tsx";
 
 type ContentDetailsHeaderProps = {
   content: contentType;
@@ -24,9 +25,12 @@ export default function ContentDetailsHeader({
           justify="space-between"
         >
           <Stack spacing="1">
-            <Heading fontSize="xl" fontWeight="bold">
-              {content.englishTitle}
-            </Heading>
+            <Stack flexDirection="row" alignItems="center">
+              <ContentCardTypeIcon contentType={content.contentType} />
+              <Heading fontSize="xl" fontWeight="bold">
+                {content.englishTitle}
+              </Heading>
+            </Stack>
             <Text textStyle="sm" color="fg.muted">
               A new version is available. Please upgrade for the best
               experience.
