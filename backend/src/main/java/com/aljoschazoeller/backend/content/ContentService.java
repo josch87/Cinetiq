@@ -1,6 +1,7 @@
 package com.aljoschazoeller.backend.content;
 
 import com.aljoschazoeller.backend.content.domain.Content;
+import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +20,10 @@ public class ContentService {
 
     public Content createContent(Content content) {
         return contentRepository.save(content);
+    }
+
+    public Content getContentById(String id) {
+        return contentRepository.findById(id)
+                .orElseThrow(() -> new ContentNotFoundException("No content found with ID " + id));
     }
 }

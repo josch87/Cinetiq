@@ -3,7 +3,7 @@ package com.aljoschazoeller.backend.api;
 import java.time.ZonedDateTime;
 
 public class ResponseInfo {
-        private final int count;
+        private final Integer count;
         private final ZonedDateTime timestamp;
 
 
@@ -12,7 +12,12 @@ public class ResponseInfo {
         this.timestamp = ZonedDateTime.now();
     }
 
-    public int getCount() {
+    public ResponseInfo() {
+        this.count = null;
+        this.timestamp = ZonedDateTime.now();
+    }
+
+    public Integer getCount() {
         return count;
     }
 

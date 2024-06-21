@@ -10,7 +10,7 @@ public class ApiResponse<T> {
         if (data instanceof Collection<?>) {
             this.info = new ResponseInfo(((Collection<?>) data).size());
         } else {
-            this.info = new ResponseInfo(1);
+            this.info = new ResponseInfo();
         }
         this.data = data;
     }
