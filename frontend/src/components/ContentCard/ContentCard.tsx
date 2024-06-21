@@ -1,6 +1,6 @@
 import { Card, CardHeader, Heading } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
-import ContentCardTitle from "./ContentCardTitle.tsx";
+import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ export default function ContentCard({ content }: Readonly<ContentCardProps>) {
       >
         <ContentTypeIcon contentType={content.contentType} />
         <Heading size="md">
-          <ContentCardTitle content={content} />
+          <ContentTitle content={content} />
         </Heading>
       </CardHeader>
     </Card>

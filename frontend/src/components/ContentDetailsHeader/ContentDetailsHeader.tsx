@@ -1,6 +1,7 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
+import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 
 type ContentDetailsHeaderProps = {
   content: contentType;
@@ -28,7 +29,7 @@ export default function ContentDetailsHeader({
             <Stack flexDirection="row" alignItems="center">
               <ContentTypeIcon contentType={content.contentType} />
               <Heading fontSize="xl" fontWeight="bold">
-                {content.englishTitle}
+                <ContentTitle content={content} />
               </Heading>
             </Stack>
             <Text textStyle="sm" color="fg.muted">

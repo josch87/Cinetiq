@@ -5,7 +5,7 @@ type ContentCardTitleProps = {
   content: contentType;
 };
 
-export default function ContentCardTitle({
+export default function ContentTitle({
   content,
 }: Readonly<ContentCardTitleProps>) {
   if (content.englishTitle) {
