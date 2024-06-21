@@ -7,7 +7,7 @@ type ContentCardTypeIconProps = {
   contentType: contentTypeEnum;
 };
 
-export default function ContentCardTypeIcon({
+export default function ContentTypeIcon({
   contentType,
 }: Readonly<ContentCardTypeIconProps>) {
   if (contentType === "MOVIE") {
