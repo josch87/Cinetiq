@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentCard from "./ContentCard.tsx";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 

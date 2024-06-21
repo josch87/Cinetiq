@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentResultBody from "./ContentResultBody.tsx";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import { MemoryRouter } from "react-router-dom";
 
 const content: contentType[] = [

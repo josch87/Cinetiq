@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 

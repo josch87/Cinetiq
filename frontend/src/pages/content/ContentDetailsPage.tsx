@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { contentType, infoType } from "../../model/contentModel.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
-import ContentDetailsHeader from "../../components/ContentDetailsHeader/ContentDetailsHeader.tsx";
+import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 
 type ContentDetailsPageProps = {
   user: githubUserType | null | undefined;

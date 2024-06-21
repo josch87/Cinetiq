@@ -1,5 +1,5 @@
 import { Card, Skeleton, Text } from "@chakra-ui/react";
-import { infoType } from "../../model/contentModel.ts";
+import { infoType } from "../../../model/contentModel.ts";
 
 type ContentFilterResultHeaderProps = {
   info: infoType | undefined;

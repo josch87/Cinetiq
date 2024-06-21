@@ -1,4 +1,4 @@
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import { Tooltip } from "@chakra-ui/react";
 
 type ContentCardTitleProps = {

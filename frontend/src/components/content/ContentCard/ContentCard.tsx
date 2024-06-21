@@ -1,5 +1,5 @@
 import { Card, CardHeader, Heading } from "@chakra-ui/react";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import { useNavigate } from "react-router-dom";
