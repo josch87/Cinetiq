@@ -25,7 +25,9 @@ class UserServiceTest {
         //WHEN
 
         //THEN
-        assertThrows(UserNotFoundException.class, () -> userService.findByGithubId("nonexistentId"));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> userService.findByGithubId("nonexistentId"));
+        assertEquals("No appUser found with GitHub ID nonexistentId", exception.getMessage());
+        verify(mockUserRepository).findAppUserByGithubId("nonexistentId");
     }
 
     @Test
