@@ -12,7 +12,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { FaFilm } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-const data = [{ id: 1, title: "Content Filter", path: "/content-filter" }];
+const data = [{ id: 1, title: "All Content", path: "/content" }];
 
 export const ContentCollapse = () => {
   const navigate = useNavigate();

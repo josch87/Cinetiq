@@ -57,7 +57,13 @@ export default function DefaultPageTemplate({
               </Container>
             </Box>
           </Flex>
-          <Box as="main" bg={mode("gray.50", "gray.800")} flex="1" p="4">
+          <Box
+            as="main"
+            bg={mode("gray.50", "gray.800")}
+            flex="1"
+            p="4"
+            overflowY="auto"
+          >
             {children}
           </Box>
         </Flex>

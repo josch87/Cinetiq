@@ -15,8 +15,8 @@ import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
-    private final UserRepository mockUserRespository = mock(UserRepository.class);
-    private final UserService userService = new UserService(mockUserRespository);
+    private final UserRepository mockUserRepository = mock(UserRepository.class);
+    private final UserService userService = new UserService(mockUserRepository);
 
     @Test
     void findByGithubIdTest_whenIdNotFound_thenThrowException() {
@@ -34,13 +34,13 @@ class UserServiceTest {
         Map<String, Object> githubUserProfile = new HashMap<>();
         githubUserProfile.put("id", "github-id-1111");
         AppUser expected = new AppUser("appUser-id-1212", "github-id-1111", githubUserProfile, Instant.now());
-        when(mockUserRespository.findAppUserByGithubId("github-id-1111")).thenReturn(Optional.of(expected));
+        when(mockUserRepository.findAppUserByGithubId("github-id-1111")).thenReturn(Optional.of(expected));
 
         //WHEN
         AppUser actual = userService.findByGithubId("github-id-1111");
 
         //THEN
-        verify(mockUserRespository).findAppUserByGithubId("github-id-1111");
+        verify(mockUserRepository).findAppUserByGithubId("github-id-1111");
         assertEquals(expected, actual);
     }
 
@@ -55,13 +55,13 @@ class UserServiceTest {
         when(oAuth2User.getAttributes()).thenReturn(githubUserProfile);
 
         AppUser expected = new AppUser("appUser-id-1212", "github-id-1111", githubUserProfile, currentTime);
-        when(mockUserRespository.save(any(AppUser.class))).thenReturn(expected);
+        when(mockUserRepository.save(any(AppUser.class))).thenReturn(expected);
 
         //WHEN
         AppUser actual = userService.register(oAuth2User);
 
         //THEN
-        verify(mockUserRespository).save(any(AppUser.class));
+        verify(mockUserRepository).save(any(AppUser.class));
 
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.githubId(), actual.githubId());

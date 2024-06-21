@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import LoginPage from "./LoginPage.tsx";
 import { MemoryRouter } from "react-router-dom";
 
-jest.mock("../../services/userService.ts", () => ({
+jest.mock("../../services/authService.ts", () => ({
   isLoggedIn: jest.fn().mockResolvedValue(false),
 }));
 
