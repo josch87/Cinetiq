@@ -1,6 +1,16 @@
 import axios from "axios";
 import { contentType, infoType } from "../model/contentModel.ts";
 
+function processSingleContent(rawContent: contentType): contentType {
+  return { ...rawContent, createdAt: new Date(rawContent.createdAt) };
+}
+
+function processContentArray(rawContent: contentType[]): contentType[] {
+  return rawContent.map((content) => {
+    return processSingleContent(content);
+  });
+}
+
 export function getContent(): Promise<{
   info: infoType;
   content: contentType[];
@@ -8,7 +18,7 @@ export function getContent(): Promise<{
   return axios
     .get("/api/content")
     .then((response) => {
-      const content = processContent(response.data.data);
+      const content = processContentArray(response.data.data);
       return { info: response.data.info, content };
     })
     .catch((error) => {
@@ -17,8 +27,17 @@ export function getContent(): Promise<{
     });
 }
 
-function processContent(rawContent: contentType[]): contentType[] {
-  return rawContent.map((content) => {
-    return { ...content, createdAt: new Date(content.createdAt) };
-  });
+export function getContentById(
+  id: string
+): Promise<{ info: infoType; content: contentType } | null> {
+  return axios
+    .get(`/api/content/${id}`)
+    .then((response) => {
+      const content = processSingleContent(response.data.data);
+      return { info: response.data.info, content };
+    })
+    .catch((error) => {
+      console.error(error.message);
+      return null;
+    });
 }

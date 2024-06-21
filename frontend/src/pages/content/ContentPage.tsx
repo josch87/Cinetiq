@@ -1,17 +1,17 @@
-import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
-import { githubUserType } from "../model/userModel.ts";
+import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
+import { githubUserType } from "../../model/userModel.ts";
 import {
   contentSkeletonData,
   contentType,
   infoType,
-} from "../model/contentModel.ts";
+} from "../../model/contentModel.ts";
 import { Container, Flex, Skeleton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getContent } from "../services/contentService.ts";
-import ContentResultHeader from "../components/ContentResult/ContentResultHeader.tsx";
-import NoData from "../components/NoData/NoData.tsx";
-import ContentResultBody from "../components/ContentResult/ContentResultBody.tsx";
-import ContentCard from "../components/ContentCard/ContentCard.tsx";
+import { getContent } from "../../services/contentService.ts";
+import ContentResultHeader from "../../components/ContentResult/ContentResultHeader.tsx";
+import NoData from "../../components/NoData/NoData.tsx";
+import ContentResultBody from "../../components/ContentResult/ContentResultBody.tsx";
+import ContentCard from "../../components/ContentCard/ContentCard.tsx";
 
 type ContentPageProps = {
   user: githubUserType | null | undefined;
@@ -26,7 +26,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
   useEffect(() => {
     getContent()
       .then((response) => {
-        if (response != null) {
+        if (response) {
           setInfo(response.info);
           setContent(response.content);
         }
