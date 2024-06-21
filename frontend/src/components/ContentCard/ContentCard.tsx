@@ -1,18 +1,15 @@
-import { Card, CardHeader, Heading } from "@chakra-ui/react";
+import { Card, CardHeader, Heading, LinkBox } from "@chakra-ui/react";
 import { contentType } from "../../model/contentModel.ts";
 import ContentCardTitle from "./ContentCardTitle.tsx";
 import ContentCardTypeIcon from "./ContentCardTypeIcon.tsx";
-import { useNavigate } from "react-router-dom";
 
 type ContentCardProps = {
   content: contentType;
 };
 
 export default function ContentCard({ content }: Readonly<ContentCardProps>) {
-  const navigate = useNavigate();
-
   return (
-    <Card onClick={() => navigate(`/content/${content.id}`)} cursor="pointer">
+    <LinkBox as={Card}>
       <CardHeader
         display="flex"
         flexDirection="row"
@@ -24,6 +21,6 @@ export default function ContentCard({ content }: Readonly<ContentCardProps>) {
           <ContentCardTitle content={content} />
         </Heading>
       </CardHeader>
-    </Card>
+    </LinkBox>
   );
 }
