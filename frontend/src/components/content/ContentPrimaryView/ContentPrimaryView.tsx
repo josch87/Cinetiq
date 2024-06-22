@@ -51,7 +51,7 @@ export default function ContentPrimaryView({
           Primary View
         </Heading>
       </CardHeader>
-      <CardBody>
+      <CardBody pt={0}>
         <Stack divider={<StackDivider />} spacing="4">
           <Box>
             <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
