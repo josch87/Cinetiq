@@ -11,11 +11,9 @@ export default function ContentDetails({
 }: Readonly<ContentDetailsProps>) {
   return (
     <Box>
-      <Tabs size="md" variant="enclosed-colored" colorScheme="teal">
+      <Tabs size="md" variant="enclosed" colorScheme="teal">
         <TabList flexWrap="wrap">
           <Tab>Basics</Tab>
-          <Tab>Cast & Crew</Tab>
-          <Tab>Video</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px={0} pb={0} display="flex" flexDirection="column" gap={4}>

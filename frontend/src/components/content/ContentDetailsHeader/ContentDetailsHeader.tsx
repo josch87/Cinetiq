@@ -34,8 +34,7 @@ export default function ContentDetailsHeader({
               </Heading>
             </Stack>
             <Text textStyle="sm" color="fg.muted">
-              A new version is available. Please upgrade for the best
-              experience.
+              {`Created on ${content.createdAt.toDateString()}`}
             </Text>
           </Stack>
           <ContentDetailsActions />
