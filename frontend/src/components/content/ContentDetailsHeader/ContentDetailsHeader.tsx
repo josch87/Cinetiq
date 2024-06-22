@@ -12,7 +12,7 @@ export default function ContentDetailsHeader({
   content,
 }: Readonly<ContentDetailsHeaderProps>) {
   return (
-    <Box as="section" pb={{ base: "12", md: "24" }}>
+    <Box as="section" pb={{ base: "12", md: "4" }}>
       <Box
         bg="bg.surface"
         bgColor="white"
