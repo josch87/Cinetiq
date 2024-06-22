@@ -1,6 +1,7 @@
 import { contentType } from "../../../model/contentModel.ts";
-import { Box } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import ContentPrimaryView from "../ContentPrimaryView/ContentPrimaryView.tsx";
+import ContentDetails from "../ContentDetails/ContentDetails.tsx";
 
 type ContentDetailsBodyProps = {
   content: contentType;
@@ -10,8 +11,9 @@ export default function ContentDetailsBody({
   content,
 }: Readonly<ContentDetailsBodyProps>) {
   return (
-    <Box height="100%">
+    <Grid templateColumns="2fr 3fr" gap={4}>
       <ContentPrimaryView content={content} />
-    </Box>
+      <ContentDetails content={content} />
+    </Grid>
   );
 }
