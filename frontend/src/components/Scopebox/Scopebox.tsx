@@ -36,7 +36,7 @@ export default function Scopebox({
           />
         </Tooltip>
       </CardHeader>
-      <CardBody>{children}</CardBody>
+      <CardBody pt={0}>{children}</CardBody>
     </Card>
   );
 }

@@ -25,7 +25,6 @@ type ContentPrimaryViewProps = {
 const StyledTd = styled(Td)`
   padding-left: 2px;
   font-weight: bold;
-  min-width: 50px;
   width: 1%;
 `;
 
