@@ -14,6 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { githubUserType } from "../../../model/userModel.ts";
 
 type ContentPrimaryViewProps = {
   content: contentType;
@@ -29,6 +32,19 @@ const StyledTd = styled(Td)`
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
+  const [contentAuthor, setContentAuthor] = useState<githubUserType>();
+
+  useEffect(() => {
+    axios
+      .get("https://api.github.com/user/" + content.createdBy.githubId)
+      .then((response) => {
+        setContentAuthor(response.data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, []);
+
   return (
     <Card>
       <CardHeader>
@@ -77,7 +93,7 @@ export default function ContentPrimaryView({
                   </Tr>
                   <Tr>
                     <StyledTd>Author</StyledTd>
-                    <Td>{content.createdBy.id}</Td>
+                    <Td>{contentAuthor?.name}</Td>
                   </Tr>
                 </Tbody>
               </Table>
