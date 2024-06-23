@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.content;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.ContentType;
 import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
+import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,8 @@ import static org.mockito.Mockito.*;
 class ContentServiceTest {
 
     private final ContentRepository mockContentRepository = mock(ContentRepository.class);
-    private final ContentService contentService = new ContentService(mockContentRepository) {
+    private final UserService mockUserService = mock(UserService.class);
+    private final ContentService contentService = new ContentService(mockContentRepository, mockUserService) {
     };
 
     @Test
@@ -29,6 +31,7 @@ class ContentServiceTest {
 
         //THEN
         assertTrue(actual.isEmpty());
+        verify(mockContentRepository, times(1)).findAll();
     }
 
     @Test

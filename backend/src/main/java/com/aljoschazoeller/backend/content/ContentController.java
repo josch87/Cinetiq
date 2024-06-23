@@ -59,4 +59,10 @@ public class ContentController {
                 currentTime);
         return contentService.createContent(contentToSave);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void softDeleteContentById(Principal principal, @PathVariable String id) {
+        contentService.softDeleteContentById(id, principal);
+    }
 }
