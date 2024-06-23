@@ -18,12 +18,12 @@ public class ContentService {
         return contentRepository.findAll();
     }
 
-    public Content createContent(Content content) {
-        return contentRepository.save(content);
-    }
-
     public Content getContentById(String id) {
         return contentRepository.findById(id)
                 .orElseThrow(() -> new ContentNotFoundException("No content found with ID " + id));
+    }
+
+    public Content createContent(Content content) {
+        return contentRepository.save(content);
     }
 }
