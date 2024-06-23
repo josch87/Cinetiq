@@ -91,8 +91,8 @@ export default function ContentPrimaryView({
                     </Td>
                   </Tr>
                   <Tr>
-                    <StyledTd>Author</StyledTd>
-                    <Td>{contentAuthor?.name}</Td>
+                    <StyledTd>Created by</StyledTd>
+                    <Td>{contentAuthor?.name} in Cinetiq</Td>
                   </Tr>
                 </Tbody>
               </Table>
