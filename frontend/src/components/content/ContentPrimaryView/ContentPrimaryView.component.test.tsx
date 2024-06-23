@@ -70,3 +70,13 @@ test("ContentPrimaryView renders the original title", async () => {
     expect(title).toBeInTheDocument();
   });
 });
+
+test("ContentPrimaryView renders the authors name from GitHub", async () => {
+  mockedAxios.get.mockResolvedValueOnce({ data: githubProfile });
+  render(<ContentPrimaryView content={content} />);
+
+  await waitFor(async () => {
+    const authorName = await screen.findByText(/My GitHub name/i);
+    expect(authorName).toBeInTheDocument();
+  });
+});
