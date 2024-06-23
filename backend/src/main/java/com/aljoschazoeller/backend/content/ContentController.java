@@ -27,7 +27,7 @@ public class ContentController {
 
     @GetMapping
     public ApiResponse<List<Content>> getContent() {
-        List<Content> content = contentService.getAllContent();
+        List<Content> content = contentService.getAllActiveContent();
         return new ApiResponse<>(content);
     }
 

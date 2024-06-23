@@ -22,8 +22,8 @@ public class ContentService {
         this.userService = userService;
     }
 
-    public List<Content> getAllContent() {
-        return contentRepository.findAll();
+    public List<Content> getAllActiveContent() {
+        return contentRepository.findContentByStatus(ContentStatus.ACTIVE);
     }
 
     public Content getContentById(String id) {

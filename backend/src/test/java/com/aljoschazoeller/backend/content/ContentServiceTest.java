@@ -23,11 +23,11 @@ class ContentServiceTest {
     };
 
     @Test
-    void getAllContentTest_whenNoContentInDatabase_thenReturnEmptyList() {
+    void getAllContentTest_whenNoActiveContentInDatabase_thenReturnEmptyList() {
         //GIVEN
 
         //WHEN
-        List<Content> actual = contentService.getAllContent();
+        List<Content> actual = contentService.getAllActiveContent();
 
         //THEN
         assertTrue(actual.isEmpty());
@@ -35,7 +35,7 @@ class ContentServiceTest {
     }
 
     @Test
-    void getAllContentTest_whenOneContentInDatabase_thenReturnListWithOne() {
+    void getAllContentTest_whenOneActiveContentInDatabase_thenReturnListWithOne() {
         //GIVEN
         Content expected = new Content(
                 "content-id-1",
@@ -49,7 +49,7 @@ class ContentServiceTest {
         when(mockContentRepository.findAll()).thenReturn(Collections.singletonList(expected));
 
         //WHEN
-        List<Content> actual = contentService.getAllContent();
+        List<Content> actual = contentService.getAllActiveContent();
 
         //THEN
         verify(mockContentRepository).findAll();
