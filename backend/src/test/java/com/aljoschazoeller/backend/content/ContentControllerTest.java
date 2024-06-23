@@ -106,6 +106,75 @@ class ContentControllerTest {
     }
 
     @Test
+    void getContentByIdTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/content/1"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    @WithMockUser
+    void getContentByIdTest_whenIdNotFound_thenReturnNotFound() throws Exception {
+        mockMvc.perform(get("/api/content/-1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No content found with ID -1"));
+    }
+
+    @Test
+    @WithMockUser
+    @DirtiesContext
+    void getContentByIdTest_whenIdFound_thenReturnContent() throws Exception {
+        AppUser user = new AppUser(
+                "appUser-id-1",
+                "user",
+                null,
+                Instant.parse("2024-06-20T15:10:05.022Z"));
+
+        userRepository.save(user);
+
+        MvcResult result = mockMvc.perform(post("/api/content")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                          "contentType": "MOVIE",
+                          "originalTitle": "Original Title",
+                          "englishTitle": "English Title",
+                          "germanTitle": "German Title"
+                                }
+                        """))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+
+        mockMvc.perform(get("/api/content/" + content.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.id").value(content.id()))
+                .andExpect(jsonPath("$.data.createdAt").exists());
+    }
+
+    @Test
     void createContentTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
         mockMvc.perform(post("/api/content")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -134,15 +203,15 @@ class ContentControllerTest {
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                                    "contentType": "MOVIE",
-                                    "originalTitle": "Original Title",
-                                    "englishTitle": "English Title",
-                                    "germanTitle": "German Title"
-                                }
-                        """))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                            "contentType": "MOVIE",
+                                            "originalTitle": "Original Title",
+                                            "englishTitle": "English Title",
+                                            "germanTitle": "German Title"
+                                        }
+                                """))
                 .andExpect(status().isCreated())
                 .andExpect(content().json("""
                         {
@@ -165,7 +234,7 @@ class ContentControllerTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         Content savedContent = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
-        
+
         mockMvc.perform(get("/api/content"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
