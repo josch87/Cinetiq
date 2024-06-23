@@ -12,7 +12,7 @@ function pluralizeResults(count: number) {
 export default function ContentResultHeader({
   info,
 }: Readonly<ContentFilterResultHeaderProps>) {
-  if (info === undefined) {
+  if (info === undefined || info.count === null) {
     return (
       <Card bgColor="gray.100" mb={4} fontSize="sm" p={2}>
         <Skeleton noOfLines={1} fitContent>
