@@ -2,7 +2,13 @@ import axios from "axios";
 import { contentType, infoType } from "../model/contentModel.ts";
 
 function processSingleContent(rawContent: contentType): contentType {
-  return { ...rawContent, createdAt: new Date(rawContent.createdAt) };
+  return {
+    ...rawContent,
+    createdAt: new Date(rawContent.createdAt),
+    statusUpdatedAt: rawContent.statusUpdatedAt
+      ? new Date(rawContent.statusUpdatedAt)
+      : null,
+  };
 }
 
 function processContentArray(rawContent: contentType[]): contentType[] {

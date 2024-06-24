@@ -1,8 +1,11 @@
 import { appUserType } from "./userModel.ts";
 
+export type contentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
+export type contentStatusEnum = "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
+
 export type contentType = {
   id: string;
-  status: "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
+  status: contentStatusEnum;
   statusUpdatedAt: Date | null;
   statusUpdatedBy: appUserType | null;
   contentType: contentTypeEnum;
@@ -33,8 +36,6 @@ export const contentSkeletonData: contentType = {
   },
   createdAt: new Date(),
 };
-
-export type contentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
 
 export type infoType = {
   count: number | null;
