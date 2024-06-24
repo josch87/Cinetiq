@@ -6,6 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { contentType } from "../../model/contentModel.ts";
@@ -25,12 +26,19 @@ export default function DeleteAlertDialog({
 }: Readonly<DeleteContentAlertDialogProps>) {
   const navigate = useNavigate();
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const toast = useToast();
 
   function handleDeleteContent() {
     axios
       .delete(`/api/content/${content.id}`)
       .then(() => {
         navigate("/content");
+        toast({
+          title: "Success",
+          description: "Deleted content",
+          status: "success",
+          isClosable: true,
+        });
       })
       .catch((error) => console.error(error.message));
   }
