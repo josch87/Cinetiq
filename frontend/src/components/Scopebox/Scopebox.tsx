@@ -12,7 +12,7 @@ import { FaEdit } from "react-icons/fa";
 type ScopeboxProps = {
   children: ReactNode;
   heading: string;
-  editable: boolean;
+  editable?: boolean;
 };
 
 export default function Scopebox({
