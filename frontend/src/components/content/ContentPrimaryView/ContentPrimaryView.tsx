@@ -42,7 +42,7 @@ export default function ContentPrimaryView({
       .catch((error) => {
         console.error(error.message);
       });
-  }, []);
+  }, [content.createdBy.githubId]);
 
   return (
     <Card>
