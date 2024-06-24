@@ -11,6 +11,7 @@ import {
   Tbody,
   Td,
   Tr,
+  Text,
 } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
 import styled from "@emotion/styled";
@@ -78,13 +79,13 @@ export default function ContentPrimaryView({
           </Box>
           <Box>
             <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
-              Created
+              Info
             </Heading>
             <TableContainer>
               <Table variant="unstyled" size="sm">
                 <Tbody>
                   <Tr>
-                    <StyledTd>Date created</StyledTd>
+                    <StyledTd>Created at</StyledTd>
                     <Td>
                       {content.createdAt.toDateString()},{" "}
                       {content.createdAt.toLocaleTimeString()}
@@ -94,6 +95,26 @@ export default function ContentPrimaryView({
                     <StyledTd>Created by</StyledTd>
                     <Td>{contentAuthor?.name} in Cinetiq</Td>
                   </Tr>
+                  {content.status !== "ACTIVE" && (
+                    <>
+                      <Tr>
+                        <StyledTd>Status</StyledTd>
+                        <Td>
+                          <Text color="red">{content.status}</Text>
+                        </Td>
+                      </Tr>
+                      <Tr>
+                        <StyledTd>Status updated at</StyledTd>
+                        <Td>{`${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`}</Td>
+                      </Tr>
+                      <Tr>
+                        <StyledTd>Status updated by</StyledTd>
+                        <Td>
+                          <Text color="red">{content.status}</Text>
+                        </Td>
+                      </Tr>
+                    </>
+                  )}
                 </Tbody>
               </Table>
             </TableContainer>

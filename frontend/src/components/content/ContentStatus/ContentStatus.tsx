@@ -39,7 +39,7 @@ export default function ContentStatus({
           console.error(error.message);
         });
     }
-  }, []);
+  }, [content.statusUpdatedBy]);
 
   if (content.status === "ACTIVE") {
     return null;
