@@ -1,0 +1,8 @@
+# Database
+MONGODB_URI={your_mongodb_uri}
+MONGODB_DATABASE={your_database_name>}
+
+# Authentication
+GITHUB_ID={id_of_your_github_app}
+GITHUB_SECRET={secret_of_your_github_app}
+APP_URL=http://localhost:5173
