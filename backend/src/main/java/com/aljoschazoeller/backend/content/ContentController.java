@@ -61,7 +61,7 @@ public class ContentController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void softDeleteContentById(Principal principal, @PathVariable String id) {
         contentService.softDeleteContentById(id, principal);
     }
