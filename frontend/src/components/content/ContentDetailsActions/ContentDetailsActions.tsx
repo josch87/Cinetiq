@@ -1,10 +1,4 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Button,
   Menu,
   MenuButton,
@@ -14,10 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { FaFileExport, FaShareNodes, FaTrash } from "react-icons/fa6";
 import { FiChevronDown } from "react-icons/fi";
-import React, { MouseEvent } from "react";
 import { contentType } from "../../../model/contentModel.ts";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import DeleteAlertDialog from "../../AlertDialogs/DeleteAlertDialog.tsx";
 
 type ContentDetailsActionsProps = {
   content: contentType;
@@ -26,16 +18,7 @@ type ContentDetailsActionsProps = {
 export default function ContentDetailsActions({
   content,
 }: Readonly<ContentDetailsActionsProps>) {
-  const navigate = useNavigate();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
-
-  function handleDeleteContent(event: MouseEvent<HTMLButtonElement>) {
-    axios.delete(`/api/content/${content.id}`).then(() => {
-      navigate("/content");
-    });
-  }
 
   return (
     <>
@@ -53,31 +36,7 @@ export default function ContentDetailsActions({
           )}
         </MenuList>
       </Menu>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Content
-            </AlertDialogHeader>
-
-            <AlertDialogBody>Are you sure?</AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={handleDeleteContent} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <DeleteAlertDialog content={content} isOpen={isOpen} onClose={onClose} />
     </>
   );
 }
