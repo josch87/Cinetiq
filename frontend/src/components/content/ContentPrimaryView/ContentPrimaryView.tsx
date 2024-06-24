@@ -16,8 +16,8 @@ import {
 import { contentType } from "../../../model/contentModel.ts";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { githubUserType } from "../../../model/userModel.ts";
+import { getGithubUserById } from "../../../services/githubService.ts";
 
 type ContentPrimaryViewProps = {
   content: contentType;
@@ -32,17 +32,16 @@ const StyledTd = styled(Td)`
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
-  const [contentAuthor, setContentAuthor] = useState<githubUserType>();
+  const [contentAuthor, setContentAuthor] = useState<
+    githubUserType | undefined | null
+  >(undefined);
 
   useEffect(() => {
-    axios
-      .get("https://api.github.com/user/" + content.createdBy.githubId)
+    getGithubUserById(content.createdBy.githubId)
       .then((response) => {
-        setContentAuthor(response.data);
+        setContentAuthor(response);
       })
-      .catch((error) => {
-        console.error(error.message);
-      });
+      .catch(() => setContentAuthor(null));
   }, [content.createdBy.githubId]);
 
   return (
