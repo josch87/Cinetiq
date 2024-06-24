@@ -23,11 +23,9 @@ function getIcon(status: contentStatusEnum) {
 export default function ContentStatus({
   content,
 }: Readonly<ContentStatusProps>) {
-  const {
-    githubUser: statusUpdatedByGithubUser,
-    isLoading,
-    isError,
-  } = useGithubUserById(content.statusUpdatedBy?.githubId);
+  const { githubUser: statusUpdatedByGithubUser } = useGithubUserById(
+    content.statusUpdatedBy?.githubId
+  );
 
   if (content.status === "ACTIVE") {
     return null;
@@ -37,7 +35,7 @@ export default function ContentStatus({
     <Tooltip
       label={`by ${statusUpdatedByGithubUser?.name} on ${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`}
     >
-      <Flex gap={2} alignItems="center" border="1px solid red" px="2" py="1">
+      <Flex gap={2} alignItems="center" border="1px solid red" px={2} py={1}>
         {getIcon(content.status)}
         <Text as="strong" color="red">
           {content.status}

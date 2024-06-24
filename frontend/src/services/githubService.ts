@@ -1,7 +1,12 @@
 import axios from "axios";
 import useSWR from "swr";
+import { githubUserType } from "../model/userModel.ts";
 
-export function useGithubUserById(githubId: string | undefined) {
+export function useGithubUserById(githubId: string | undefined): {
+  githubUser: githubUserType;
+  isLoading: boolean;
+  isError: any;
+} {
   const fetcher = (githubId: string) =>
     axios
       .get(`https://api.github.com/user/${githubId}`)

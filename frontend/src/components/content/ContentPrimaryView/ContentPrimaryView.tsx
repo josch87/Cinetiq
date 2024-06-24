@@ -1,40 +1,56 @@
 import {
-  Box,
   Card,
   CardBody,
   CardHeader,
   Heading,
   Stack,
   StackDivider,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tr,
   Text,
 } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
-import styled from "@emotion/styled";
 import { useGithubUserById } from "../../../services/githubService.ts";
+import ContentPrimaryViewSection from "../ContentPrimaryViewSection/ContentPrimaryViewSection.tsx";
 
 type ContentPrimaryViewProps = {
   content: contentType;
 };
 
-const StyledTd = styled(Td)`
-  padding-left: 2px;
-  font-weight: bold;
-  width: 1%;
-`;
-
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
-  const {
-    githubUser: contentAuthor,
-    isLoading,
-    isError,
-  } = useGithubUserById(content.createdBy.githubId);
+  const { githubUser: contentAuthor } = useGithubUserById(
+    content.createdBy.githubId
+  );
+
+  const { githubUser: statusUpdatedByGithubUser } = useGithubUserById(
+    content.statusUpdatedBy?.githubId
+  );
+
+  const titlesData = [
+    { label: "English title", value: content.englishTitle },
+    { label: "German title", value: content.germanTitle },
+    { label: "Original title", value: content.originalTitle },
+  ];
+
+  const createdData = [
+    {
+      label: "Created at",
+      value: `${content.createdAt.toDateString()}, ${content.createdAt.toLocaleTimeString()}`,
+    },
+    { label: "Created by", value: `${contentAuthor?.name} in Cinetiq` },
+  ];
+
+  const statusData = [
+    {
+      label: "Status",
+      value: <Text color="red">{content.status}</Text>,
+    },
+    {
+      label: "Updated at",
+      value: `${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`,
+    },
+    { label: "Updated by", value: statusUpdatedByGithubUser?.name },
+  ];
 
   return (
     <Card>
@@ -45,71 +61,17 @@ export default function ContentPrimaryView({
       </CardHeader>
       <CardBody pt={0}>
         <Stack divider={<StackDivider />} spacing="4">
-          <Box>
-            <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
-              Titles
-            </Heading>
-            <TableContainer>
-              <Table variant="unstyled" size="sm">
-                <Tbody>
-                  <Tr>
-                    <StyledTd>English title</StyledTd>
-                    <Td>{content.englishTitle}</Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>German title</StyledTd>
-                    <Td>{content.germanTitle}</Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>Original title</StyledTd>
-                    <Td>{content.originalTitle}</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box>
-            <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
-              Info
-            </Heading>
-            <TableContainer>
-              <Table variant="unstyled" size="sm">
-                <Tbody>
-                  <Tr>
-                    <StyledTd>Created at</StyledTd>
-                    <Td>
-                      {content.createdAt.toDateString()},{" "}
-                      {content.createdAt.toLocaleTimeString()}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>Created by</StyledTd>
-                    <Td>{contentAuthor?.name} in Cinetiq</Td>
-                  </Tr>
-                  {content.status !== "ACTIVE" && (
-                    <>
-                      <Tr>
-                        <StyledTd>Status</StyledTd>
-                        <Td>
-                          <Text color="red">{content.status}</Text>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <StyledTd>Status updated at</StyledTd>
-                        <Td>{`${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`}</Td>
-                      </Tr>
-                      <Tr>
-                        <StyledTd>Status updated by</StyledTd>
-                        <Td>
-                          <Text color="red">{content.status}</Text>
-                        </Td>
-                      </Tr>
-                    </>
-                  )}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
+          <ContentPrimaryViewSection heading="titles" tableData={titlesData} />
+          <ContentPrimaryViewSection
+            heading="Created"
+            tableData={createdData}
+          />
+          {content.status !== "ACTIVE" && (
+            <ContentPrimaryViewSection
+              heading="Status"
+              tableData={statusData}
+            />
+          )}
         </Stack>
       </CardBody>
     </Card>
