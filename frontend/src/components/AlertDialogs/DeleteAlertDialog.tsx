@@ -8,7 +8,7 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { contentType } from "../../model/contentModel.ts";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
@@ -40,7 +40,15 @@ export default function DeleteAlertDialog({
           isClosable: true,
         });
       })
-      .catch((error) => console.error(error.message));
+      .catch((error: AxiosError) => {
+        console.error(error.message);
+        toast({
+          title: "Error",
+          description: "Deleting was not possible",
+          status: "error",
+          isClosable: true,
+        });
+      });
   }
 
   return (
