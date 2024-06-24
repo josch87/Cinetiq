@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ContentRepository extends MongoRepository<Content, String> {
 
-    public List<Content> findContentByStatus(ContentStatus status);
+    List<Content> findContentByStatus(ContentStatus status);
 }
