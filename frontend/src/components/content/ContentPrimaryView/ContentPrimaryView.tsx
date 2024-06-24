@@ -15,9 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
-import { githubUserType } from "../../../model/userModel.ts";
-import { getGithubUserById } from "../../../services/githubService.ts";
+import { useGithubUserById } from "../../../services/githubService.ts";
 
 type ContentPrimaryViewProps = {
   content: contentType;
@@ -32,17 +30,11 @@ const StyledTd = styled(Td)`
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
-  const [contentAuthor, setContentAuthor] = useState<
-    githubUserType | undefined | null
-  >(undefined);
-
-  useEffect(() => {
-    getGithubUserById(content.createdBy.githubId)
-      .then((response) => {
-        setContentAuthor(response);
-      })
-      .catch(() => setContentAuthor(null));
-  }, [content.createdBy.githubId]);
+  const {
+    githubUser: contentAuthor,
+    isLoading,
+    isError,
+  } = useGithubUserById(content.createdBy.githubId);
 
   return (
     <Card>
