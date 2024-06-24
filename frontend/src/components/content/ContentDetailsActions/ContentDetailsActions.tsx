@@ -27,8 +27,12 @@ export default function ContentDetailsActions({
           Actions
         </MenuButton>
         <MenuList>
-          <MenuItem icon={<FaShareNodes />}>Share</MenuItem>
-          <MenuItem icon={<FaFileExport />}>Export</MenuItem>
+          <MenuItem icon={<FaShareNodes />} isDisabled>
+            Share
+          </MenuItem>
+          <MenuItem icon={<FaFileExport />} isDisabled>
+            Export
+          </MenuItem>
           {content.status === "ACTIVE" && (
             <MenuItem icon={<FaTrash />} onClick={onOpen} color="red">
               Delete

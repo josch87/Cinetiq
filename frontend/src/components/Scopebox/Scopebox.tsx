@@ -12,11 +12,13 @@ import { FaEdit } from "react-icons/fa";
 type ScopeboxProps = {
   children: ReactNode;
   heading: string;
+  editable: boolean;
 };
 
 export default function Scopebox({
   children,
   heading,
+  editable,
 }: Readonly<ScopeboxProps>) {
   return (
     <Card>
@@ -26,15 +28,17 @@ export default function Scopebox({
         justifyContent="space-between"
       >
         <Heading fontSize="md">{heading}</Heading>
-        <Tooltip label="Edit">
-          <IconButton
-            aria-label="Edit"
-            size="xs"
-            icon={<FaEdit />}
-            variant="outline"
-            colorScheme="teal"
-          />
-        </Tooltip>
+        {editable && (
+          <Tooltip label="Edit">
+            <IconButton
+              aria-label="Edit"
+              size="xs"
+              icon={<FaEdit />}
+              variant="outline"
+              colorScheme="teal"
+            />
+          </Tooltip>
+        )}
       </CardHeader>
       <CardBody pt={0}>{children}</CardBody>
     </Card>
