@@ -7,7 +7,9 @@ import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -121,5 +123,66 @@ class ContentServiceTest {
         //THEN
         verify(mockContentRepository, times(1)).save(newContent);
         assertEquals(savedContent, actual);
+    }
+
+    @Test
+    void softDeleteContentByIdTest_whenContentDoesNotExist_thenThrowContentNotFoundException() {
+        Principal mockPrincipal = mock(Principal.class);
+
+        ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.softDeleteContentById("-1", mockPrincipal));
+        verify(mockContentRepository).findById("-1");
+        assertEquals("No content found with ID -1", exception.getMessage());
+    }
+
+    @Test
+    void softDeleteContentByIdTest_whenContentExists_thenContentIsSoftDeleted() {
+        //Given
+        Principal mockPrincipal = mock(Principal.class);
+
+        Instant currentTime = Instant.now();
+        Content contentToDelete = new Content(
+                "1",
+                ContentStatus.ACTIVE,
+                null,
+                null,
+                ContentType.MOVIE,
+                "Original Title",
+                "English Title",
+                "German Title",
+                new AppUser("appUser-id-1", "github-id-1", null, null),
+                currentTime
+        );
+
+        AppUser statusUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
+
+        Content deletedContent = new Content(
+                "1",
+                ContentStatus.DELETED,
+                Instant.parse("2024-06-24T22:10:05.108Z"),
+                statusUpdatedByUser,
+                ContentType.MOVIE,
+                "Original Title",
+                "English Title",
+                "German Title",
+                new AppUser("appUser-id-1", "github-id-1", null, null),
+                currentTime
+        );
+
+        when(mockContentRepository.save(contentToDelete)).thenReturn(deletedContent);
+
+        when(mockPrincipal.getName()).thenReturn(statusUpdatedByUser.githubId());
+        when(mockUserService.findByGithubId(statusUpdatedByUser.githubId())).thenReturn(statusUpdatedByUser);
+        when(mockContentRepository.findById("1")).thenReturn(Optional.of(contentToDelete));
+
+        //WHEN
+        contentService.softDeleteContentById("1", mockPrincipal);
+
+        //THEN
+        ArgumentCaptor<Content> contentCaptor = ArgumentCaptor.forClass(Content.class);
+        verify(mockContentRepository).save(contentCaptor.capture());
+
+        Content capturedContent = contentCaptor.getValue();
+        assertEquals(ContentStatus.DELETED, capturedContent.status());
+        assertEquals(statusUpdatedByUser, capturedContent.statusUpdatedBy());
     }
 }
