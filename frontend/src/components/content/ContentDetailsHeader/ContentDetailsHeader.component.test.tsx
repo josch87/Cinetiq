@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentDetailsHeader from "./ContentDetailsHeader.tsx";
 import { contentType } from "../../../model/contentModel.ts";
+import { MemoryRouter } from "react-router-dom";
 
 const content: contentType = {
   id: "1",
@@ -18,7 +19,11 @@ const content: contentType = {
 };
 
 test("ContentDetailsHeader renders the english title", () => {
-  render(<ContentDetailsHeader content={content} />);
+  render(
+    <MemoryRouter>
+      <ContentDetailsHeader content={content} />
+    </MemoryRouter>
+  );
   const title = screen.getByRole("heading", {
     level: 2,
     name: /english title of 1/i,
