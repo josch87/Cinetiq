@@ -17,6 +17,7 @@ type DefaultPageTemplateProps = {
   pageTitle: string;
   pageSubtitle: string;
   user: githubUserType | null | undefined;
+  warning?: boolean;
 };
 
 export default function DefaultPageTemplate({
@@ -24,6 +25,7 @@ export default function DefaultPageTemplate({
   pageTitle,
   pageSubtitle,
   user,
+  warning,
 }: Readonly<DefaultPageTemplateProps>) {
   if (!user) {
     return <LoadingSpinner />;
@@ -59,7 +61,7 @@ export default function DefaultPageTemplate({
           </Flex>
           <Box
             as="main"
-            bg={mode("gray.50", "gray.800")}
+            bg={warning ? "red.50" : mode("gray.50", "gray.800")}
             flex="1"
             p="4"
             overflowY="auto"
