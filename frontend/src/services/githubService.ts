@@ -3,9 +3,9 @@ import useSWR from "swr";
 import { githubUserType } from "../model/userModel.ts";
 
 export function useGithubUserById(githubId: string | undefined): {
-  githubUser: githubUserType;
+  githubUser: githubUserType | undefined;
   isLoading: boolean;
-  isError: any;
+  isError: Error | undefined;
 } {
   const fetcher = (githubId: string) =>
     axios
