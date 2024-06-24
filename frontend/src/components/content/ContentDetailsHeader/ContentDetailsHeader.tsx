@@ -40,7 +40,7 @@ export default function ContentDetailsHeader({
           </Stack>
           <HStack gap={6}>
             <ContentStatus content={content} />
-            <ContentDetailsActions />
+            <ContentDetailsActions content={content} />
           </HStack>
         </Stack>
       </Box>
