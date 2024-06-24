@@ -1,11 +1,11 @@
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 import { Tooltip } from "@chakra-ui/react";
 
 type ContentCardTitleProps = {
   content: contentType;
 };
 
-export default function ContentCardTitle({
+export default function ContentTitle({
   content,
 }: Readonly<ContentCardTitleProps>) {
   if (content.englishTitle) {

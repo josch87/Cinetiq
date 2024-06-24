@@ -1,5 +1,5 @@
 import { Card, Skeleton, Text } from "@chakra-ui/react";
-import { infoType } from "../../model/contentModel.ts";
+import { infoType } from "../../../model/contentModel.ts";
 
 type ContentFilterResultHeaderProps = {
   info: infoType | undefined;
@@ -12,7 +12,7 @@ function pluralizeResults(count: number) {
 export default function ContentResultHeader({
   info,
 }: Readonly<ContentFilterResultHeaderProps>) {
-  if (info === undefined) {
+  if (info === undefined || info.count === null) {
     return (
       <Card bgColor="gray.100" mb={4} fontSize="sm" p={2}>
         <Skeleton noOfLines={1} fitContent>

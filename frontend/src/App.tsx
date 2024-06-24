@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { loadUser } from "./services/authService.ts";
 import { githubUserType } from "./model/userModel.ts";
 import ProtectedRoutes from "./pages/ProtectedRoutes.tsx";
-import ContentPage from "./pages/ContentPage.tsx";
+import ContentPage from "./pages/content/ContentPage.tsx";
+import ContentDetailsPage from "./pages/content/ContentDetailsPage.tsx";
 
 function App() {
   const [user, setUser] = useState<githubUserType | null | undefined>(
@@ -23,6 +24,10 @@ function App() {
       <Route element={<ProtectedRoutes user={user} />}>
         <Route path="/dashboard" element={<DashboardPage user={user} />} />
         <Route path="/content" element={<ContentPage user={user} />} />
+        <Route
+          path={"/content/:id"}
+          element={<ContentDetailsPage user={user} />}
+        />
       </Route>
     </Routes>
   );

@@ -25,7 +25,9 @@ class UserServiceTest {
         //WHEN
 
         //THEN
-        assertThrows(UserNotFoundException.class, () -> userService.findByGithubId("nonexistentId"));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> userService.findByGithubId("nonexistentId"));
+        assertEquals("No appUser found with GitHub ID nonexistentId", exception.getMessage());
+        verify(mockUserRepository, times(1)).findAppUserByGithubId("nonexistentId");
     }
 
     @Test
@@ -40,7 +42,7 @@ class UserServiceTest {
         AppUser actual = userService.findByGithubId("github-id-1111");
 
         //THEN
-        verify(mockUserRepository).findAppUserByGithubId("github-id-1111");
+        verify(mockUserRepository, times(1)).findAppUserByGithubId("github-id-1111");
         assertEquals(expected, actual);
     }
 
@@ -61,7 +63,7 @@ class UserServiceTest {
         AppUser actual = userService.register(oAuth2User);
 
         //THEN
-        verify(mockUserRepository).save(any(AppUser.class));
+        verify(mockUserRepository, times(1)).save(any(AppUser.class));
 
         assertEquals(expected.id(), actual.id());
         assertEquals(expected.githubId(), actual.githubId());

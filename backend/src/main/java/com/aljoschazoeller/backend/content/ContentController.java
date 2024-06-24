@@ -31,6 +31,12 @@ public class ContentController {
         return new ApiResponse<>(content);
     }
 
+    @GetMapping("{id}")
+    public ApiResponse<Content> getContentById(@PathVariable String id) {
+        Content content = contentService.getContentById(id);
+        return new ApiResponse<>(content);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Content createContent(Principal principal, @RequestBody NewContentDTO body) {

@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import ContentCard from "../ContentCard/ContentCard.tsx";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
 
 type ContentResultBodyProps = {
   content: contentType[];

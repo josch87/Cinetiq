@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentResultBody from "./ContentResultBody.tsx";
-import { contentType } from "../../model/contentModel.ts";
+import { contentType } from "../../../model/contentModel.ts";
+import { MemoryRouter } from "react-router-dom";
 
 const content: contentType[] = [
   {
@@ -33,7 +34,11 @@ const content: contentType[] = [
 ];
 
 test("ContentResultBody renders two ContentCards when array of size two with the title", () => {
-  render(<ContentResultBody content={content} />);
+  render(
+    <MemoryRouter>
+      <ContentResultBody content={content} />
+    </MemoryRouter>
+  );
   const title = screen.getByText(/english title of 1/i);
   const title2 = screen.getByText(/german title of 2/i);
   expect(title).toBeInTheDocument();

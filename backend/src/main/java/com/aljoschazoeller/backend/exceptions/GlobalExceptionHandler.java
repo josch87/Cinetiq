@@ -13,4 +13,10 @@ public class GlobalExceptionHandler {
     public String handleUnauthorizedRequestException(UnauthorizedRequestException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(ContentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleContentNotFoundException(ContentNotFoundException exception) {
+        return exception.getMessage();
+    }
 }

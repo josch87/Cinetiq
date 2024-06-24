@@ -27,5 +27,5 @@ export const contentSkeletonData: contentType = {
 export type contentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
 
 export type infoType = {
-  count: number;
+  count: number | null;
 };

@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(a -> a
                         .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/content").authenticated()
+                        .requestMatchers("/api/content/*").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
