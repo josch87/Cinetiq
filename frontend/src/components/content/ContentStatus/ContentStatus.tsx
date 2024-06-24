@@ -3,7 +3,7 @@ import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { FaBoxArchive, FaCodeMerge, FaTrash } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { githubUserType } from "../../../model/userModel.ts";
-import axios from "axios";
+import { getGithubUserById } from "../../../services/githubService.ts";
 
 type ContentStatusProps = {
   content: contentType;
@@ -25,19 +25,15 @@ function getIcon(status: contentStatusEnum) {
 export default function ContentStatus({
   content,
 }: Readonly<ContentStatusProps>) {
-  const [statusUpdatedByUser, setStatusUpdatedByUser] =
-    useState<githubUserType>();
+  const [statusUpdatedByUser, setStatusUpdatedByUser] = useState<
+    githubUserType | undefined | null
+  >(undefined);
 
   useEffect(() => {
     if (content.statusUpdatedBy !== null) {
-      axios
-        .get("https://api.github.com/user/" + content.statusUpdatedBy.githubId)
-        .then((response) => {
-          setStatusUpdatedByUser(response.data);
-        })
-        .catch((error) => {
-          console.error(error.message);
-        });
+      getGithubUserById(content.statusUpdatedBy.githubId)
+        .then((response) => setStatusUpdatedByUser(response))
+        .catch(() => setStatusUpdatedByUser(null));
     }
   }, [content.statusUpdatedBy]);
 
