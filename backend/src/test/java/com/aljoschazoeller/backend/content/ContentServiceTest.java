@@ -1,6 +1,7 @@
 package com.aljoschazoeller.backend.content;
 
 import com.aljoschazoeller.backend.content.domain.Content;
+import com.aljoschazoeller.backend.content.domain.ContentStatus;
 import com.aljoschazoeller.backend.content.domain.ContentType;
 import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
 import com.aljoschazoeller.backend.user.UserService;
@@ -28,10 +29,12 @@ class ContentServiceTest {
 
         //WHEN
         List<Content> actual = contentService.getAllActiveContent();
+        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.emptyList());
+
 
         //THEN
         assertTrue(actual.isEmpty());
-        verify(mockContentRepository, times(1)).findAll();
+        verify(mockContentRepository, times(1)).findContentByStatus(ContentStatus.ACTIVE);
     }
 
     @Test
@@ -46,13 +49,13 @@ class ContentServiceTest {
                 new AppUser("appUser-id-1", "github-id-1", null, null),
                 Instant.now()
         );
-        when(mockContentRepository.findAll()).thenReturn(Collections.singletonList(expected));
+        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.singletonList(expected));
 
         //WHEN
         List<Content> actual = contentService.getAllActiveContent();
 
         //THEN
-        verify(mockContentRepository).findAll();
+        verify(mockContentRepository).findContentByStatus(ContentStatus.ACTIVE);
         assertEquals(Collections.singletonList(expected), actual);
     }
 
