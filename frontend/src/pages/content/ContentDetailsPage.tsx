@@ -44,6 +44,7 @@ export default function ContentDetailsPage({
         pageTitle={"Content Details"}
         pageSubtitle="Display details of the content"
         user={user}
+        warning={content.status != "ACTIVE"}
       >
         <ContentDetailsHeader content={content} />
         <ContentDetailsBody content={content} />

@@ -1,48 +1,56 @@
 import {
-  Box,
   Card,
   CardBody,
   CardHeader,
   Heading,
   Stack,
   StackDivider,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tr,
+  Text,
 } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
-import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { githubUserType } from "../../../model/userModel.ts";
+import { useGithubUserById } from "../../../services/githubService.ts";
+import ContentPrimaryViewSection from "../ContentPrimaryViewSection/ContentPrimaryViewSection.tsx";
 
 type ContentPrimaryViewProps = {
   content: contentType;
 };
 
-const StyledTd = styled(Td)`
-  padding-left: 2px;
-  font-weight: bold;
-  width: 1%;
-`;
-
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
-  const [contentAuthor, setContentAuthor] = useState<githubUserType>();
+  const { githubUser: contentAuthor } = useGithubUserById(
+    content.createdBy.githubId
+  );
 
-  useEffect(() => {
-    axios
-      .get("https://api.github.com/user/" + content.createdBy.githubId)
-      .then((response) => {
-        setContentAuthor(response.data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }, []);
+  const { githubUser: statusUpdatedByGithubUser } = useGithubUserById(
+    content.statusUpdatedBy?.githubId
+  );
+
+  const titlesData = [
+    { label: "English title", value: content.englishTitle },
+    { label: "German title", value: content.germanTitle },
+    { label: "Original title", value: content.originalTitle },
+  ];
+
+  const createdData = [
+    {
+      label: "Created at",
+      value: `${content.createdAt.toDateString()}, ${content.createdAt.toLocaleTimeString()}`,
+    },
+    { label: "Created by", value: `${contentAuthor?.name} in Cinetiq` },
+  ];
+
+  const statusData = [
+    {
+      label: "Status",
+      value: <Text color="red">{content.status}</Text>,
+    },
+    {
+      label: "Updated at",
+      value: `${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`,
+    },
+    { label: "Updated by", value: statusUpdatedByGithubUser?.name },
+  ];
 
   return (
     <Card>
@@ -53,51 +61,17 @@ export default function ContentPrimaryView({
       </CardHeader>
       <CardBody pt={0}>
         <Stack divider={<StackDivider />} spacing="4">
-          <Box>
-            <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
-              Titles
-            </Heading>
-            <TableContainer>
-              <Table variant="unstyled" size="sm">
-                <Tbody>
-                  <Tr>
-                    <StyledTd>English title</StyledTd>
-                    <Td>{content.englishTitle}</Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>German title</StyledTd>
-                    <Td>{content.germanTitle}</Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>Original title</StyledTd>
-                    <Td>{content.originalTitle}</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box>
-            <Heading as="h4" size="xs" textTransform="uppercase" mb={2}>
-              Created
-            </Heading>
-            <TableContainer>
-              <Table variant="unstyled" size="sm">
-                <Tbody>
-                  <Tr>
-                    <StyledTd>Date created</StyledTd>
-                    <Td>
-                      {content.createdAt.toDateString()},{" "}
-                      {content.createdAt.toLocaleTimeString()}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <StyledTd>Created by</StyledTd>
-                    <Td>{contentAuthor?.name} in Cinetiq</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
+          <ContentPrimaryViewSection heading="titles" tableData={titlesData} />
+          <ContentPrimaryViewSection
+            heading="Created"
+            tableData={createdData}
+          />
+          {content.status !== "ACTIVE" && (
+            <ContentPrimaryViewSection
+              heading="Status"
+              tableData={statusData}
+            />
+          )}
         </Stack>
       </CardBody>
     </Card>

@@ -2,24 +2,29 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { contentType } from "../../../model/contentModel.ts";
 import ContentPrimaryView from "./ContentPrimaryView.tsx";
-import { githubUserType } from "../../../model/userModel.ts";
+import { appUserType, githubUserType } from "../../../model/userModel.ts";
 import axios from "axios";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const user: appUserType = {
+  id: "appUser-id-1",
+  githubId: "github-id-1",
+  createdAt: new Date("2024-06-10T15:10:05.217Z"),
+};
+
 const content: contentType = {
   id: "1",
+  status: "ACTIVE",
+  statusUpdatedAt: null,
+  statusUpdatedBy: null,
   contentType: "MOVIE",
   originalTitle: "Original title of 1",
   englishTitle: "English title of 1",
   germanTitle: "German title of 1",
   createdAt: new Date("2024-06-20T18:20:05.208Z"),
-  createdBy: {
-    id: "appUser-id-1",
-    githubId: "github-id-1",
-    createdAt: new Date("2024-06-10T15:10:05.217Z"),
-  },
+  createdBy: user,
 };
 
 const githubProfile: githubUserType = {

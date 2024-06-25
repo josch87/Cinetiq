@@ -6,7 +6,7 @@ type ContentDetailsProps = {
   content: contentType;
 };
 
-export default function ContentDetails({
+export default function ContentDetailsTabs({
   content,
 }: Readonly<ContentDetailsProps>) {
   return (

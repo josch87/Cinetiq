@@ -1,8 +1,9 @@
-import { Box, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { contentType } from "../../../model/contentModel.ts";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 import ContentDetailsActions from "../ContentDetailsActions/ContentDetailsActions.tsx";
+import ContentStatus from "../ContentStatus/ContentStatus.tsx";
 
 type ContentDetailsHeaderProps = {
   content: contentType;
@@ -37,7 +38,10 @@ export default function ContentDetailsHeader({
               {`Created on ${content.createdAt.toDateString()}`}
             </Text>
           </Stack>
-          <ContentDetailsActions />
+          <HStack gap={6}>
+            <ContentStatus content={content} />
+            <ContentDetailsActions content={content} />
+          </HStack>
         </Stack>
       </Box>
     </Box>

@@ -27,7 +27,7 @@ public class ContentController {
 
     @GetMapping
     public ApiResponse<List<Content>> getContent() {
-        List<Content> content = contentService.getAllContent();
+        List<Content> content = contentService.getAllActiveContent();
         return new ApiResponse<>(content);
     }
 
@@ -58,5 +58,11 @@ public class ContentController {
                 appUser,
                 currentTime);
         return contentService.createContent(contentToSave);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void softDeleteContentById(Principal principal, @PathVariable String id) {
+        contentService.softDeleteContentById(id, principal);
     }
 }
