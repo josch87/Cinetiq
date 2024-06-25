@@ -18,7 +18,7 @@
         <sonar.organization>aljoscha</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectName>aljoscha_Cinetiq_backend</sonar.projectName>
-        <sonar.coverage.exclusions>src/main/java/com/aljoschazoeller/backend/migration/</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>src/main/java/com/aljoschazoeller/backend/migration/**</sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
