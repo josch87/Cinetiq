@@ -10,38 +10,108 @@ import {
   DrawerOverlay,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
+  Heading,
   Input,
   Select,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { useContentCreationDrawerStore } from "../../../store/store.ts";
+import { Controller, useForm } from "react-hook-form";
+import axios, { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
+import { contentType } from "../../../model/contentModel.ts";
+import { useRef } from "react";
 
 export default function ContentCreationDrawer() {
   const { isOpen, onClose } = useContentCreationDrawerStore();
-
-  function handleCreateContent() {
-    console.log("Content created");
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      contentType: "",
+      englishTitle: "",
+      germanTitle: "",
+      originalTitle: "",
+    },
+  });
+  const toast = useToast();
+  const navigate = useNavigate();
+  const firstField = useRef<HTMLSelectElement>(null);
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">
+    <Drawer
+      isOpen={isOpen}
+      placement="right"
+      onClose={onClose}
+      size="lg"
+      initialFocusRef={firstField}
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create new content</DrawerHeader>
+        <DrawerHeader>
+          <Heading fontSize="2xl" color="teal.600">
+            Create new content
+          </Heading>
+        </DrawerHeader>
 
         <DrawerBody>
-          <Box as="form">
+          <Box
+            as="form"
+            id="create-content-form"
+            onSubmit={handleSubmit((data) => {
+              axios
+                .post("/api/content", data)
+                .then((response: AxiosResponse<contentType>) => {
+                  toast({
+                    title: "Success",
+                    description: "Created content",
+                    status: "success",
+                    isClosable: true,
+                  });
+                  navigate(`/content/${response.data.id}`);
+                  onClose();
+                  reset();
+                })
+                .catch((error) => {
+                  console.error(error.message);
+                });
+            })}
+          >
             <Stack spacing={5}>
-              <FormControl isRequired>
-                <FormLabel color="teal.500">Content Type</FormLabel>
-                <Select placeholder="Select a type">
-                  <option value="MOVIE">Movie</option>
-                  <option value="SERIES">Series</option>
-                  <option value="EXHIBITION">Exhibition</option>
-                </Select>
+              <FormControl isInvalid={!!errors.contentType?.message}>
+                <FormLabel requiredIndicator>Content Type</FormLabel>
+                <Controller
+                  name="contentType"
+                  control={control}
+                  rules={{ required: "You need to specify a type." }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      placeholder="Select a type"
+                      focusBorderColor="teal.600"
+                      ref={firstField}
+                    >
+                      <option value="MOVIE">Movie</option>
+                      <option value="SERIES">Series</option>
+                      <option value="EXHIBITION">Exhibition</option>
+                    </Select>
+                  )}
+                />
+                <FormHelperText>This can not be changed later.</FormHelperText>
+                <FormErrorMessage>
+                  {errors.contentType?.message}
+                </FormErrorMessage>
               </FormControl>
+
               <Stack
                 as="fieldset"
                 px={4}
@@ -50,24 +120,53 @@ export default function ContentCreationDrawer() {
                 borderRadius="md"
                 spacing={4}
               >
-                <FormLabel as="legend" fontSize="lg" color="teal.500">
+                <FormLabel as="legend" fontSize="lg" color="teal.600">
                   Titles
                 </FormLabel>
-                <FormControl id="englishTitle" isRequired>
-                  <FormLabel>English Title</FormLabel>
-                  <Input type="text" />
-                  <FormErrorMessage>English title is required</FormErrorMessage>
-                </FormControl>{" "}
-                <FormControl id="germanTitle" isRequired>
-                  <FormLabel>German Title</FormLabel>
-                  <Input type="text" />
-                  <FormErrorMessage>German title is required</FormErrorMessage>
-                </FormControl>{" "}
-                <FormControl id="originalTitle" isRequired>
+
+                <FormControl isInvalid={!!errors.originalTitle?.message}>
                   <FormLabel>Original Title</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    {...register("originalTitle", {
+                      required: "Original title is required.",
+
+                      validate: {
+                        notOnlySpaces: (value) =>
+                          value.trim() !== "" ||
+                          "Title must have at least one visible character.",
+                      },
+                    })}
+                    type="text"
+                    focusBorderColor="teal.600"
+                  />
                   <FormErrorMessage>
-                    Original title is required
+                    {errors.originalTitle?.message}
+                  </FormErrorMessage>
+                </FormControl>
+
+                <FormControl isInvalid={!!errors.englishTitle?.message}>
+                  <FormLabel optionalIndicator>English Title</FormLabel>
+                  <Input
+                    {...register("englishTitle")}
+                    type="text"
+                    focusBorderColor="teal.600"
+                  />
+                  <FormErrorMessage>
+                    {errors.englishTitle?.message}
+                  </FormErrorMessage>
+                </FormControl>
+
+                <FormControl isInvalid={!!errors.germanTitle?.message}>
+                  <FormLabel>German Title</FormLabel>
+                  <Input
+                    {...register("germanTitle", {
+                      minLength: { value: 5, message: "Min lenght is 5" },
+                    })}
+                    type="text"
+                    focusBorderColor="teal.600"
+                  />
+                  <FormErrorMessage>
+                    {errors.germanTitle?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Stack>
@@ -79,7 +178,7 @@ export default function ContentCreationDrawer() {
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="teal" onClick={handleCreateContent}>
+          <Button colorScheme="teal" type="submit" form="create-content-form">
             Create
           </Button>
         </DrawerFooter>
