@@ -12,13 +12,13 @@ import { FaEdit } from "react-icons/fa";
 type ScopeboxProps = {
   children: ReactNode;
   heading: string;
-  editable?: boolean;
+  isEditable?: boolean;
 };
 
 export default function Scopebox({
   children,
   heading,
-  editable,
+  isEditable,
 }: Readonly<ScopeboxProps>) {
   return (
     <Card>
@@ -28,7 +28,7 @@ export default function Scopebox({
         justifyContent="space-between"
       >
         <Heading fontSize="md">{heading}</Heading>
-        {editable && (
+        {isEditable && (
           <Tooltip label="Edit">
             <IconButton
               aria-label="Edit"
