@@ -5,13 +5,14 @@ import {
   contentType,
   infoType,
 } from "../../model/contentModel.ts";
-import { Container, Flex, Skeleton } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
 import ContentResultHeader from "../../components/content/ContentResult/ContentResultHeader.tsx";
 import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
+import { useContentCreationDrawerStore } from "../../store/store.ts";
 
 type ContentPageProps = {
   user: githubUserType | null | undefined;
@@ -21,6 +22,10 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
   const [info, setInfo] = useState<infoType | undefined | null>(undefined);
   const [content, setContent] = useState<contentType[] | undefined | null>(
     undefined
+  );
+
+  const onContentCreationDrawerOpen = useContentCreationDrawerStore(
+    (state) => state.onOpen
   );
 
   useEffect(() => {
@@ -73,9 +78,12 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
       user={user}
     >
       {info.count === 0 ? (
-        <Container>
+        <VStack gap={8}>
           <NoData />
-        </Container>
+          <Button colorScheme="teal" onClick={onContentCreationDrawerOpen}>
+            Create content
+          </Button>
+        </VStack>
       ) : (
         <>
           <ContentResultHeader info={info} />
