@@ -11,13 +11,31 @@ import {
 import { FiChevronDown } from "react-icons/fi";
 import { FaFilm } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-
-const data = [{ id: 1, title: "All Content", path: "/content" }];
+import { useContentCreationDrawerStore } from "../../store/store.ts";
 
 export const ContentCollapse = () => {
   const navigate = useNavigate();
-
   const { isOpen, onToggle } = useDisclosure();
+
+  const onOpenContentCreationDrawer = useContentCreationDrawerStore(
+    (state) => state.onOpen
+  );
+
+  const data = [
+    {
+      id: 1,
+      title: "All Content",
+      onClick: () => {
+        navigate("/content");
+      },
+    },
+    {
+      id: 2,
+      title: "Create content",
+      onClick: onOpenContentCreationDrawer,
+    },
+  ];
+
   return (
     <Box>
       <Button
@@ -39,9 +57,7 @@ export const ContentCollapse = () => {
               key={item.id}
               variant="tertiary"
               justifyContent="start"
-              onClick={() => {
-                navigate(item.path);
-              }}
+              onClick={item.onClick}
             >
               {item.title}
             </Button>
