@@ -47,7 +47,7 @@ export default function ContentCreationDrawer() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     control,
     reset,
   } = useForm({
@@ -61,7 +61,8 @@ export default function ContentCreationDrawer() {
   });
   const toast = useToast();
   const navigate = useNavigate();
-  const firstField = useRef<HTMLSelectElement>(null);
+  const firstDrawerField = useRef<HTMLSelectElement>(null);
+  const firstCancelAlertDialogField = useRef<HTMLButtonElement>(null);
 
   function handleCancel() {
     onCancelAlertDialogClose();
@@ -75,7 +76,7 @@ export default function ContentCreationDrawer() {
       placement="right"
       onClose={onContentCreationDrawerClose}
       size="lg"
-      initialFocusRef={firstField}
+      initialFocusRef={firstDrawerField}
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -122,7 +123,7 @@ export default function ContentCreationDrawer() {
                       {...field}
                       placeholder="Select a type"
                       focusBorderColor="teal.600"
-                      ref={firstField}
+                      ref={firstDrawerField}
                     >
                       <option value="MOVIE">Movie</option>
                       <option value="SERIES">Series</option>
@@ -200,7 +201,18 @@ export default function ContentCreationDrawer() {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onCancelAlertDialogOpen}>
+          <Button
+            variant="outline"
+            mr={3}
+            onClick={() => {
+              if (isDirty) {
+                onCancelAlertDialogOpen();
+              } else {
+                onContentCreationDrawerClose();
+                reset();
+              }
+            }}
+          >
             Cancel
           </Button>
           <Button colorScheme="teal" type="submit" form="create-content-form">
@@ -210,7 +222,7 @@ export default function ContentCreationDrawer() {
       </DrawerContent>
 
       <AlertDialog
-        leastDestructiveRef={null}
+        leastDestructiveRef={firstCancelAlertDialogField}
         isOpen={isCancelAlertDialogOpen}
         onClose={onCancelAlertDialogClose}
       >
@@ -227,15 +239,20 @@ export default function ContentCreationDrawer() {
                   entered data will be lost.
                 </Text>
                 <Text as="em" fontSize="xs">
-                  Hint: Consider closing the drawer if you wish to continue at a
-                  later time.
+                  Hint: If you wish to continue at a later time consider only
+                  closing the drawer instead.
                 </Text>
               </Stack>
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button onClick={onCancelAlertDialogClose}>No</Button>
-              <Button colorScheme="red" ml={3} onClick={handleCancel} autoFocus>
+              <Button
+                ref={firstCancelAlertDialogField}
+                onClick={onCancelAlertDialogClose}
+              >
+                No
+              </Button>
+              <Button colorScheme="red" ml={3} onClick={handleCancel}>
                 Yes, Cancel
               </Button>
             </AlertDialogFooter>
