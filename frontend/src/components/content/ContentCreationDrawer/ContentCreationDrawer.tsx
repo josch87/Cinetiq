@@ -30,10 +30,7 @@ import CancelContentCreationAlertDialog, {
 } from "../../CancelContentCreationAlertDialog.tsx";
 
 export default function ContentCreationDrawer() {
-  const {
-    isOpen: isContentCreationDrawerOpen,
-    onClose: onContentCreationDrawerClose,
-  } = useContentCreationDrawerStore();
+  const contentCreationDrawerStore = useContentCreationDrawerStore();
 
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
     useDisclosure();
@@ -68,7 +65,7 @@ export default function ContentCreationDrawer() {
           isClosable: true,
         });
         navigate(`/content/${response.data.id}`);
-        onContentCreationDrawerClose();
+        contentCreationDrawerStore.onClose();
         reset();
       })
       .catch((error) => {
@@ -79,14 +76,14 @@ export default function ContentCreationDrawer() {
   function handleConfirmedCancel() {
     cancelAlertDialogDisclosure.onClose();
     reset();
-    onContentCreationDrawerClose();
+    contentCreationDrawerStore.onClose();
   }
 
   return (
     <Drawer
-      isOpen={isContentCreationDrawerOpen}
+      isOpen={contentCreationDrawerStore.isOpen}
       placement="right"
-      onClose={onContentCreationDrawerClose}
+      onClose={contentCreationDrawerStore.onClose}
       size="lg"
       initialFocusRef={firstDrawerField}
     >
@@ -203,7 +200,7 @@ export default function ContentCreationDrawer() {
               if (isDirty) {
                 cancelAlertDialogDisclosure.onOpen();
               } else {
-                onContentCreationDrawerClose();
+                contentCreationDrawerStore.onClose();
                 reset();
               }
             }}
