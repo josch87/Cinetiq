@@ -16,6 +16,13 @@ export type contentType = {
   createdAt: Date;
 };
 
+export type NewContentType = {
+  contentType: contentTypeEnum | "";
+  originalTitle: string;
+  englishTitle: string;
+  germanTitle: string;
+};
+
 export const contentSkeletonData: contentType = {
   id: "1",
   status: "ACTIVE",

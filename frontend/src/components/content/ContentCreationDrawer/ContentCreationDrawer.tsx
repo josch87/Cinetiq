@@ -30,7 +30,7 @@ import { useContentCreationDrawerStore } from "../../../store/store.ts";
 import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { contentType } from "../../../model/contentModel.ts";
+import { contentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 
 export default function ContentCreationDrawer() {
@@ -50,7 +50,7 @@ export default function ContentCreationDrawer() {
     formState: { errors, isDirty },
     control,
     reset,
-  } = useForm({
+  } = useForm<NewContentType>({
     mode: "onChange",
     defaultValues: {
       contentType: "",
@@ -64,7 +64,26 @@ export default function ContentCreationDrawer() {
   const firstDrawerField = useRef<HTMLSelectElement>(null);
   const firstCancelAlertDialogField = useRef<HTMLButtonElement>(null);
 
-  function handleCancel() {
+  function handleFormSubmit(data: NewContentType) {
+    axios
+      .post("/api/content", data)
+      .then((response: AxiosResponse<contentType>) => {
+        toast({
+          title: "Success",
+          description: "Created content",
+          status: "success",
+          isClosable: true,
+        });
+        navigate(`/content/${response.data.id}`);
+        onContentCreationDrawerClose();
+        reset();
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }
+
+  function handleConfirmedCancel() {
     onCancelAlertDialogClose();
     reset();
     onContentCreationDrawerClose();
@@ -92,24 +111,7 @@ export default function ContentCreationDrawer() {
             as="form"
             noValidate
             id="create-content-form"
-            onSubmit={handleSubmit((data) => {
-              axios
-                .post("/api/content", data)
-                .then((response: AxiosResponse<contentType>) => {
-                  toast({
-                    title: "Success",
-                    description: "Created content",
-                    status: "success",
-                    isClosable: true,
-                  });
-                  navigate(`/content/${response.data.id}`);
-                  onContentCreationDrawerClose();
-                  reset();
-                })
-                .catch((error) => {
-                  console.error(error.message);
-                });
-            })}
+            onSubmit={handleSubmit(handleFormSubmit)}
           >
             <Stack spacing={5}>
               <FormControl isInvalid={!!errors.contentType?.message} isRequired>
@@ -252,7 +254,7 @@ export default function ContentCreationDrawer() {
               >
                 No
               </Button>
-              <Button colorScheme="red" ml={3} onClick={handleCancel}>
+              <Button colorScheme="red" ml={3} onClick={handleConfirmedCancel}>
                 Yes, Cancel
               </Button>
             </AlertDialogFooter>
