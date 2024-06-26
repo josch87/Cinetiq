@@ -34,7 +34,10 @@ import { contentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 
 export default function ContentCreationDrawer() {
-  const { isOpen, onClose } = useContentCreationDrawerStore();
+  const {
+    isOpen: isContentCreationDrawerOpen,
+    onClose: onContentCreationDrawerClose,
+  } = useContentCreationDrawerStore();
   const {
     isOpen: isCancelAlertDialogOpen,
     onClose: onCancelAlertDialogClose,
@@ -63,14 +66,14 @@ export default function ContentCreationDrawer() {
   function handleCancel() {
     onCancelAlertDialogClose();
     reset();
-    onClose();
+    onContentCreationDrawerClose();
   }
 
   return (
     <Drawer
-      isOpen={isOpen}
+      isOpen={isContentCreationDrawerOpen}
       placement="right"
-      onClose={onClose}
+      onClose={onContentCreationDrawerClose}
       size="lg"
       initialFocusRef={firstField}
     >
@@ -99,7 +102,7 @@ export default function ContentCreationDrawer() {
                     isClosable: true,
                   });
                   navigate(`/content/${response.data.id}`);
-                  onClose();
+                  onContentCreationDrawerClose();
                   reset();
                 })
                 .catch((error) => {
