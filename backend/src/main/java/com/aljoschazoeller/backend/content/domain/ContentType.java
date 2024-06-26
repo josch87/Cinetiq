@@ -1,5 +1,8 @@
 package com.aljoschazoeller.backend.content.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum ContentType {
     MOVIE("movie"),
     SERIES("series"),
@@ -11,7 +14,4 @@ public enum ContentType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }
