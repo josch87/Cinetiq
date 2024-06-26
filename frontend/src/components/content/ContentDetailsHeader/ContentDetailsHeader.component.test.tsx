@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentDetailsHeader from "./ContentDetailsHeader.tsx";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import { MemoryRouter } from "react-router-dom";
 import { appUserType } from "../../../model/userModel.ts";
 
@@ -11,7 +11,7 @@ const user: appUserType = {
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
 };
 
-const content: contentType = {
+const content: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedBy: null,

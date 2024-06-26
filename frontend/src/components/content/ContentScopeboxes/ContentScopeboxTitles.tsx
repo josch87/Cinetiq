@@ -8,11 +8,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Scopebox from "../../Scopebox/Scopebox.tsx";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import styled from "@emotion/styled";
 
 type ContentScopeboxTitlesProp = {
-  content: contentType;
+  content: ContentType;
 };
 
 const StyledTh = styled(Th)`

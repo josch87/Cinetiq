@@ -7,12 +7,12 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import { useGithubUserById } from "../../../services/githubService.ts";
 import ContentPrimaryViewSection from "../ContentPrimaryViewSection/ContentPrimaryViewSection.tsx";
 
 type ContentPrimaryViewProps = {
-  content: contentType;
+  content: ContentType;
 };
 
 export default function ContentPrimaryView({

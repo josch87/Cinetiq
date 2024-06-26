@@ -1,13 +1,13 @@
-import { contentStatusEnum, contentType } from "../../../model/contentModel.ts";
+import { ContentStatusEnum, ContentType } from "../../../model/contentModel.ts";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { FaBoxArchive, FaCodeMerge, FaTrash } from "react-icons/fa6";
 import { useGithubUserById } from "../../../services/githubService.ts";
 
 type ContentStatusProps = {
-  content: contentType;
+  content: ContentType;
 };
 
-function getIcon(status: contentStatusEnum) {
+function getIcon(status: ContentStatusEnum) {
   switch (status) {
     case "DELETED":
       return <Icon as={FaTrash} color="red" />;

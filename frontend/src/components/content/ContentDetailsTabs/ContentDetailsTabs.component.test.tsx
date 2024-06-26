@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentDetailsTabs from "./ContentDetailsTabs.tsx";
 import { appUserType } from "../../../model/userModel.ts";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 
 const user: appUserType = {
   id: "appUser-id-1",
@@ -10,7 +10,7 @@ const user: appUserType = {
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
 };
 
-const contentMovie: contentType = {
+const contentMovie: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: null,

@@ -1,10 +1,10 @@
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import { Grid } from "@chakra-ui/react";
 import ContentPrimaryView from "../ContentPrimaryView/ContentPrimaryView.tsx";
 import ContentDetailsTabs from "../ContentDetailsTabs/ContentDetailsTabs.tsx";
 
 type ContentDetailsBodyProps = {
-  content: contentType;
+  content: ContentType;
 };
 
 export default function ContentDetailsBody({

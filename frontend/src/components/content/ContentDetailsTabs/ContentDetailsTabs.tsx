@@ -1,9 +1,9 @@
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import ContentScopeboxTitles from "../ContentScopeboxes/ContentScopeboxTitles.tsx";
 
 type ContentDetailsProps = {
-  content: contentType;
+  content: ContentType;
 };
 
 export default function ContentDetailsTabs({

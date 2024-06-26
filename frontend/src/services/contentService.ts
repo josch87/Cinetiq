@@ -1,7 +1,7 @@
 import axios from "axios";
-import { contentType, infoType } from "../model/contentModel.ts";
+import { ContentType, InfoType } from "../model/contentModel.ts";
 
-function processSingleContent(rawContent: contentType): contentType {
+function processSingleContent(rawContent: ContentType): ContentType {
   return {
     ...rawContent,
     createdAt: new Date(rawContent.createdAt),
@@ -11,15 +11,15 @@ function processSingleContent(rawContent: contentType): contentType {
   };
 }
 
-function processContentArray(rawContent: contentType[]): contentType[] {
+function processContentArray(rawContent: ContentType[]): ContentType[] {
   return rawContent.map((content) => {
     return processSingleContent(content);
   });
 }
 
 export function getContent(): Promise<{
-  info: infoType;
-  content: contentType[];
+  info: InfoType;
+  content: ContentType[];
 } | null> {
   return axios
     .get("/api/content")
@@ -35,7 +35,7 @@ export function getContent(): Promise<{
 
 export function getContentById(
   id: string
-): Promise<{ info: infoType; content: contentType } | null> {
+): Promise<{ info: InfoType; content: ContentType } | null> {
   return axios
     .get(`/api/content/${id}`)
     .then((response) => {

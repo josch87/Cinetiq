@@ -30,7 +30,7 @@ import { useContentCreationDrawerStore } from "../../../store/store.ts";
 import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { contentType, NewContentType } from "../../../model/contentModel.ts";
+import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 
 export default function ContentCreationDrawer() {
@@ -67,7 +67,7 @@ export default function ContentCreationDrawer() {
   function handleFormSubmit(data: NewContentType) {
     axios
       .post("/api/content", data)
-      .then((response: AxiosResponse<contentType>) => {
+      .then((response: AxiosResponse<ContentType>) => {
         toast({
           title: "Success",
           description: "Created content",

@@ -9,12 +9,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios, { AxiosError } from "axios";
-import { contentType } from "../../model/contentModel.ts";
+import { ContentType } from "../../model/contentModel.ts";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
 type DeleteContentAlertDialogProps = {
-  content: contentType;
+  content: ContentType;
   isOpen: boolean;
   onClose: () => void;
 };

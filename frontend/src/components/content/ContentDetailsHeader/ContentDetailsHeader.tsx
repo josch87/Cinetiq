@@ -1,12 +1,12 @@
 import { Box, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 import ContentDetailsActions from "../ContentDetailsActions/ContentDetailsActions.tsx";
 import ContentStatus from "../ContentStatus/ContentStatus.tsx";
 
 type ContentDetailsHeaderProps = {
-  content: contentType;
+  content: ContentType;
 };
 
 export default function ContentDetailsHeader({

@@ -2,8 +2,8 @@ import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
 import {
   contentSkeletonData,
-  contentType,
-  infoType,
+  ContentType,
+  InfoType,
 } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -19,8 +19,8 @@ type ContentPageProps = {
 };
 
 export default function ContentPage({ user }: Readonly<ContentPageProps>) {
-  const [info, setInfo] = useState<infoType | undefined | null>(undefined);
-  const [content, setContent] = useState<contentType[] | undefined | null>(
+  const [info, setInfo] = useState<InfoType | undefined | null>(undefined);
+  const [content, setContent] = useState<ContentType[] | undefined | null>(
     undefined
   );
 
