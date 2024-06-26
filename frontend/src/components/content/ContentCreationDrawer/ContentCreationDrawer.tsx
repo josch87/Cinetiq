@@ -1,4 +1,10 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   Drawer,
@@ -16,6 +22,8 @@ import {
   Input,
   Select,
   Stack,
+  Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useContentCreationDrawerStore } from "../../../store/store.ts";
@@ -27,6 +35,12 @@ import { useRef } from "react";
 
 export default function ContentCreationDrawer() {
   const { isOpen, onClose } = useContentCreationDrawerStore();
+  const {
+    isOpen: isCancelAlertDialogOpen,
+    onClose: onCancelAlertDialogClose,
+    onOpen: onCancelAlertDialogOpen,
+  } = useDisclosure();
+
   const {
     register,
     handleSubmit,
@@ -45,6 +59,12 @@ export default function ContentCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
   const firstField = useRef<HTMLSelectElement>(null);
+
+  function handleCancel() {
+    onCancelAlertDialogClose();
+    reset();
+    onClose();
+  }
 
   return (
     <Drawer
@@ -163,9 +183,7 @@ export default function ContentCreationDrawer() {
                 <FormControl isInvalid={!!errors.germanTitle?.message}>
                   <FormLabel>German Title</FormLabel>
                   <Input
-                    {...register("germanTitle", {
-                      minLength: { value: 5, message: "Min lenght is 5" },
-                    })}
+                    {...register("germanTitle")}
                     type="text"
                     focusBorderColor="teal.600"
                   />
@@ -179,7 +197,7 @@ export default function ContentCreationDrawer() {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
+          <Button variant="outline" mr={3} onClick={onCancelAlertDialogOpen}>
             Cancel
           </Button>
           <Button colorScheme="teal" type="submit" form="create-content-form">
@@ -187,6 +205,40 @@ export default function ContentCreationDrawer() {
           </Button>
         </DrawerFooter>
       </DrawerContent>
+
+      <AlertDialog
+        leastDestructiveRef={null}
+        isOpen={isCancelAlertDialogOpen}
+        onClose={onCancelAlertDialogClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Cancel Content Creation
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Stack spacing={4}>
+                <Text>
+                  Are you sure you want to cancel creating new content? All
+                  entered data will be lost.
+                </Text>
+                <Text as="em" fontSize="xs">
+                  Hint: Consider closing the drawer if you wish to continue at a
+                  later time.
+                </Text>
+              </Stack>
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={onCancelAlertDialogClose}>No</Button>
+              <Button colorScheme="red" ml={3} onClick={handleCancel} autoFocus>
+                Yes, Cancel
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Drawer>
   );
 }
