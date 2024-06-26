@@ -66,6 +66,7 @@ export default function ContentCreationDrawer() {
         <DrawerBody>
           <Box
             as="form"
+            noValidate
             id="create-content-form"
             onSubmit={handleSubmit((data) => {
               axios
@@ -87,8 +88,8 @@ export default function ContentCreationDrawer() {
             })}
           >
             <Stack spacing={5}>
-              <FormControl isInvalid={!!errors.contentType?.message}>
-                <FormLabel requiredIndicator>Content Type</FormLabel>
+              <FormControl isInvalid={!!errors.contentType?.message} isRequired>
+                <FormLabel>Content Type</FormLabel>
                 <Controller
                   name="contentType"
                   control={control}
@@ -124,7 +125,10 @@ export default function ContentCreationDrawer() {
                   Titles
                 </FormLabel>
 
-                <FormControl isInvalid={!!errors.originalTitle?.message}>
+                <FormControl
+                  isInvalid={!!errors.originalTitle?.message}
+                  isRequired
+                >
                   <FormLabel>Original Title</FormLabel>
                   <Input
                     {...register("originalTitle", {
