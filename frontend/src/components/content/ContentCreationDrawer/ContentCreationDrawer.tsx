@@ -1,10 +1,4 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   Drawer,
@@ -22,7 +16,6 @@ import {
   Input,
   Select,
   Stack,
-  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -32,17 +25,18 @@ import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
+import CancelContentCreationAlertDialog, {
+  CancelAlertDialogDisclosureType,
+} from "../../CancelContentCreationAlertDialog.tsx";
 
 export default function ContentCreationDrawer() {
   const {
     isOpen: isContentCreationDrawerOpen,
     onClose: onContentCreationDrawerClose,
   } = useContentCreationDrawerStore();
-  const {
-    isOpen: isCancelAlertDialogOpen,
-    onClose: onCancelAlertDialogClose,
-    onOpen: onCancelAlertDialogOpen,
-  } = useDisclosure();
+
+  const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
+    useDisclosure();
 
   const {
     register,
@@ -62,7 +56,6 @@ export default function ContentCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
   const firstDrawerField = useRef<HTMLSelectElement>(null);
-  const firstCancelAlertDialogField = useRef<HTMLButtonElement>(null);
 
   function handleFormSubmit(data: NewContentType) {
     axios
@@ -84,7 +77,7 @@ export default function ContentCreationDrawer() {
   }
 
   function handleConfirmedCancel() {
-    onCancelAlertDialogClose();
+    cancelAlertDialogDisclosure.onClose();
     reset();
     onContentCreationDrawerClose();
   }
@@ -208,7 +201,7 @@ export default function ContentCreationDrawer() {
             mr={3}
             onClick={() => {
               if (isDirty) {
-                onCancelAlertDialogOpen();
+                cancelAlertDialogDisclosure.onOpen();
               } else {
                 onContentCreationDrawerClose();
                 reset();
@@ -223,44 +216,10 @@ export default function ContentCreationDrawer() {
         </DrawerFooter>
       </DrawerContent>
 
-      <AlertDialog
-        leastDestructiveRef={firstCancelAlertDialogField}
-        isOpen={isCancelAlertDialogOpen}
-        onClose={onCancelAlertDialogClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Cancel Content Creation
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              <Stack spacing={4}>
-                <Text>
-                  Are you sure you want to cancel creating new content? All
-                  entered data will be lost.
-                </Text>
-                <Text as="em" fontSize="xs">
-                  Hint: If you wish to continue at a later time consider only
-                  closing the drawer instead.
-                </Text>
-              </Stack>
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button
-                ref={firstCancelAlertDialogField}
-                onClick={onCancelAlertDialogClose}
-              >
-                No
-              </Button>
-              <Button colorScheme="red" ml={3} onClick={handleConfirmedCancel}>
-                Yes, Cancel
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <CancelContentCreationAlertDialog
+        cancelAlertDialogDisclosure={cancelAlertDialogDisclosure}
+        handleConfirmedCancel={handleConfirmedCancel}
+      />
     </Drawer>
   );
 }
