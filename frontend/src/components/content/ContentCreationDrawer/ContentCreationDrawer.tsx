@@ -30,11 +30,12 @@ import CancelContentCreationAlertDialog, {
 } from "../../CancelContentCreationAlertDialog.tsx";
 
 export default function ContentCreationDrawer() {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const firstDrawerField = useRef<HTMLSelectElement>(null);
   const contentCreationDrawerStore = useContentCreationDrawerStore();
-
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
     useDisclosure();
-
   const {
     register,
     handleSubmit,
@@ -50,9 +51,6 @@ export default function ContentCreationDrawer() {
       originalTitle: "",
     },
   });
-  const toast = useToast();
-  const navigate = useNavigate();
-  const firstDrawerField = useRef<HTMLSelectElement>(null);
 
   function handleFormSubmit(data: NewContentType) {
     axios
