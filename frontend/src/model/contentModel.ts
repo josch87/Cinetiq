@@ -23,6 +23,12 @@ export type NewContentType = {
   germanTitle: string;
 };
 
+export type UpdateContentTitlesType = {
+  originalTitle: string;
+  englishTitle: string;
+  germanTitle: string;
+};
+
 export const contentSkeletonData: ContentType = {
   id: "1",
   status: "ACTIVE",

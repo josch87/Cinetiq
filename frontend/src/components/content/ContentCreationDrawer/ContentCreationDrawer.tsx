@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { useContentCreationDrawerStore } from "../../../store/store.ts";
 import { Controller, useForm } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
@@ -67,7 +67,7 @@ export default function ContentCreationDrawer() {
         contentCreationDrawerStore.onClose();
         reset();
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         console.error(error.message);
       });
   }
@@ -148,7 +148,6 @@ export default function ContentCreationDrawer() {
                   <Input
                     {...register("originalTitle", {
                       required: "Original title is required.",
-
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
