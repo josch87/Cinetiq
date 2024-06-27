@@ -52,7 +52,7 @@ public class ContentController {
 
         Content contentToSave = new Content(
                 null,
-                body.contentType(),
+                body.getContentTypeAsEnum(),
                 body.originalTitle().trim(),
                 body.englishTitle().trim(),
                 body.germanTitle().trim(),

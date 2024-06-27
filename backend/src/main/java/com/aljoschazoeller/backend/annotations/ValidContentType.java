@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target(ElementType.FIELD)
 @Constraint(validatedBy = ContentTypeValidator.class)
 public @interface ValidContentType {
     String message() default "Invalid content type";
