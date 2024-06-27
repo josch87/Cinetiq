@@ -27,7 +27,7 @@ import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 import CancelContentCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
-} from "../CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
+} from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
 
 export default function ContentCreationDrawer() {
   const toast = useToast();
