@@ -4,7 +4,6 @@ import com.aljoschazoeller.backend.annotations.ValidContentType;
 import jakarta.validation.constraints.NotBlank;
 
 public record NewContentDTO(
-//        @JsonDeserialize(using = ContentTypeDeserializer.class)
         @ValidContentType
         String contentType,
         @NotBlank(message = "The Original Title must have at least one non-whitespace character")
