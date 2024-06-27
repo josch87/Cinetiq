@@ -41,7 +41,7 @@ public class ContentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Content createContent(Principal principal, @Valid @RequestBody NewContentDTO body) {
+    public ApiResponse<Content> createContent(Principal principal, @Valid @RequestBody NewContentDTO body) {
         Instant currentTime = Instant.now();
 
         if (principal == null) {
@@ -59,7 +59,8 @@ public class ContentController {
                 body.germanTitle().trim(),
                 appUser,
                 currentTime);
-        return contentService.createContent(contentToSave);
+        Content savedContent =  contentService.createContent(contentToSave);
+        return new ApiResponse<>(savedContent);
     }
 
     @PatchMapping("{id}")

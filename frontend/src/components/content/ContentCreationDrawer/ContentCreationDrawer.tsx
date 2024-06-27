@@ -28,6 +28,7 @@ import { useRef } from "react";
 import CancelContentCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
+import { ApiResponseType } from "../../../model/apiModel.ts";
 
 export default function ContentCreationDrawer() {
   const toast = useToast();
@@ -55,14 +56,14 @@ export default function ContentCreationDrawer() {
   function handleFormSubmit(data: NewContentType) {
     axios
       .post("/api/content", data)
-      .then((response: AxiosResponse<ContentType>) => {
+      .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
         toast({
           title: "Success",
           description: "Created content",
           status: "success",
           isClosable: true,
         });
-        navigate(`/content/${response.data.id}`);
+        navigate(`/content/${response.data.data.id}`);
         contentCreationDrawerStore.onClose();
         reset();
       })

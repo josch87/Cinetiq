@@ -43,7 +43,3 @@ export const contentSkeletonData: ContentType = {
   },
   createdAt: new Date(),
 };
-
-export type InfoType = {
-  count: number | null;
-};

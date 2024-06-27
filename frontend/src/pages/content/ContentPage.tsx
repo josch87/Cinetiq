@@ -1,10 +1,6 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
-import {
-  contentSkeletonData,
-  ContentType,
-  InfoType,
-} from "../../model/contentModel.ts";
+import { contentSkeletonData, ContentType } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
@@ -13,6 +9,7 @@ import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
 import { useContentCreationDrawerStore } from "../../store/store.ts";
+import { InfoType } from "../../model/apiModel.ts";
 
 type ContentPageProps = {
   user: githubUserType | null | undefined;
