@@ -50,16 +50,16 @@ export default function ContentScopeboxTitles({
             </Thead>
             <Tbody>
               <Tr>
+                <StyledTd>Original title</StyledTd>
+                <Td>{content.originalTitle}</Td>
+              </Tr>
+              <Tr>
                 <StyledTd>English title</StyledTd>
                 <Td>{content.englishTitle}</Td>
               </Tr>
               <Tr>
                 <StyledTd>German title</StyledTd>
                 <Td>{content.germanTitle}</Td>
-              </Tr>
-              <Tr>
-                <StyledTd>Original title</StyledTd>
-                <Td>{content.originalTitle}</Td>
               </Tr>
             </Tbody>
           </Table>
