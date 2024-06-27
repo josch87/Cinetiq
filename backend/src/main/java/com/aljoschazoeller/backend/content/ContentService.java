@@ -69,6 +69,9 @@ public class ContentService {
 
         updates.forEach((field, value) -> {
             if (allowedFields.contains(field)) {
+                if (value instanceof  String string) {
+                    value = string.trim();
+                }
                 update.set(field, value);
             } else {
                 notAllowedUpdates.add(field);
