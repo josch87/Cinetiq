@@ -1,7 +1,12 @@
 package com.aljoschazoeller.backend.api;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.Collection;
 
+@Getter
+@NoArgsConstructor
 public class ApiResponse<T> {
         private ResponseInfo info;
         private T data;
@@ -15,11 +20,4 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public ResponseInfo getInfo() {
-        return info;
-    }
-
-    public T getData() {
-        return data;
-    }
 }

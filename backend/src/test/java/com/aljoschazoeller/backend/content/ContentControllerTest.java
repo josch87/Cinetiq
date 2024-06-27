@@ -1,8 +1,10 @@
 package com.aljoschazoeller.backend.content;
 
+import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.user.UserRepository;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
@@ -78,7 +80,9 @@ class ContentControllerTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        Content savedContent = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content savedContent = apiResponse.getData();
 
         mockMvc.perform(get("/api/content"))
                 .andExpect(status().isOk())
@@ -146,8 +150,9 @@ class ContentControllerTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-
-        Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content content = apiResponse.getData();
 
         mockMvc.perform(get("/api/content/" + content.id()))
                 .andExpect(status().isOk())
@@ -214,25 +219,31 @@ class ContentControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json("""
                         {
-                            "contentType": "MOVIE",
-                            "originalTitle": "Original Title",
-                            "englishTitle": "English Title",
-                            "germanTitle": "German Title",
-                            "createdBy": {
-                                "id": "appUser-id-1",
-                                "githubId": "user",
-                                "createdAt": "2024-06-20T15:10:05.022Z"
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
                             }
                         }
                         """))
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.createdAt").exists())
                 .andReturn();
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-
-        Content savedContent = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content savedContent = apiResponse.getData();
 
         mockMvc.perform(get("/api/content"))
                 .andExpect(status().isOk())
@@ -296,8 +307,9 @@ class ContentControllerTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-
-        Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content content = apiResponse.getData();
 
         mockMvc.perform(delete("/api/content/" + content.id()))
                 .andExpect(status().isNoContent())
@@ -353,8 +365,9 @@ class ContentControllerTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-
-        Content content = objectMapper.readValue(result.getResponse().getContentAsString(), Content.class);
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content content = apiResponse.getData();
 
         mockMvc.perform(delete("/api/content/" + content.id()))
                 .andExpect(status().isNoContent())
