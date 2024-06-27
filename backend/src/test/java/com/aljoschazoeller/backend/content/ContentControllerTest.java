@@ -116,7 +116,7 @@ class ContentControllerTest {
     void getContentByIdTest_whenIdNotFound_thenReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/content/-1"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No content found with ID -1"));
+                .andExpect(content().string("No content found with ID '-1'."));
     }
 
     @Test

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/content")
@@ -59,6 +60,12 @@ public class ContentController {
                 appUser,
                 currentTime);
         return contentService.createContent(contentToSave);
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Content updateContentById(Principal principal, @PathVariable String id, @RequestBody Map<String, Object> updates) {
+        return contentService.updateContentById(id, updates, principal);
     }
 
     @DeleteMapping("{id}")

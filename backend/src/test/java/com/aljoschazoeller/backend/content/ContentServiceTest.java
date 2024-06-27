@@ -8,6 +8,7 @@ import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -22,7 +23,8 @@ class ContentServiceTest {
 
     private final ContentRepository mockContentRepository = mock(ContentRepository.class);
     private final UserService mockUserService = mock(UserService.class);
-    private final ContentService contentService = new ContentService(mockContentRepository, mockUserService) {
+    private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
+    private final ContentService contentService = new ContentService(mockContentRepository, mockUserService, mockMongoTemplate) {
     };
 
     @Test
@@ -66,7 +68,7 @@ class ContentServiceTest {
 
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.getContentById("-1"));
         verify(mockContentRepository).findById("-1");
-        assertEquals("No content found with ID -1", exception.getMessage());
+        assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
     @Test
@@ -131,7 +133,7 @@ class ContentServiceTest {
 
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.softDeleteContentById("-1", mockPrincipal));
         verify(mockContentRepository).findById("-1");
-        assertEquals("No content found with ID -1", exception.getMessage());
+        assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
     @Test
@@ -150,7 +152,9 @@ class ContentServiceTest {
                 "English Title",
                 "German Title",
                 new AppUser("appUser-id-1", "github-id-1", null, null),
-                currentTime
+                currentTime,
+                null,
+                null
         );
 
         AppUser statusUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
@@ -165,7 +169,9 @@ class ContentServiceTest {
                 "English Title",
                 "German Title",
                 new AppUser("appUser-id-1", "github-id-1", null, null),
-                currentTime
+                currentTime,
+                null,
+                null
         );
 
         when(mockContentRepository.save(contentToDelete)).thenReturn(deletedContent);
