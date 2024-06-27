@@ -64,8 +64,9 @@ public class ContentController {
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Content updateContentById(Principal principal, @PathVariable String id, @RequestBody Map<String, Object> updates) {
-        return contentService.updateContentById(id, updates, principal);
+    public ApiResponse<Content> updateContentById(Principal principal, @PathVariable String id, @RequestBody Map<String, Object> updates) {
+        Content content =  contentService.updateContentById(id, updates, principal);
+        return new ApiResponse<>(content);
     }
 
     @DeleteMapping("{id}")
