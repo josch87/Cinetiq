@@ -43,10 +43,4 @@ public class GlobalExceptionHandler {
     public String handleInvalidContentStatusException(InvalidContentStatusException exception) {
         return exception.getMessage();
     }
-
-    @ExceptionHandler(NotAllowedUpdateFieldsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleNotAllowedUpdateFieldsException(NotAllowedUpdateFieldsException exception) {
-        return exception.getMessage();
-    }
 }

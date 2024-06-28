@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.content;
 import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.NewContentDTO;
+import com.aljoschazoeller.backend.content.domain.UpdateContentDTO;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/content")
@@ -65,7 +65,7 @@ public class ContentController {
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<Content> updateContentById(Principal principal, @PathVariable String id, @RequestBody Map<String, Object> updates) {
+    public ApiResponse<Content> updateContentById(Principal principal, @PathVariable String id, @Valid @RequestBody UpdateContentDTO updates) {
         Content content =  contentService.updateContentById(id, updates, principal);
         return new ApiResponse<>(content);
     }

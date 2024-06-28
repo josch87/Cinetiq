@@ -154,7 +154,7 @@ export default function ContentCreationDrawer() {
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
-                          "Title must have at least one visible character.",
+                          "Title must have at least one non-whitespace character.",
                       },
                     })}
                     type="text"

@@ -2,9 +2,9 @@ package com.aljoschazoeller.backend.content;
 
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.ContentStatus;
+import com.aljoschazoeller.backend.content.domain.UpdateContentDTO;
 import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
 import com.aljoschazoeller.backend.exceptions.InvalidContentStatusException;
-import com.aljoschazoeller.backend.exceptions.NotAllowedUpdateFieldsException;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ContentService {
@@ -46,7 +44,7 @@ public class ContentService {
     }
 
 
-    public Content updateContentById(String id, Map<String, Object> updates, Principal principal) {
+    public Content updateContentById(String id, UpdateContentDTO updates, Principal principal) {
         Instant currentTime = Instant.now();
 
         if (principal == null) {
@@ -64,23 +62,14 @@ public class ContentService {
 
         Update update = new Update().set("lastUpdatedAt", currentTime).set("lastUpdatedBy", appUser);
 
-        List<String> allowedFields = List.of("originalTitle", "englishTitle", "germanTitle");
-        List<String> notAllowedUpdates = new ArrayList<>();
-
-        updates.forEach((field, value) -> {
-            if (allowedFields.contains(field)) {
-                if (value instanceof  String string) {
+        updates.getAsMap().forEach((field, value) -> {
+            if (value != null) {
+                if (value instanceof String string) {
                     value = string.trim();
                 }
                 update.set(field, value);
-            } else {
-                notAllowedUpdates.add(field);
             }
         });
-
-        if (!notAllowedUpdates.isEmpty()) {
-            throw new NotAllowedUpdateFieldsException(notAllowedUpdates);
-        }
 
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
