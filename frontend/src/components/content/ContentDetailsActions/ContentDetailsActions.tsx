@@ -8,11 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { FaFileExport, FaShareNodes, FaTrash } from "react-icons/fa6";
 import { FiChevronDown } from "react-icons/fi";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import DeleteAlertDialog from "../../AlertDialogs/DeleteAlertDialog.tsx";
 
 type ContentDetailsActionsProps = {
-  content: contentType;
+  content: ContentType;
 };
 
 export default function ContentDetailsActions({

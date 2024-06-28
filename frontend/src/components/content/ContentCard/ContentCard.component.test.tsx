@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentCard from "./ContentCard.tsx";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { appUserType } from "../../../model/userModel.ts";
@@ -12,7 +12,7 @@ const user: appUserType = {
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
 };
 
-const contentMovie: contentType = {
+const contentMovie: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: null,
@@ -25,7 +25,7 @@ const contentMovie: contentType = {
   createdBy: user,
 };
 
-const contentExhibition: contentType = {
+const contentExhibition: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: null,
@@ -38,7 +38,7 @@ const contentExhibition: contentType = {
   createdBy: user,
 };
 
-const contentSeries: contentType = {
+const contentSeries: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: null,

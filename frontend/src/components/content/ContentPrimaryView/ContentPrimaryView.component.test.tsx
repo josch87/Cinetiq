@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { contentType } from "../../../model/contentModel.ts";
+import { ContentType } from "../../../model/contentModel.ts";
 import ContentPrimaryView from "./ContentPrimaryView.tsx";
 import { appUserType, githubUserType } from "../../../model/userModel.ts";
 import axios from "axios";
@@ -14,7 +14,7 @@ const user: appUserType = {
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
 };
 
-const content: contentType = {
+const content: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: null,

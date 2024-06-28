@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/contentService.ts";
 import { useEffect, useState } from "react";
-import { contentType } from "../../model/contentModel.ts";
+import { ContentType } from "../../model/contentModel.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
@@ -17,7 +17,7 @@ export default function ContentDetailsPage({
   const params = useParams();
   const id: string | undefined = params.id;
 
-  const [content, setContent] = useState<contentType | undefined | null>(
+  const [content, setContent] = useState<ContentType | undefined | null>(
     undefined
   );
 

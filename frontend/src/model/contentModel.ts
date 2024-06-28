@@ -1,14 +1,14 @@
 import { appUserType } from "./userModel.ts";
 
-export type contentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
-export type contentStatusEnum = "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
+export type ContentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
+export type ContentStatusEnum = "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
 
-export type contentType = {
+export type ContentType = {
   id: string;
-  status: contentStatusEnum;
+  status: ContentStatusEnum;
   statusUpdatedAt: Date | null;
   statusUpdatedBy: appUserType | null;
-  contentType: contentTypeEnum;
+  contentType: ContentTypeEnum;
   originalTitle: string;
   englishTitle: string;
   germanTitle: string;
@@ -16,7 +16,14 @@ export type contentType = {
   createdAt: Date;
 };
 
-export const contentSkeletonData: contentType = {
+export type NewContentType = {
+  contentType: ContentTypeEnum | "";
+  originalTitle: string;
+  englishTitle: string;
+  germanTitle: string;
+};
+
+export const contentSkeletonData: ContentType = {
   id: "1",
   status: "ACTIVE",
   statusUpdatedAt: new Date(),
@@ -25,7 +32,7 @@ export const contentSkeletonData: contentType = {
     githubId: "2",
     createdAt: new Date(),
   },
-  contentType: "MOVIE" as contentTypeEnum,
+  contentType: "MOVIE" as ContentTypeEnum,
   englishTitle: "test",
   germanTitle: "",
   originalTitle: "",
@@ -37,6 +44,6 @@ export const contentSkeletonData: contentType = {
   createdAt: new Date(),
 };
 
-export type infoType = {
+export type InfoType = {
   count: number | null;
 };

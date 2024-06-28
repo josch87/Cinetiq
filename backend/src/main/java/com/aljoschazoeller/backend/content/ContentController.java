@@ -6,6 +6,7 @@ import com.aljoschazoeller.backend.content.domain.NewContentDTO;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class ContentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Content createContent(Principal principal, @RequestBody NewContentDTO body) {
+    public Content createContent(Principal principal, @Valid @RequestBody NewContentDTO body) {
         Instant currentTime = Instant.now();
 
         if (principal == null) {
@@ -51,10 +52,10 @@ public class ContentController {
 
         Content contentToSave = new Content(
                 null,
-                body.contentType(),
-                body.originalTitle(),
-                body.englishTitle(),
-                body.germanTitle(),
+                body.getContentTypeAsEnum(),
+                body.originalTitle().trim(),
+                body.englishTitle().trim(),
+                body.germanTitle().trim(),
                 appUser,
                 currentTime);
         return contentService.createContent(contentToSave);
