@@ -210,11 +210,11 @@ class ContentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                            "contentType": "MOVIE",
-                                            "originalTitle": "Original Title",
-                                            "englishTitle": "English Title",
-                                            "germanTitle": "German Title"
-                                        }
+                                  "contentType": "MOVIE",
+                                  "originalTitle": "Original Title",
+                                  "englishTitle": "English Title",
+                                  "germanTitle": "German Title"
+                                }
                                 """))
                 .andExpect(status().isCreated())
                 .andExpect(content().json("""
@@ -270,6 +270,225 @@ class ContentControllerTest {
                 .andExpect(jsonPath("$.data[0].id").value(savedContent.id()))
                 .andExpect(jsonPath("$.data[0].createdAt").exists());
 
+    }
+
+    @Test
+    void updateContentByIdTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
+        mockMvc.perform(patch("/api/content/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void updateContentByIdTest_whenAuthenticated_thenUpdateContentInDatabase() throws Exception {
+        AppUser user = new AppUser(
+                "appUser-id-1",
+                "user",
+                null,
+                Instant.parse("2024-06-20T15:10:05.022Z"));
+
+        userRepository.save(user);
+
+        MvcResult result = mockMvc.perform(post("/api/content")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "contentType": "MOVIE",
+                                  "originalTitle": "Original Title",
+                                  "englishTitle": "English Title",
+                                  "germanTitle": "German Title"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content oldContent = apiResponse.getData();
+
+
+        mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "originalTitle": "New Original Title",
+                                    "englishTitle": "New English Title",
+                                    "germanTitle": "New German Title"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "New Original Title",
+                                "englishTitle": "New English Title",
+                                "germanTitle": "New German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                },
+                                "lastUpdatedBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").exists());
+
+        mockMvc.perform(get("/api/content/" + oldContent.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "New Original Title",
+                                "englishTitle": "New English Title",
+                                "germanTitle": "New German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                },
+                                "lastUpdatedBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void updateContentByIdTest_whenOriginalTitleEmptyString_thenReturnBadRequest() throws Exception {
+        AppUser user = new AppUser(
+                "appUser-id-1",
+                "user",
+                null,
+                Instant.parse("2024-06-20T15:10:05.022Z"));
+
+        userRepository.save(user);
+
+        MvcResult result = mockMvc.perform(post("/api/content")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "contentType": "MOVIE",
+                                  "originalTitle": "Original Title",
+                                  "englishTitle": "English Title",
+                                  "germanTitle": "German Title"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content oldContent = apiResponse.getData();
+
+
+        mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "originalTitle": "",
+                                    "englishTitle": "New English Title",
+                                    "germanTitle": "New German Title"
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                            "errors": {
+                                "originalTitle": "The Original Title must have at least one non-whitespace character"
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
+                .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
+
+        mockMvc.perform(get("/api/content/" + oldContent.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
+                .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
     }
 
     @Test
