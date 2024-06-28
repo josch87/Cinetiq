@@ -15,6 +15,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
@@ -179,14 +180,25 @@ export default function ContentModalEditTitles({
           >
             Cancel
           </Button>
-          <Button
-            colorScheme="teal"
-            type="submit"
-            form="update-content-title-form"
-            isDisabled={!isDirty || Object.keys(errors).length > 0}
+          <Tooltip
+            label={
+              !isDirty
+                ? "You need to make a change."
+                : Object.keys(errors).length > 0
+                  ? "You need to resolve all errors."
+                  : ""
+            }
+            isDisabled={isDirty && Object.keys(errors).length === 0}
           >
-            Save
-          </Button>
+            <Button
+              colorScheme="teal"
+              type="submit"
+              form="update-content-title-form"
+              isDisabled={!isDirty || Object.keys(errors).length > 0}
+            >
+              Save
+            </Button>
+          </Tooltip>
         </ModalFooter>
       </ModalContent>
     </Modal>
