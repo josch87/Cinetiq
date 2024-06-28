@@ -13,6 +13,7 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Select,
   Stack,
@@ -29,6 +30,7 @@ import CancelContentCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
 import { ApiResponseType } from "../../../model/apiModel.ts";
+import { FaRegSquarePlus } from "react-icons/fa6";
 
 export default function ContentCreationDrawer() {
   const toast = useToast();
@@ -89,7 +91,8 @@ export default function ContentCreationDrawer() {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>
+        <DrawerHeader color="teal" display="flex" alignItems="center" gap={2}>
+          <Icon as={FaRegSquarePlus} />
           <Heading fontSize="2xl" color="teal.600">
             Create new content
           </Heading>

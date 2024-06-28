@@ -4,6 +4,8 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
+  Icon,
   Input,
   Modal,
   ModalBody,
@@ -23,6 +25,7 @@ import {
 import { useRef } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiResponseType } from "../../../model/apiModel.ts";
+import { FaPen } from "react-icons/fa6";
 
 type ContentModalEditTitlesProps = {
   disclosure: {
@@ -72,7 +75,7 @@ export default function ContentModalEditTitles({
 
   return (
     <Modal
-      isCentered
+      //isCentered
       onClose={handleClose}
       isOpen={disclosure.isOpen}
       motionPreset="slideInBottom"
@@ -80,7 +83,10 @@ export default function ContentModalEditTitles({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Edit titles</ModalHeader>
+        <ModalHeader color="teal" display="flex" alignItems="center" gap={2}>
+          <Icon as={FaPen} />
+          <Heading fontSize="2xl">Edit titles</Heading>
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box
