@@ -87,6 +87,14 @@ export default function ContentModalEditTitles({
       });
   }
 
+  function getSaveButtonTooltipLabel(): string | undefined {
+    if (!isDirty) {
+      return "You need to make a change.";
+    } else if (Object.keys(errors).length > 0) {
+      return "You need to resolve all errors.";
+    }
+  }
+
   return (
     <Modal
       onClose={handleClose}
@@ -181,13 +189,7 @@ export default function ContentModalEditTitles({
             Cancel
           </Button>
           <Tooltip
-            label={
-              !isDirty
-                ? "You need to make a change."
-                : Object.keys(errors).length > 0
-                  ? "You need to resolve all errors."
-                  : ""
-            }
+            label={getSaveButtonTooltipLabel()}
             isDisabled={isDirty && Object.keys(errors).length === 0}
           >
             <Button
