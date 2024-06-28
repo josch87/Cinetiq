@@ -22,10 +22,12 @@ import {
   NewContentType,
   UpdateContentTitlesType,
 } from "../../../model/contentModel.ts";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaPen } from "react-icons/fa6";
+import { useContentStore } from "../../../store/store.ts";
+import { processSingleContent } from "../../../services/contentService.ts";
 
 type ContentModalEditTitlesProps = {
   disclosure: {
@@ -38,9 +40,10 @@ type ContentModalEditTitlesProps = {
 
 export default function ContentModalEditTitles({
   disclosure,
-  content,
 }: Readonly<ContentModalEditTitlesProps>) {
   const initialRef = useRef<HTMLButtonElement>(null);
+  const content = useContentStore((state) => state.content);
+  const setContent = useContentStore((state) => state.setContent);
 
   const {
     register,
@@ -50,11 +53,19 @@ export default function ContentModalEditTitles({
   } = useForm<NewContentType>({
     mode: "onChange",
     defaultValues: {
-      englishTitle: content.englishTitle,
-      germanTitle: content.germanTitle,
-      originalTitle: content.originalTitle,
+      englishTitle: content?.englishTitle,
+      germanTitle: content?.germanTitle,
+      originalTitle: content?.originalTitle,
     },
   });
+
+  useEffect(() => {
+    reset({
+      englishTitle: content?.englishTitle,
+      germanTitle: content?.germanTitle,
+      originalTitle: content?.originalTitle,
+    });
+  }, [content]); //eslint-disable-line react-hooks/exhaustive-deps
 
   function handleClose() {
     reset();
@@ -62,10 +73,12 @@ export default function ContentModalEditTitles({
   }
 
   function handleFormSubmit(data: UpdateContentTitlesType) {
-    axios
+    axios // @ts-expect-error Component wil always have content
       .patch(`/api/content/${content.id}`, data)
       .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
         disclosure.onClose();
+        const newContent = processSingleContent(response.data.data);
+        setContent(newContent);
         reset();
       })
       .catch((error: AxiosError) => {
@@ -75,7 +88,6 @@ export default function ContentModalEditTitles({
 
   return (
     <Modal
-      //isCentered
       onClose={handleClose}
       isOpen={disclosure.isOpen}
       motionPreset="slideInBottom"

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { ContentType } from "../model/contentModel.ts";
 
 type ContentCreationDrawerState = {
   isOpen: boolean;
@@ -13,3 +14,13 @@ export const useContentCreationDrawerStore = create<ContentCreationDrawerState>(
     onClose: () => set({ isOpen: false }),
   })
 );
+
+type ContentState = {
+  content: ContentType | undefined | null;
+  setContent: (content: ContentType | undefined | null) => void;
+};
+
+export const useContentStore = create<ContentState>((set) => ({
+  content: undefined,
+  setContent: (content) => set((state) => ({ ...state, content })),
+}));
