@@ -492,6 +492,99 @@ class ContentControllerTest {
     }
 
     @Test
+    @DirtiesContext
+    @WithMockUser
+    void updateContentByIdTest_whenContentDeleted_thenReturnBadRequest() throws Exception {
+        AppUser user = new AppUser(
+                "appUser-id-1",
+                "user",
+                null,
+                Instant.parse("2024-06-20T15:10:05.022Z"));
+
+        userRepository.save(user);
+
+        MvcResult result = mockMvc.perform(post("/api/content")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "contentType": "MOVIE",
+                                  "originalTitle": "Original Title",
+                                  "englishTitle": "English Title",
+                                  "germanTitle": "German Title"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.createdAt").exists())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ApiResponse<Content> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Content oldContent = apiResponse.getData();
+
+        mockMvc.perform(delete("/api/content/" + oldContent.id()))
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+
+        mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "originalTitle": "New English Title",
+                                    "englishTitle": "New English Title",
+                                    "germanTitle": "New German Title"
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Content with ID '" + oldContent.id() + "' is currently not active and can not be updated."))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
+                .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
+
+        mockMvc.perform(get("/api/content/" + oldContent.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "contentType": "MOVIE",
+                                "originalTitle": "Original Title",
+                                "englishTitle": "English Title",
+                                "germanTitle": "German Title",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
+                .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
+    }
+
+    @Test
     void softDeleteContentByIdTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/content/1")
                         .contentType(MediaType.APPLICATION_JSON))
