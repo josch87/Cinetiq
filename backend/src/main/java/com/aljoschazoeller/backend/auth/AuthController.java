@@ -1,6 +1,6 @@
 package com.aljoschazoeller.backend.auth;
 
-import com.aljoschazoeller.backend.auth.domain.GithubUser;
+import com.aljoschazoeller.backend.auth.domain.LoggedInGithubUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +14,10 @@ import java.util.Map;
 public class AuthController {
 
     @GetMapping("/me")
-    public GithubUser getMe(@AuthenticationPrincipal OAuth2User user) {
+    public LoggedInGithubUser getMe(@AuthenticationPrincipal OAuth2User user) {
         Map<String, Object> attributes = user.getAttributes();
 
-        return new GithubUser(
+        return new LoggedInGithubUser(
                 attributes.get("id").toString(),
                 attributes.get("login") != null ? attributes.get("login").toString() : null,
                 attributes.get("avatar_url") != null ? attributes.get("avatar_url").toString() : null,
