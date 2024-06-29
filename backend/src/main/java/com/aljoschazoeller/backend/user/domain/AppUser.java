@@ -11,7 +11,8 @@ public record AppUser(
         @Id
         String id,
         String githubId,
-        Map<String, Object> githubUserProfile, // Profile during first signup
+        Map<String, Object> githubUserProfileOnSignUp, // Profile during first signup
+        GithubUserProfile GithubUserProfileSynced,
         Instant createdAt
 ) {
 }
