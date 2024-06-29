@@ -10,6 +10,7 @@ import ContentResultBody from "../../components/content/ContentResult/ContentRes
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
 import { useContentCreationDrawerStore } from "../../store/store.ts";
 import { InfoType } from "../../model/apiModel.ts";
+import { AxiosError } from "axios";
 
 type ContentPageProps = {
   user: GithubUserType | null | undefined;
@@ -33,7 +34,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
           setContent(response.data);
         }
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         console.error(error.message);
         setInfo(null);
         setContent(null);

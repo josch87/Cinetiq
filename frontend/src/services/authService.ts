@@ -21,7 +21,7 @@ export function logout() {
 
 export const loadUser = (): Promise<GithubUserType | null> => {
   return axios
-    .get<GithubUserType>("/api/auth/me")
+    .get("/api/auth/me")
     .then((response) => {
       return response.data;
     })
