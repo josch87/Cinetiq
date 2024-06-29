@@ -89,7 +89,7 @@ export default function ContentModalEditTitles({
 
   function getSaveButtonTooltipLabel(): string | undefined {
     if (!isDirty) {
-      return "You need to make a change.";
+      return "You need to edit data.";
     } else if (Object.keys(errors).length > 0) {
       return "You need to resolve all errors.";
     }
