@@ -9,14 +9,14 @@ import {
   useColorModeValue as mode,
   Text,
 } from "@chakra-ui/react";
-import { githubUserType } from "../../model/userModel.ts";
+import { GithubUserType } from "../../model/userModel.ts";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.tsx";
 
 type DefaultPageTemplateProps = {
   children: ReactNode;
   pageTitle: string;
   pageSubtitle: string;
-  user: githubUserType | null | undefined;
+  user: GithubUserType | null | undefined;
   warning?: boolean;
 };
 

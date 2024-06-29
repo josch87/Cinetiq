@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/contentService.ts";
 import { useEffect } from "react";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
-import { githubUserType } from "../../model/userModel.ts";
+import { GithubUserType } from "../../model/userModel.ts";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 import ContentDetailsBody from "../../components/content/ContentDetailsBody/ContentDetailsBody.tsx";
 import { useContentStore } from "../../store/store.ts";
 
 type ContentDetailsPageProps = {
-  user: githubUserType | null | undefined;
+  user: GithubUserType | null | undefined;
 };
 
 export default function ContentDetailsPage({

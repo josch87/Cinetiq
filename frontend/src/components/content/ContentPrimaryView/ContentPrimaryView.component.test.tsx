@@ -2,13 +2,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ContentType } from "../../../model/contentModel.ts";
 import ContentPrimaryView from "./ContentPrimaryView.tsx";
-import { appUserType, githubUserType } from "../../../model/userModel.ts";
+import { AppUserType, GithubUserType } from "../../../model/userModel.ts";
 import axios from "axios";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-const user: appUserType = {
+const user: AppUserType = {
   id: "appUser-id-1",
   githubId: "github-id-1",
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
@@ -27,7 +27,7 @@ const content: ContentType = {
   createdBy: user,
 };
 
-const githubProfile: githubUserType = {
+const githubProfile: GithubUserType = {
   id: "github-id-1",
   name: "My GitHub name",
   company: "My GitHub Company",

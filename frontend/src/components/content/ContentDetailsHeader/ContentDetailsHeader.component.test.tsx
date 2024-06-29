@@ -3,9 +3,9 @@ import "@testing-library/jest-dom";
 import ContentDetailsHeader from "./ContentDetailsHeader.tsx";
 import { ContentType } from "../../../model/contentModel.ts";
 import { MemoryRouter } from "react-router-dom";
-import { appUserType } from "../../../model/userModel.ts";
+import { AppUserType } from "../../../model/userModel.ts";
 
-const user: appUserType = {
+const user: AppUserType = {
   id: "appUser-id-1",
   githubId: "github-id-1",
   createdAt: new Date("2024-06-10T15:10:05.217Z"),

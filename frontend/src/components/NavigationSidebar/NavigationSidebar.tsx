@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { ContentCollapse } from "./collapses/ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
-import { githubUserType } from "../../model/userModel.ts";
+import { GithubUserType } from "../../model/userModel.ts";
 import {
   FaArrowRightFromBracket,
   FaBorderAll,
@@ -26,7 +26,7 @@ import Logo from "../Logo/Logo.tsx";
 import { ManagementCollapse } from "./collapses/ManagementCollapse.tsx";
 
 type NavigationSidebarProps = {
-  user: githubUserType;
+  user: GithubUserType;
 };
 
 export default function NavigationSidebar({

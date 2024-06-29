@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NavigationSidebar from "./NavigationSidebar.tsx";
-import { githubUserType } from "../../model/userModel.ts";
+import { GithubUserType } from "../../model/userModel.ts";
 import { MemoryRouter } from "react-router-dom";
 
-const user: githubUserType = {
+const user: GithubUserType = {
   id: "11111",
   name: "Chuck Norris",
 };

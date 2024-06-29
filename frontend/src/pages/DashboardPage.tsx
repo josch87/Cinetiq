@@ -1,10 +1,10 @@
 import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
-import { githubUserType } from "../model/userModel.ts";
+import { GithubUserType } from "../model/userModel.ts";
 import { Grid, GridItem, Text } from "@chakra-ui/react";
 import DashboardWidget from "../components/DashboardWidget/DashboardWidget.tsx";
 
 type DashboardPageProps = {
-  user: githubUserType | null | undefined;
+  user: GithubUserType | null | undefined;
 };
 
 export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {

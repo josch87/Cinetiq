@@ -1,5 +1,5 @@
 import axios from "axios";
-import { githubUserType } from "../model/userModel.ts";
+import { GithubUserType } from "../model/userModel.ts";
 
 export function login() {
   const host =
@@ -19,9 +19,9 @@ export function logout() {
   window.open(host + "/logout", "_self");
 }
 
-export const loadUser = (): Promise<githubUserType | null> => {
+export const loadUser = (): Promise<GithubUserType | null> => {
   return axios
-    .get<githubUserType>("/api/auth/me")
+    .get<GithubUserType>("/api/auth/me")
     .then((response) => {
       return response.data;
     })

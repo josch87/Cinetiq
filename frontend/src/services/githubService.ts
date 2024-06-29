@@ -1,9 +1,9 @@
 import axios from "axios";
 import useSWR from "swr";
-import { githubUserType } from "../model/userModel.ts";
+import { GithubUserType } from "../model/userModel.ts";
 
 export function useGithubUserById(githubId: string | undefined): {
-  githubUser: githubUserType | undefined;
+  githubUser: GithubUserType | undefined;
   isLoading: boolean;
   isError: Error | undefined;
 } {

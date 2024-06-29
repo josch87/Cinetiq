@@ -1,10 +1,10 @@
-export type appUserType = {
+export type AppUserType = {
   id: string;
   githubId: string;
   createdAt: Date;
 };
 
-export type githubUserType = {
+export type GithubUserType = {
   id: string;
   username?: string;
   avatarUrl?: string;

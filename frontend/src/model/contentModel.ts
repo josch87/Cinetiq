@@ -1,4 +1,4 @@
-import { appUserType } from "./userModel.ts";
+import { AppUserType } from "./userModel.ts";
 
 export type ContentTypeEnum = "MOVIE" | "SERIES" | "EXHIBITION";
 export type ContentStatusEnum = "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
@@ -7,12 +7,12 @@ export type ContentType = {
   id: string;
   status: ContentStatusEnum;
   statusUpdatedAt: Date | null;
-  statusUpdatedBy: appUserType | null;
+  statusUpdatedBy: AppUserType | null;
   contentType: ContentTypeEnum;
   originalTitle: string;
   englishTitle: string;
   germanTitle: string;
-  createdBy: appUserType;
+  createdBy: AppUserType;
   createdAt: Date;
 };
 

@@ -4,9 +4,9 @@ import ContentCard from "./ContentCard.tsx";
 import { ContentType } from "../../../model/contentModel.ts";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { appUserType } from "../../../model/userModel.ts";
+import { AppUserType } from "../../../model/userModel.ts";
 
-const user: appUserType = {
+const user: AppUserType = {
   id: "appUser-id-1",
   githubId: "github-id-1",
   createdAt: new Date("2024-06-10T15:10:05.217Z"),
