@@ -12,7 +12,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { ContentCollapse } from "./ContentCollapse.tsx";
+import { ContentCollapse } from "./collapses/ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
 import { githubUserType } from "../../model/userModel.ts";
 import {
@@ -23,6 +23,7 @@ import {
 import { logout } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
+import { ManagementCollapse } from "./collapses/ManagementCollapse.tsx";
 
 type NavigationSidebarProps = {
   user: githubUserType;
@@ -55,6 +56,7 @@ export default function NavigationSidebar({
               Dashboard
             </SidebarButton>
             <ContentCollapse />
+            <ManagementCollapse />
           </Stack>
         </Stack>
         <Stack spacing="4" divider={<StackDivider />}>
