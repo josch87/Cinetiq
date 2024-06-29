@@ -26,12 +26,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("No appUser found with GitHub ID '" + githubId + "'"));
     }
 
-    public AppUser register(OAuth2User oAuth2User) {
+    public AppUser register(OAuth2User oAuth2User, Instant registeredAt) {
         AppUser appUserToSave = new AppUser(
                 null,
                 oAuth2User.getAttributes().get("id").toString(),
                 oAuth2User.getAttributes(),
-                Instant.now()
+                registeredAt
         );
 
         return userRepository.save(appUserToSave);

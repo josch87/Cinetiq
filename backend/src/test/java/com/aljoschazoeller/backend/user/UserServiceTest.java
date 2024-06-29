@@ -49,24 +49,20 @@ class UserServiceTest {
     @Test
     void registerTest_whenOAuth2User_thenReturnAppUser() {
         //GIVEN
-        Instant currentTime = Instant.now();
-
+        Instant mockedTime = Instant.parse("2024-06-29T13:51:12.235Z");
         OAuth2User oAuth2User = mock(OAuth2User.class);
         Map<String, Object> githubUserProfile = new HashMap<>();
         githubUserProfile.put("id", "github-id-1111");
         when(oAuth2User.getAttributes()).thenReturn(githubUserProfile);
 
-        AppUser expected = new AppUser("appUser-id-1212", "github-id-1111", githubUserProfile, currentTime);
+        AppUser expected = new AppUser("appUser-id-1212", "github-id-1111", githubUserProfile, mockedTime);
         when(mockUserRepository.save(any(AppUser.class))).thenReturn(expected);
 
         //WHEN
-        AppUser actual = userService.register(oAuth2User);
+        AppUser actual = userService.register(oAuth2User, mockedTime);
 
         //THEN
         verify(mockUserRepository, times(1)).save(any(AppUser.class));
-
-        assertEquals(expected.id(), actual.id());
-        assertEquals(expected.githubId(), actual.githubId());
-        assertEquals(expected.githubUserProfile(), actual.githubUserProfile());
+        assertEquals(expected, actual);
     }
 }
