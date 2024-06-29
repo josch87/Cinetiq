@@ -61,7 +61,7 @@ public class SecurityConfig {
 
             AppUser appUser;
             try {
-                appUser = userService.findByGithubId(oAuth2User.getName());
+                appUser = userService.syncGithubUserProfile(oAuth2User);
                 loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request), currentTime);
             } catch (UserNotFoundException exception) {
                 appUser = userService.register(oAuth2User, currentTime);
