@@ -28,7 +28,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage user={user} />} />
           <Route path="/content" element={<ContentPage user={user} />} />
           <Route
-            path={"/content/:id"}
+            path="/content/:id"
             element={<ContentDetailsPage user={user} />}
           />
         </Route>
