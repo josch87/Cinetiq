@@ -30,7 +30,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
       .then((response) => {
         if (response) {
           setInfo(response.info);
-          setContent(response.content);
+          setContent(response.data);
         }
       })
       .catch((error) => {

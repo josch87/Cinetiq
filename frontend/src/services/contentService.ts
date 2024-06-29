@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ContentType } from "../model/contentModel.ts";
-import { InfoType } from "../model/apiModel.ts";
+import { ApiResponseType, InfoType } from "../model/apiModel.ts";
 
 export function processSingleContent(rawContent: ContentType): ContentType {
   return {
@@ -18,15 +18,12 @@ function processContentArray(rawContent: ContentType[]): ContentType[] {
   });
 }
 
-export function getContent(): Promise<{
-  info: InfoType;
-  content: ContentType[];
-} | null> {
+export function getContent(): Promise<ApiResponseType<ContentType[]> | null> {
   return axios
     .get("/api/content")
     .then((response) => {
       const content = processContentArray(response.data.data);
-      return { info: response.data.info, content };
+      return { info: response.data.info, data: content };
     })
     .catch((error) => {
       console.error(error.message);
