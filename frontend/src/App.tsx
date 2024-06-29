@@ -9,6 +9,7 @@ import ProtectedRoutes from "./pages/ProtectedRoutes.tsx";
 import ContentPage from "./pages/content/ContentPage.tsx";
 import ContentDetailsPage from "./pages/content/ContentDetailsPage.tsx";
 import ContentCreationDrawer from "./components/content/ContentCreationDrawer/ContentCreationDrawer.tsx";
+import StaffPage from "./pages/management/StaffPage.tsx";
 
 function App() {
   const [user, setUser] = useState<githubUserType | null | undefined>(
@@ -31,6 +32,7 @@ function App() {
             element={<ContentDetailsPage user={user} />}
           />
         </Route>
+        <Route path="/staff" element={<StaffPage user={user} />} />
       </Routes>
       <ContentCreationDrawer />
     </>
