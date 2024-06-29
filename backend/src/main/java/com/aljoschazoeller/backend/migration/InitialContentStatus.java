@@ -7,7 +7,7 @@ import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-@ChangeUnit(id="initial-contentstatus", order="1", author="Aljoscha Zöller" )
+@ChangeUnit(id = "initial-contentstatus", order = "1", author = "Aljoscha Zöller")
 public class InitialContentStatus {
 
     private final MongoTemplate mongoTemplate;
