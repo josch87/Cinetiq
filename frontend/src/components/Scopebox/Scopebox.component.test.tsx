@@ -27,7 +27,7 @@ test("Scopebox renders its children", () => {
 
 test("Scopebox renders an edit button when prop is present", () => {
   render(
-    <Scopebox heading="My awesome scopebox" isEditable>
+    <Scopebox heading="My awesome scopebox" onEdit={() => {}}>
       <p>I am a child paragraph.</p>
     </Scopebox>
   );
@@ -39,7 +39,7 @@ test("Scopebox renders an edit button when prop is present", () => {
 
 test("Scopebox renders an edit button when prop is true", () => {
   render(
-    <Scopebox heading="My awesome scopebox" isEditable={true}>
+    <Scopebox heading="My awesome scopebox" onEdit={() => {}}>
       <p>I am a child paragraph.</p>
     </Scopebox>
   );
@@ -63,7 +63,7 @@ test("Scopebox does not render an edit button when prop is not present", () => {
 
 test("Scopebox does not render an edit button when prop is false", () => {
   render(
-    <Scopebox heading="My awesome scopebox" isEditable={false}>
+    <Scopebox heading="My awesome scopebox">
       <p>I am a child paragraph.</p>
     </Scopebox>
   );

@@ -26,10 +26,33 @@ public record Content(
 
         @DBRef
         AppUser createdBy,
-        Instant createdAt
+        Instant createdAt,
+
+        @DBRef
+        AppUser lastUpdatedBy,
+        Instant lastUpdatedAt
 ) {
-    public Content(String id, ContentType contentType, String originalTitle, String englishTitle, String germanTitle, AppUser createdBy, Instant createdAt) {
-        this(id, ContentStatus.ACTIVE, null, null, contentType, originalTitle, englishTitle, germanTitle, createdBy, createdAt);
+    public Content(
+            String id,
+            ContentType contentType,
+            String originalTitle,
+            String englishTitle,
+            String germanTitle,
+            AppUser createdBy,
+            Instant createdAt
+    ) {
+        this(id,
+                ContentStatus.ACTIVE,
+                null,
+                null,
+                contentType,
+                originalTitle,
+                englishTitle,
+                germanTitle,
+                createdBy,
+                createdAt,
+                null,
+                null);
     }
 
 }

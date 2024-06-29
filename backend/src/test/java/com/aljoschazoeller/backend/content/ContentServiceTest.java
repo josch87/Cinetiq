@@ -3,11 +3,17 @@ package com.aljoschazoeller.backend.content;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.ContentStatus;
 import com.aljoschazoeller.backend.content.domain.ContentType;
+import com.aljoschazoeller.backend.content.domain.UpdateContentDTO;
 import com.aljoschazoeller.backend.exceptions.ContentNotFoundException;
+import com.aljoschazoeller.backend.exceptions.InvalidContentStatusException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import com.mongodb.client.result.UpdateResult;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -22,7 +28,8 @@ class ContentServiceTest {
 
     private final ContentRepository mockContentRepository = mock(ContentRepository.class);
     private final UserService mockUserService = mock(UserService.class);
-    private final ContentService contentService = new ContentService(mockContentRepository, mockUserService) {
+    private final MongoTemplate mockMongoTemplate = mock(MongoTemplate.class);
+    private final ContentService contentService = new ContentService(mockContentRepository, mockUserService, mockMongoTemplate) {
     };
 
     @Test
@@ -66,7 +73,7 @@ class ContentServiceTest {
 
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.getContentById("-1"));
         verify(mockContentRepository).findById("-1");
-        assertEquals("No content found with ID -1", exception.getMessage());
+        assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
     @Test
@@ -126,12 +133,109 @@ class ContentServiceTest {
     }
 
     @Test
+    void updateContentByIdTest_whenContentDoesNotExist_thenThrowContentNotFoundException() {
+        Principal mockPrincipal = mock(Principal.class);
+
+        when(mockContentRepository.findById("-1")).thenReturn(Optional.empty());
+
+        ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.updateContentById("-1", null, mockPrincipal));
+        verify(mockContentRepository).findById("-1");
+        assertEquals("No content found with ID '-1'.", exception.getMessage());
+    }
+
+    @Test
+    void updateContentByIdTest_whenContentIsDeleted_thenThrowInvalidContentStautsException() {
+        //GIVEN
+        Instant currentTime = Instant.now();
+        Principal mockPrincipal = mock(Principal.class);
+
+        Content oldContent = new Content(
+                "1",
+                ContentStatus.DELETED,
+                null,
+                null,
+                ContentType.MOVIE,
+                "Original Title",
+                "English Title",
+                "German Title",
+                new AppUser("appUser-id-author", "github-id-author", null, null),
+                currentTime,
+                null,
+                null
+        );
+
+        when(mockContentRepository.findById("1")).thenReturn(Optional.of(oldContent));
+
+        //THEN
+
+        InvalidContentStatusException exception = assertThrows(InvalidContentStatusException.class, () -> contentService.updateContentById("1", null, mockPrincipal));
+        verify(mockContentRepository).findById("1");
+        assertEquals("Content with ID '1' is currently not active and can not be updated.", exception.getMessage());
+    }
+
+    @Test
+    void updateContentByIdTest_whenCalledWithUpdateData_thenReturnUpdatedContent() {
+        //GIVEN
+        Instant currentTime = Instant.now();
+        Principal mockPrincipal = mock(Principal.class);
+        Content oldContent = new Content(
+                "1",
+                ContentStatus.ACTIVE,
+                null,
+                null,
+                ContentType.MOVIE,
+                "Original Title",
+                "English Title",
+                "German Title",
+                new AppUser("appUser-id-author", "github-id-author", null, null),
+                currentTime,
+                null,
+                null
+        );
+        UpdateContentDTO updateContentDTO = new UpdateContentDTO("New original title", "New english title", "New german title");
+
+        AppUser lastUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
+        when(mockPrincipal.getName()).thenReturn(lastUpdatedByUser.githubId());
+        when(mockUserService.findByGithubId(lastUpdatedByUser.githubId())).thenReturn(lastUpdatedByUser);
+        when(mockContentRepository.findById("1")).thenReturn(Optional.of(oldContent));
+
+
+        Instant updateTime = Instant.parse("2024-06-28T15:17:12.267Z");
+
+        Content expected = new Content(
+                "1",
+                ContentStatus.ACTIVE,
+                null,
+                null,
+                ContentType.MOVIE,
+                "New original Title",
+                "New english Title",
+                "New german Title",
+                new AppUser("appUser-id-author", "github-id-author", null, null),
+                currentTime,
+                lastUpdatedByUser,
+                updateTime
+        );
+
+        when(mockMongoTemplate.updateFirst(any(Query.class), any(Update.class), eq(Content.class))).thenReturn(UpdateResult.acknowledged(1, 1L, null));
+        when(mockMongoTemplate.findOne(any(Query.class), eq(Content.class))).thenReturn(expected);
+
+        //WHEN
+        Content actual = contentService.updateContentById("1", updateContentDTO, mockPrincipal);
+
+        //THEN
+        verify(mockContentRepository).findById("1");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void softDeleteContentByIdTest_whenContentDoesNotExist_thenThrowContentNotFoundException() {
         Principal mockPrincipal = mock(Principal.class);
 
+        when(mockContentRepository.findById("-1")).thenReturn(Optional.empty());
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.softDeleteContentById("-1", mockPrincipal));
         verify(mockContentRepository).findById("-1");
-        assertEquals("No content found with ID -1", exception.getMessage());
+        assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
     @Test
@@ -150,7 +254,9 @@ class ContentServiceTest {
                 "English Title",
                 "German Title",
                 new AppUser("appUser-id-1", "github-id-1", null, null),
-                currentTime
+                currentTime,
+                null,
+                null
         );
 
         AppUser statusUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
@@ -165,7 +271,9 @@ class ContentServiceTest {
                 "English Title",
                 "German Title",
                 new AppUser("appUser-id-1", "github-id-1", null, null),
-                currentTime
+                currentTime,
+                null,
+                null
         );
 
         when(mockContentRepository.save(contentToDelete)).thenReturn(deletedContent);

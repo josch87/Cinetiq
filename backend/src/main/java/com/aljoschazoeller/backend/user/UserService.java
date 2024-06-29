@@ -18,7 +18,7 @@ public class UserService {
 
     public AppUser findByGithubId(String githubId) {
         return userRepository.findAppUserByGithubId(githubId)
-                .orElseThrow(() -> new UserNotFoundException("No appUser found with GitHub ID " + githubId));
+                .orElseThrow(() -> new UserNotFoundException("No appUser found with GitHub ID '" + githubId + "'"));
     }
 
     public AppUser register(OAuth2User oAuth2User) {

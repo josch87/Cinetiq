@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/contentService.ts";
-import { useEffect, useState } from "react";
-import { ContentType } from "../../model/contentModel.ts";
+import { useEffect } from "react";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { githubUserType } from "../../model/userModel.ts";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 import ContentDetailsBody from "../../components/content/ContentDetailsBody/ContentDetailsBody.tsx";
+import { useContentStore } from "../../store/store.ts";
 
 type ContentDetailsPageProps = {
   user: githubUserType | null | undefined;
@@ -17,9 +17,8 @@ export default function ContentDetailsPage({
   const params = useParams();
   const id: string | undefined = params.id;
 
-  const [content, setContent] = useState<ContentType | undefined | null>(
-    undefined
-  );
+  const content = useContentStore((state) => state.content);
+  const setContent = useContentStore((state) => state.setContent);
 
   useEffect(() => {
     if (id) {
@@ -36,7 +35,7 @@ export default function ContentDetailsPage({
           setContent(null);
         });
     }
-  }, [id]);
+  }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (content) {
     return (

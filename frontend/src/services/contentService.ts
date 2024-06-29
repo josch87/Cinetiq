@@ -1,7 +1,8 @@
 import axios from "axios";
-import { ContentType, InfoType } from "../model/contentModel.ts";
+import { ContentType } from "../model/contentModel.ts";
+import { InfoType } from "../model/apiModel.ts";
 
-function processSingleContent(rawContent: ContentType): ContentType {
+export function processSingleContent(rawContent: ContentType): ContentType {
   return {
     ...rawContent,
     createdAt: new Date(rawContent.createdAt),

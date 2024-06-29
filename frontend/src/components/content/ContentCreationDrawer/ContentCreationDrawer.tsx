@@ -13,6 +13,7 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Select,
   Stack,
@@ -21,13 +22,15 @@ import {
 } from "@chakra-ui/react";
 import { useContentCreationDrawerStore } from "../../../store/store.ts";
 import { Controller, useForm } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 import CancelContentCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
+import { ApiResponseType } from "../../../model/apiModel.ts";
+import { FaRegSquarePlus } from "react-icons/fa6";
 
 export default function ContentCreationDrawer() {
   const toast = useToast();
@@ -55,18 +58,18 @@ export default function ContentCreationDrawer() {
   function handleFormSubmit(data: NewContentType) {
     axios
       .post("/api/content", data)
-      .then((response: AxiosResponse<ContentType>) => {
+      .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
         toast({
           title: "Success",
           description: "Created content",
           status: "success",
           isClosable: true,
         });
-        navigate(`/content/${response.data.id}`);
+        navigate(`/content/${response.data.data.id}`);
         contentCreationDrawerStore.onClose();
         reset();
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         console.error(error.message);
       });
   }
@@ -88,7 +91,8 @@ export default function ContentCreationDrawer() {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>
+        <DrawerHeader color="teal" display="flex" alignItems="center" gap={2}>
+          <Icon as={FaRegSquarePlus} />
           <Heading fontSize="2xl" color="teal.600">
             Create new content
           </Heading>
@@ -147,11 +151,10 @@ export default function ContentCreationDrawer() {
                   <Input
                     {...register("originalTitle", {
                       required: "Original title is required.",
-
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
-                          "Title must have at least one visible character.",
+                          "Title must have at least one non-whitespace character.",
                       },
                     })}
                     type="text"

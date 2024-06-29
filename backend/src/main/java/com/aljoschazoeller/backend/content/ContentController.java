@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.content;
 import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.content.domain.NewContentDTO;
+import com.aljoschazoeller.backend.content.domain.UpdateContentDTO;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
@@ -40,7 +41,7 @@ public class ContentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Content createContent(Principal principal, @Valid @RequestBody NewContentDTO body) {
+    public ApiResponse<Content> createContent(Principal principal, @Valid @RequestBody NewContentDTO body) {
         Instant currentTime = Instant.now();
 
         if (principal == null) {
@@ -58,7 +59,15 @@ public class ContentController {
                 body.germanTitle().trim(),
                 appUser,
                 currentTime);
-        return contentService.createContent(contentToSave);
+        Content savedContent =  contentService.createContent(contentToSave);
+        return new ApiResponse<>(savedContent);
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Content> updateContentById(Principal principal, @PathVariable String id, @Valid @RequestBody UpdateContentDTO updates) {
+        Content content =  contentService.updateContentById(id, updates, principal);
+        return new ApiResponse<>(content);
     }
 
     @DeleteMapping("{id}")
