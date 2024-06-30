@@ -41,6 +41,7 @@ class UserServiceTest {
                 .id("appUser-id-1212")
                 .githubId("github-id-1111")
                 .createdAt(Instant.now())
+                .githubUserProfileOnSignUp(githubUserProfile)
                 .build();
 
         when(mockUserRepository.findAppUserByGithubId("github-id-1111")).thenReturn(Optional.of(expected));

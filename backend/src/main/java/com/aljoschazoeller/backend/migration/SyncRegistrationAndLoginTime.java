@@ -17,11 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 @ChangeUnit(id = "sync-registration-and-login-time", order = "2", author = "Aljoscha Zöller")
 public class SyncRegistrationAndLoginTime {
 
     private final MongoTemplate mongoTemplate;
     private Map<String, Instant> originalDates;
+
+    private static final String CREATED_AT = "created_at";
 
     public SyncRegistrationAndLoginTime(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
@@ -35,7 +38,7 @@ public class SyncRegistrationAndLoginTime {
         for (AppUser appUser : appUsers) {
             Query query = new Query(Criteria.where("appUser._id")
                     .is(appUser.id()))
-                    .with(Sort.by(Sort.Direction.ASC, "createdAt"))
+                    .with(Sort.by(Sort.Direction.ASC, CREATED_AT))
                     .limit(1);
             LoginLog loginLog = mongoTemplate.findOne(query, LoginLog.class);
 
@@ -50,7 +53,7 @@ public class SyncRegistrationAndLoginTime {
                 );
                 FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
 
-                mongoTemplate.findAndModify(query, new Update().set("createdAt", updatedLog.createdAt()),
+                mongoTemplate.findAndModify(query, new Update().set(CREATED_AT, updatedLog.createdAt()),
                         options, LoginLog.class);
             }
         }
@@ -60,7 +63,7 @@ public class SyncRegistrationAndLoginTime {
     public void rollbackExecution() {
         for (Map.Entry<String, Instant> entry : originalDates.entrySet()) {
             Query query = new Query(Criteria.where("_id").is(entry.getKey()));
-            Update update = Update.update("createdAt", entry.getValue());
+            Update update = Update.update(CREATED_AT, entry.getValue());
             mongoTemplate.updateFirst(query, update, LoginLog.class);
         }
     }

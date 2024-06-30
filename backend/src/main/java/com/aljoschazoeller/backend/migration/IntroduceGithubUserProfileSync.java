@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.time.Instant;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @ChangeUnit(id = "introduce-githubuserprofile-sync", order = "3", author = "Aljoscha Zöller")
 public class IntroduceGithubUserProfileSync {
 
