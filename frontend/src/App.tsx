@@ -31,8 +31,8 @@ function App() {
             path="/content/:id"
             element={<ContentDetailsPage user={user} />}
           />
+          <Route path="/staff" element={<StaffPage user={user} />} />
         </Route>
-        <Route path="/staff" element={<StaffPage user={user} />} />
       </Routes>
       <ContentCreationDrawer />
     </>
