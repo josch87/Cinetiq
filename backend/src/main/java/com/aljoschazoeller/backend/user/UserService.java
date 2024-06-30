@@ -51,12 +51,14 @@ public class UserService {
         Instant currentTime = Instant.now();
 
         AppUser appUser = this.findByGithubId(user.getAttributes().get("id").toString());
-        GithubUserProfile currentGithubUserProfile = GithubMapper.mapOAuth2UserToGithubUserProfile(user);
+        GithubUserProfile oAuth2UserGithubProfile = GithubMapper.mapOAuth2UserToGithubUserProfile(user);
 
         AppUser updatedAppUser;
-        if (currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at())) {
+        boolean isGithubUpdatedSinceLastSync = oAuth2UserGithubProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
+
+        if (isGithubUpdatedSinceLastSync) {
             updatedAppUser = appUser
-                    .withGithubUserProfileSynced(currentGithubUserProfile)
+                    .withGithubUserProfileSynced(oAuth2UserGithubProfile)
                     .withGithubUserProfileSyncedAt(currentTime)
                     .withGithubUserProfileUpdatedAt(currentTime);
         } else {
