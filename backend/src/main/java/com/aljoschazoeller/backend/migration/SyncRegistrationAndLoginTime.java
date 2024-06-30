@@ -22,7 +22,7 @@ import java.util.Map;
 public class SyncRegistrationAndLoginTime {
 
     private final MongoTemplate mongoTemplate;
-    private Map<String, Instant> originalDates;
+    private final Map<String, Instant> originalDates;
 
     private static final String CREATED_AT = "created_at";
 
