@@ -2,6 +2,7 @@ package com.aljoschazoeller.backend.user;
 
 import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import com.aljoschazoeller.backend.user.domain.SyncedGithubProfilesDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UserController {
 
     @PostMapping("/sync-github-profiles")
     @ResponseStatus(HttpStatus.OK)
-    public String syncGithubUserProfiles() {
+    public SyncedGithubProfilesDTO syncGithubUserProfiles() {
         return userService.syncGithubUserProfiles();
     }
 }

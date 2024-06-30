@@ -17,6 +17,7 @@ public record AppUser(
         GithubUserProfile githubUserProfileSynced,
         Instant githubUserProfileSyncedAt,
         Instant githubUserProfileUpdatedAt,
+        boolean githubUserProfileActive,
         Instant createdAt
 ) {
 }

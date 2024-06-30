@@ -31,7 +31,8 @@ public class IntroduceGithubUserProfileSync {
 
         Update update = new Update()
                 .rename("githubUserProfile", "githubUserProfileOnSignUp")
-                .set("githubUserProfileSynced", githubUserProfile);
+                .set("githubUserProfileSynced", githubUserProfile)
+                .set("githubUserProfileActive", true);
 
         mongoTemplate.updateMulti(query, update, AppUser.class);
     }
@@ -41,7 +42,8 @@ public class IntroduceGithubUserProfileSync {
         Query query = new Query();
         Update update = new Update()
                 .rename("githubUserProfileOnSignUp", "githubUserProfile")
-                .unset("githubUserProfileSynced");
+                .unset("githubUserProfileSynced")
+                .unset("githubUserProfileActive");
         mongoTemplate.updateMulti(query, update, AppUser.class);
     }
 }

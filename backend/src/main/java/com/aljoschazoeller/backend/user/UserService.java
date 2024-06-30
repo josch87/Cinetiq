@@ -2,15 +2,18 @@ package com.aljoschazoeller.backend.user;
 
 import com.aljoschazoeller.backend.auth.GithubMapper;
 import com.aljoschazoeller.backend.auth.GithubService;
+import com.aljoschazoeller.backend.exceptions.GithubProfileNotFoundException;
 import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import com.aljoschazoeller.backend.user.domain.GithubUserProfile;
+import com.aljoschazoeller.backend.user.domain.GithubUserProfileSyncStatus;
+import com.aljoschazoeller.backend.user.domain.SyncedGithubProfilesDTO;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserService {
@@ -42,6 +45,7 @@ public class UserService {
                 githubUserProfile,
                 registeredAt,
                 null,
+                true,
                 registeredAt
         );
 
@@ -54,43 +58,67 @@ public class UserService {
         AppUser appUser = this.findByGithubId(user.getAttributes().get("id").toString());
         GithubUserProfile oAuth2UserGithubProfile = GithubMapper.mapOAuth2UserToGithubUserProfile(user);
 
-        return updateGithubUserProfile(appUser, currentTime, oAuth2UserGithubProfile);
+        updateGithubUserProfile(appUser, currentTime, oAuth2UserGithubProfile);
+        return this.findByGithubId(appUser.githubId());
     }
 
-    public AppUser syncGithubUserProfile(AppUser appUser) {
+    public GithubUserProfileSyncStatus syncGithubUserProfile(AppUser appUser) {
         Instant currentTime = Instant.now();
 
         Integer githubId = Integer.valueOf(appUser.githubId());
-        Optional<GithubUserProfile> userProfile = githubService.getUserProfile(githubId);
+        try {
+            GithubUserProfile userProfile = githubService.getUserProfile(githubId);
+            return updateGithubUserProfile(appUser, currentTime, userProfile);
 
-        if (userProfile.isEmpty()) {
-            return null;
+        } catch (GithubProfileNotFoundException exception) {
+            AppUser appUserWithInactiveGithub = appUser.withGithubUserProfileActive(false);
+            userRepository.save(appUserWithInactiveGithub);
+            return GithubUserProfileSyncStatus.NOT_FOUND;
         }
-
-        return updateGithubUserProfile(appUser, currentTime, userProfile.get());
     }
 
-    private AppUser updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
+    private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
         AppUser updatedAppUser;
         boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
 
+        GithubUserProfileSyncStatus returnValue;
 
         if (isGithubUpdatedSinceLastSync) {
             updatedAppUser = appUser
                     .withGithubUserProfileSynced(currentGithubUserProfile)
                     .withGithubUserProfileSyncedAt(currentTime)
                     .withGithubUserProfileUpdatedAt(currentTime);
+            returnValue = GithubUserProfileSyncStatus.UPDATED;
         } else {
             updatedAppUser = appUser
                     .withGithubUserProfileSyncedAt(currentTime);
+            returnValue = GithubUserProfileSyncStatus.NOT_UPDATED;
         }
-        return userRepository.save(updatedAppUser);
+        userRepository.save(updatedAppUser);
+        return returnValue;
     }
 
-    public String syncGithubUserProfiles() {
+    public SyncedGithubProfilesDTO syncGithubUserProfiles() {
         List<AppUser> appUsers = this.getAllUsers();
 
-        appUsers.forEach(this::syncGithubUserProfile);
-        return "Found " + appUsers.size() + " user(s) to sync.";
+        AtomicInteger updated = new AtomicInteger();
+        AtomicInteger notUpdated = new AtomicInteger();
+        AtomicInteger notFound = new AtomicInteger();
+
+        appUsers.forEach(appUser -> {
+            GithubUserProfileSyncStatus syncStatus = this.syncGithubUserProfile(appUser);
+            switch (syncStatus) {
+                case UPDATED -> updated.getAndIncrement();
+                case NOT_UPDATED -> notUpdated.getAndIncrement();
+                case NOT_FOUND -> notFound.getAndIncrement();
+            }
+        });
+
+        return new SyncedGithubProfilesDTO(
+                appUsers.size(),
+                updated.get(),
+                notUpdated.get(),
+                notFound.get()
+        );
     }
 }
