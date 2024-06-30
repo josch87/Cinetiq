@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -59,9 +60,14 @@ public class UserService {
     public AppUser syncGithubUserProfile(AppUser appUser) {
         Instant currentTime = Instant.now();
 
-        GithubUserProfile currentGithubUserProfile = githubService.getUserProfile(Integer.valueOf(appUser.githubId()));
+        Integer githubId = Integer.valueOf(appUser.githubId());
+        Optional<GithubUserProfile> userProfile = githubService.getUserProfile(githubId);
 
-        return updateGithubUserProfile(appUser, currentTime, currentGithubUserProfile);
+        if (userProfile.isEmpty()) {
+            return null;
+        }
+
+        return updateGithubUserProfile(appUser, currentTime, userProfile.get());
     }
 
     private AppUser updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
@@ -85,6 +91,6 @@ public class UserService {
         List<AppUser> appUsers = this.getAllUsers();
 
         appUsers.forEach(this::syncGithubUserProfile);
-        return "Synced " + appUsers.size() + " user(s).";
+        return "Found " + appUsers.size() + " user(s) to sync.";
     }
 }
