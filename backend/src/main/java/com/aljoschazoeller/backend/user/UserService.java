@@ -66,17 +66,16 @@ public class UserService {
                     .withGithubUserProfileSyncedAt(currentTime);
         }
         return userRepository.save(updatedAppUser);
-
     }
 
-    public AppUser syncGithubUserProfile(Integer githubId) {
+    public AppUser syncGithubUserProfile(AppUser appUser) {
         Instant currentTime = Instant.now();
 
-        AppUser appUser = this.findByGithubId(githubId.toString());
-        GithubUserProfile currentGithubUserProfile = githubService.getUserProfile(githubId);
+        GithubUserProfile currentGithubUserProfile = githubService.getUserProfile(Integer.valueOf(appUser.githubId()));
 
         AppUser updatedAppUser;
-        if (currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at())) {
+        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
+        if (isGithubUpdatedSinceLastSync) {
             updatedAppUser = appUser
                     .withGithubUserProfileSynced(currentGithubUserProfile)
                     .withGithubUserProfileSyncedAt(currentTime)
@@ -86,5 +85,31 @@ public class UserService {
                     .withGithubUserProfileSyncedAt(currentTime);
         }
         return userRepository.save(updatedAppUser);
+    }
+
+    public AppUser syncGithubUserProfile(Integer githubId) {
+        Instant currentTime = Instant.now();
+
+        AppUser appUser = this.findByGithubId(githubId.toString());
+        GithubUserProfile currentGithubUserProfile = githubService.getUserProfile(githubId);
+
+        AppUser updatedAppUser;
+        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
+        if (isGithubUpdatedSinceLastSync) {
+            updatedAppUser = appUser
+                    .withGithubUserProfileSynced(currentGithubUserProfile)
+                    .withGithubUserProfileSyncedAt(currentTime)
+                    .withGithubUserProfileUpdatedAt(currentTime);
+        } else {
+            updatedAppUser = appUser
+                    .withGithubUserProfileSyncedAt(currentTime);
+        }
+        return userRepository.save(updatedAppUser);
+    }
+
+
+    public void syncGithubUserProfiles() {
+        List<AppUser> appUsers = this.getAllUsers();
+        appUsers.forEach(this::syncGithubUserProfile);
     }
 }
