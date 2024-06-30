@@ -25,12 +25,14 @@ public class ContentController {
     private final UserService userService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<Content>> getContent() {
         List<Content> content = contentService.getAllActiveContent();
         return new ApiResponse<>(content);
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Content> getContentById(@PathVariable String id) {
         Content content = contentService.getContentById(id);
         return new ApiResponse<>(content);

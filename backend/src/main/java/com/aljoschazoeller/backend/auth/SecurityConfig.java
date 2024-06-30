@@ -41,6 +41,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/content").authenticated()
                         .requestMatchers("/api/content/*").authenticated()
+                        .requestMatchers("/api/users").authenticated()
+                        .requestMatchers("/api/users/*").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
