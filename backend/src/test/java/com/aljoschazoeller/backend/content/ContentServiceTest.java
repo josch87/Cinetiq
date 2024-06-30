@@ -49,13 +49,18 @@ class ContentServiceTest {
     @Test
     void getAllContentTest_whenOneActiveContentInDatabase_thenReturnListWithOne() {
         //GIVEN
+        AppUser appUser = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("github-id-1")
+                .build();
+
         Content expected = new Content(
                 "content-id-1",
                 ContentType.MOVIE,
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 Instant.now()
         );
         when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.singletonList(expected));
@@ -79,13 +84,18 @@ class ContentServiceTest {
     @Test
     void getContentByIdTest_whenContentFound_thenReturnContent() {
         // GIVEN
+        AppUser appUser = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("github-id-1")
+                .build();
+
         Content expected = new Content(
                 "1",
                 ContentType.MOVIE,
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 Instant.now()
         );
         when(mockContentRepository.findById("1")).thenReturn(Optional.of(expected));
@@ -102,6 +112,10 @@ class ContentServiceTest {
     @Test
     void createContentTest_whenContentPosted_thenReturnContent() {
         //GIVEN
+        AppUser appUser = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("github-id-1")
+                .build();
         Instant currentTime = Instant.now();
         Content newContent = new Content(
                 null,
@@ -109,7 +123,7 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 currentTime
         );
         Content savedContent = new Content(
@@ -118,7 +132,7 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 currentTime
         );
 
@@ -148,6 +162,10 @@ class ContentServiceTest {
         //GIVEN
         Instant currentTime = Instant.now();
         Principal mockPrincipal = mock(Principal.class);
+        AppUser appUser = AppUser.builder()
+                .id("appUser-id-author")
+                .githubId("github-id-author")
+                .build();
 
         Content oldContent = new Content(
                 "1",
@@ -158,7 +176,7 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-author", "github-id-author", null, null),
+                appUser,
                 currentTime,
                 null,
                 null
@@ -178,6 +196,10 @@ class ContentServiceTest {
         //GIVEN
         Instant currentTime = Instant.now();
         Principal mockPrincipal = mock(Principal.class);
+        AppUser author = AppUser.builder()
+                .id("appUser-id-author")
+                .githubId("github-id-author")
+                .build();
         Content oldContent = new Content(
                 "1",
                 ContentStatus.ACTIVE,
@@ -187,14 +209,18 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-author", "github-id-author", null, null),
+                author,
                 currentTime,
                 null,
                 null
         );
         UpdateContentDTO updateContentDTO = new UpdateContentDTO("New original title", "New english title", "New german title");
 
-        AppUser lastUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
+        AppUser lastUpdatedByUser = AppUser.builder()
+                .id("appUser-id-2")
+                .githubId("github-id-2")
+                .build();
+
         when(mockPrincipal.getName()).thenReturn(lastUpdatedByUser.githubId());
         when(mockUserService.findByGithubId(lastUpdatedByUser.githubId())).thenReturn(lastUpdatedByUser);
         when(mockContentRepository.findById("1")).thenReturn(Optional.of(oldContent));
@@ -211,7 +237,7 @@ class ContentServiceTest {
                 "New original Title",
                 "New english Title",
                 "New german Title",
-                new AppUser("appUser-id-author", "github-id-author", null, null),
+                author,
                 currentTime,
                 lastUpdatedByUser,
                 updateTime
@@ -244,6 +270,10 @@ class ContentServiceTest {
         Principal mockPrincipal = mock(Principal.class);
 
         Instant currentTime = Instant.now();
+        AppUser appUser = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("github-id-1")
+                .build();
         Content contentToDelete = new Content(
                 "1",
                 ContentStatus.ACTIVE,
@@ -253,13 +283,16 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 currentTime,
                 null,
                 null
         );
 
-        AppUser statusUpdatedByUser = new AppUser("appUser-id-2", "github-id-2", null, null);
+        AppUser statusUpdatedByUser = AppUser.builder()
+                .id("appUser-id-2")
+                .githubId("github-id-2")
+                .build();
 
         Content deletedContent = new Content(
                 "1",
@@ -270,7 +303,7 @@ class ContentServiceTest {
                 "Original Title",
                 "English Title",
                 "German Title",
-                new AppUser("appUser-id-1", "github-id-1", null, null),
+                appUser,
                 currentTime,
                 null,
                 null

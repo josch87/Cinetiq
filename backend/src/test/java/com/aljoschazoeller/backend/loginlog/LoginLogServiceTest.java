@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,7 +18,12 @@ class LoginLogServiceTest {
     void logLoginTest_whenCalled_thenLogIsSaved() {
         //GIVEN
         Instant mockedTime = Instant.parse("2024-06-29T13:51:12.235Z");
-        AppUser appUser = new AppUser("1", "githubId", new HashMap<>(), Instant.now());
+        AppUser appUser = AppUser.builder()
+                .id("1")
+                .githubId("githubId")
+                .createdAt(Instant.now())
+                .build();
+
         String ipAddress = "192.168.0.1";
         String browserInfo = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 
