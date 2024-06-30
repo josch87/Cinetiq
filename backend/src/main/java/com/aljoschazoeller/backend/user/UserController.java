@@ -25,7 +25,6 @@ public class UserController {
     @PostMapping("/sync-github-profiles")
     @ResponseStatus(HttpStatus.OK)
     public String syncGithubUserProfiles() {
-        userService.syncGithubUserProfiles();
-        return "Synced";
+        return userService.syncGithubUserProfiles();
     }
 }
