@@ -1,6 +1,5 @@
 package com.aljoschazoeller.backend.migration;
 
-import com.aljoschazoeller.backend.user.domain.AppUser;
 import com.mongodb.BasicDBObject;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
@@ -33,9 +32,10 @@ public class IntroduceGithubUserProfileSync {
         Update update = new Update()
                 .rename("githubUserProfile", "githubUserProfileOnSignUp")
                 .set("githubUserProfileSynced", githubUserProfile)
-                .set("githubUserProfileActive", true);
+                .set("githubUserProfileActive", true)
+                .set("status", "ACTIVE");
 
-        mongoTemplate.updateMulti(query, update, AppUser.class);
+        mongoTemplate.updateMulti(query, update, BasicDBObject.class, "appUsers");
     }
 
     @RollbackExecution
@@ -44,7 +44,8 @@ public class IntroduceGithubUserProfileSync {
         Update update = new Update()
                 .rename("githubUserProfileOnSignUp", "githubUserProfile")
                 .unset("githubUserProfileSynced")
-                .unset("githubUserProfileActive");
-        mongoTemplate.updateMulti(query, update, AppUser.class);
+                .unset("githubUserProfileActive")
+                .unset("status");
+        mongoTemplate.updateMulti(query, update, BasicDBObject.class, "appUsers");
     }
 }

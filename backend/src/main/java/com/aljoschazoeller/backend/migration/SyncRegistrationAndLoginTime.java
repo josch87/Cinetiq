@@ -1,7 +1,7 @@
 package com.aljoschazoeller.backend.migration;
 
-import com.aljoschazoeller.backend.loginlog.domain.LoginLog;
-import com.aljoschazoeller.backend.user.domain.AppUser;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
@@ -25,6 +25,7 @@ public class SyncRegistrationAndLoginTime {
     private final Map<String, Instant> originalDates;
 
     private static final String CREATED_AT = "created_at";
+    private static final String LOGIN_LOGS = "loginLogs";
 
     public SyncRegistrationAndLoginTime(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
@@ -33,28 +34,24 @@ public class SyncRegistrationAndLoginTime {
 
     @Execution
     public void execution() {
-        List<AppUser> appUsers = mongoTemplate.findAll(AppUser.class);
+        List<BasicDBObject> appUsers = mongoTemplate.findAll(BasicDBObject.class, "appUsers");
 
-        for (AppUser appUser : appUsers) {
+        for (BasicDBObject appUser : appUsers) {
             Query query = new Query(Criteria.where("appUser._id")
-                    .is(appUser.id()))
+                    .is(appUser.get("_id")))
                     .with(Sort.by(Sort.Direction.ASC, CREATED_AT))
                     .limit(1);
-            LoginLog loginLog = mongoTemplate.findOne(query, LoginLog.class);
+            BasicDBObject loginLog = mongoTemplate.findOne(query, BasicDBObject.class, LOGIN_LOGS);
 
             if (loginLog != null) {
-                originalDates.put(loginLog.id(), loginLog.createdAt());
-                LoginLog updatedLog = new LoginLog(
-                        loginLog.id(),
-                        loginLog.appUser(),
-                        appUser.createdAt(),
-                        loginLog.ipAddress(),
-                        loginLog.userAgent()
-                );
+                originalDates.put(loginLog.getString("_id"), (Instant)loginLog.get(CREATED_AT));
+                BasicDBObject updatedLog = new BasicDBObject(loginLog);
+                updatedLog.put(CREATED_AT, appUser.get(CREATED_AT));
+
                 FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
 
-                mongoTemplate.findAndModify(query, new Update().set(CREATED_AT, updatedLog.createdAt()),
-                        options, LoginLog.class);
+                mongoTemplate.findAndModify(query, new Update().set(CREATED_AT, updatedLog.get(CREATED_AT)),
+                        options, BasicDBList.class, LOGIN_LOGS);
             }
         }
     }
@@ -64,7 +61,7 @@ public class SyncRegistrationAndLoginTime {
         for (Map.Entry<String, Instant> entry : originalDates.entrySet()) {
             Query query = new Query(Criteria.where("_id").is(entry.getKey()));
             Update update = Update.update(CREATED_AT, entry.getValue());
-            mongoTemplate.updateFirst(query, update, LoginLog.class);
+            mongoTemplate.updateFirst(query, update, BasicDBObject.class, LOGIN_LOGS);
         }
     }
 }
