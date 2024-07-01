@@ -4,10 +4,7 @@ import com.aljoschazoeller.backend.auth.GithubMapper;
 import com.aljoschazoeller.backend.auth.GithubService;
 import com.aljoschazoeller.backend.exceptions.GithubProfileNotFoundException;
 import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
-import com.aljoschazoeller.backend.user.domain.AppUser;
-import com.aljoschazoeller.backend.user.domain.GithubUserProfile;
-import com.aljoschazoeller.backend.user.domain.GithubUserProfileSyncStatus;
-import com.aljoschazoeller.backend.user.domain.SyncedGithubProfilesDTO;
+import com.aljoschazoeller.backend.user.domain.*;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +43,7 @@ public class UserService {
                 registeredAt,
                 null,
                 true,
+                AppUserStatus.ACTIVE,
                 registeredAt
         );
 
