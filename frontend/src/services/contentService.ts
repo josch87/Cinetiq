@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ContentType } from "../model/contentModel.ts";
 import { ApiResponseType, InfoType } from "../model/apiModel.ts";
 
@@ -23,7 +23,11 @@ export function getContent(): Promise<ApiResponseType<ContentType[]> | null> {
     .get("/api/content")
     .then((response) => {
       const content = processContentArray(response.data.data);
-      return { info: response.data.info, data: content };
+      const returnValue: ApiResponseType<ContentType[]> = {
+        info: response.data.info,
+        data: content,
+      };
+      return returnValue;
     })
     .catch((error) => {
       console.error(error.message);
@@ -40,7 +44,7 @@ export function getContentById(
       const content = processSingleContent(response.data.data);
       return { info: response.data.info, content };
     })
-    .catch((error) => {
+    .catch((error: AxiosError) => {
       console.error(error.message);
       return null;
     });

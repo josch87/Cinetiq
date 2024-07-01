@@ -9,6 +9,8 @@ export type AppUserType = {
   createdAt: Date;
 };
 
+type AppUserStatusENUM = "ACTIVE" | "INACTIVE";
+
 export type GithubUserType = {
   id: string;
   username?: string;
@@ -19,7 +21,7 @@ export type GithubUserType = {
   bio?: string;
 };
 
-type GithubUserSyncedType = {
+export type GithubUserSyncedType = {
   login: string;
   id: number;
   avatar_url: string;
@@ -34,5 +36,3 @@ type GithubUserSyncedType = {
   created_at: Date;
   updated_at: Date;
 };
-
-type AppUserStatusENUM = "ACTIVE" | "INACTIVE";

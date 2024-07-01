@@ -1,6 +1,16 @@
 import axios from "axios";
 import useSWR from "swr";
-import { GithubUserType } from "../model/userModel.ts";
+import { GithubUserSyncedType, GithubUserType } from "../model/userModel.ts";
+
+export function processSingleGithubUserSynced(
+  rawGithubUser: GithubUserSyncedType
+): GithubUserSyncedType {
+  return {
+    ...rawGithubUser,
+    created_at: rawGithubUser.created_at,
+    updated_at: rawGithubUser.updated_at,
+  };
+}
 
 export function useGithubUserById(githubId: string | undefined): {
   githubUser: GithubUserType | undefined;
