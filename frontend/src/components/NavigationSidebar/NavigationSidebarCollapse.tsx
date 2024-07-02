@@ -25,7 +25,7 @@ export default function NavigationSidebarCollapse({
   title,
   icon,
   menuItems,
-}: CollapseProps) {
+}: Readonly<CollapseProps>) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
