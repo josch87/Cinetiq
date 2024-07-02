@@ -4,7 +4,7 @@ import { contentSkeletonData, ContentType } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
-import ContentResultHeader from "../../components/content/ContentResult/ContentResultHeader.tsx";
+import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
 import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
@@ -52,7 +52,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         pageSubtitle="Display all content"
         user={user}
       >
-        <ContentResultHeader info={info} />
+        <ResultHeader info={info} />
 
         <Flex flexDirection="column" gap={4}>
           <Skeleton>
@@ -84,7 +84,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         </VStack>
       ) : (
         <>
-          <ContentResultHeader info={info} />
+          <ResultHeader info={info} />
           <ContentResultBody content={content} />
         </>
       )}
