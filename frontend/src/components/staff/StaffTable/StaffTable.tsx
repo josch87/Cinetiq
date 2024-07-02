@@ -45,6 +45,7 @@ export default function StaffTable({
           <Th>Email</Th>
           <Th>Bio</Th>
           <Th>Registered&nbsp;at</Th>
+          <Th>Last&nbsp;sync</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -99,6 +100,15 @@ export default function StaffTable({
               >
                 <Text color="fg.muted">
                   {appUser.createdAt.toLocaleDateString()}
+                </Text>
+              </Tooltip>
+            </Td>
+            <Td>
+              <Tooltip
+                label={`${appUser.githubUserProfileSyncedAt.toDateString()}, ${appUser.githubUserProfileSyncedAt.toLocaleTimeString()}`}
+              >
+                <Text color="fg.muted">
+                  {appUser.githubUserProfileSyncedAt.toLocaleDateString()}
                 </Text>
               </Tooltip>
             </Td>
