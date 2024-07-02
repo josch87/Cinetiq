@@ -27,6 +27,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public AppUser getAppUserById(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("No appUser found with ID '" + id + "'"));
+    }
+
     public AppUser findByGithubId(String githubId) {
         return userRepository.findAppUserByGithubId(githubId)
                 .orElseThrow(() -> new UserNotFoundException("No appUser found with GitHub ID '" + githubId + "'"));
@@ -69,17 +74,24 @@ public class UserService {
             return updateGithubUserProfile(appUser, currentTime, userProfile);
 
         } catch (GithubProfileNotFoundException exception) {
-            AppUser appUserWithInactiveGithub = appUser.withGithubUserProfileActive(false);
-            userRepository.save(appUserWithInactiveGithub);
+            this.setGithubUserProfileInactive(appUser);
             return GithubUserProfileSyncStatus.NOT_FOUND;
         }
     }
 
-    private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
-        AppUser updatedAppUser;
-        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
+    private AppUser setGithubUserProfileInactive(AppUser appUser) {
+        this.getAppUserById(appUser.id());
+        AppUser appUserToSave = appUser.withGithubUserProfileActive(false);
 
+        return userRepository.save(appUserToSave);
+    }
+
+    private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
+        this.getAppUserById(appUser.id());
+
+        AppUser updatedAppUser;
         GithubUserProfileSyncStatus returnValue;
+        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
 
         if (isGithubUpdatedSinceLastSync) {
             updatedAppUser = appUser
@@ -92,6 +104,7 @@ public class UserService {
                     .withGithubUserProfileSyncedAt(currentTime);
             returnValue = GithubUserProfileSyncStatus.NOT_UPDATED;
         }
+
         userRepository.save(updatedAppUser);
         return returnValue;
     }
