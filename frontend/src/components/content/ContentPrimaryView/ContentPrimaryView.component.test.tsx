@@ -56,7 +56,7 @@ test("ContentPrimaryView renders the authors name from GitHub", async () => {
   render(<ContentPrimaryView content={contentMovie} />);
 
   await waitFor(async () => {
-    const authorName = await screen.findByText(/github name/i);
+    const authorName = await screen.findByText(/githubname one/i);
     expect(authorName).toBeInTheDocument();
   });
 });
