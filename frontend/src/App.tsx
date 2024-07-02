@@ -4,15 +4,15 @@ import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import { useEffect, useState } from "react";
 import { loadUser } from "./services/authService.ts";
-import { GithubUserType } from "./model/userModel.ts";
 import ProtectedRoutes from "./pages/ProtectedRoutes.tsx";
 import ContentPage from "./pages/content/ContentPage.tsx";
 import ContentDetailsPage from "./pages/content/ContentDetailsPage.tsx";
 import ContentCreationDrawer from "./components/content/ContentCreationDrawer/ContentCreationDrawer.tsx";
 import StaffPage from "./pages/management/StaffPage.tsx";
+import { GithubUserAuthType } from "./model/githubModel.ts";
 
 function App() {
-  const [user, setUser] = useState<GithubUserType | null | undefined>(
+  const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
     undefined
   );
 

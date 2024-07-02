@@ -1,5 +1,4 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
-import { GithubUserType } from "../../model/userModel.ts";
 import { ContentType } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -12,9 +11,10 @@ import { useContentCreationDrawerStore } from "../../store/store.ts";
 import { InfoType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
 import { contentSkeletonData } from "../../model/contentTestData.ts";
+import { GithubUserAuthType } from "../../model/githubModel.ts";
 
 type ContentPageProps = {
-  user: GithubUserType | null | undefined;
+  user: GithubUserAuthType | null | undefined;
 };
 
 export default function ContentPage({ user }: Readonly<ContentPageProps>) {

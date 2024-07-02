@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { ContentCollapse } from "./collapses/ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
-import { GithubUserType } from "../../model/userModel.ts";
 import {
   FaArrowRightFromBracket,
   FaBorderAll,
@@ -24,9 +23,10 @@ import { logout } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
 import { ManagementCollapse } from "./collapses/ManagementCollapse.tsx";
+import { GithubUserAuthType } from "../../model/githubModel.ts";
 
 type NavigationSidebarProps = {
-  user: GithubUserType;
+  user: GithubUserAuthType;
 };
 
 export default function NavigationSidebar({

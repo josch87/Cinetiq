@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
-import { GithubUserType } from "../model/userModel.ts";
+import { GithubUserAuthType } from "../model/githubModel.ts";
 
 type ProtectedRoutesProps = {
-  user: GithubUserType | null | undefined;
+  user: GithubUserAuthType | null | undefined;
 };
 
 export default function ProtectedRoutes({
