@@ -28,24 +28,3 @@ export type UpdateContentTitlesType = {
   englishTitle: string;
   germanTitle: string;
 };
-
-export const contentSkeletonData: ContentType = {
-  id: "1",
-  status: "ACTIVE",
-  statusUpdatedAt: new Date(),
-  statusUpdatedBy: {
-    id: "1",
-    githubId: "2",
-    createdAt: new Date(),
-  },
-  contentType: "MOVIE" as ContentTypeEnum,
-  englishTitle: "test",
-  germanTitle: "",
-  originalTitle: "",
-  createdBy: {
-    id: "1",
-    githubId: "2",
-    createdAt: new Date(),
-  },
-  createdAt: new Date(),
-};

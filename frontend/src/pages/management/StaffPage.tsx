@@ -1,9 +1,5 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
-import {
-  appUsersSkeletonData,
-  AppUserType,
-  GithubUserType,
-} from "../../model/userModel.ts";
+import { AppUserType } from "../../model/userModel.ts";
 import { Skeleton, VStack } from "@chakra-ui/react";
 import NoData from "../../components/NoData/NoData.tsx";
 import { useEffect, useState } from "react";
@@ -12,9 +8,11 @@ import { InfoType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
 import StaffTable from "../../components/staff/StaffTable/StaffTable.tsx";
 import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
+import { GithubUserAuthType } from "../../model/githubModel.ts";
+import { appUsersSkeletonData } from "../../model/userTestData.ts";
 
 type StaffPageProps = {
-  user: GithubUserType | null | undefined;
+  user: GithubUserAuthType | null | undefined;
 };
 
 export default function StaffPage({ user }: Readonly<StaffPageProps>) {

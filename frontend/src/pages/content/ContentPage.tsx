@@ -1,6 +1,6 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { GithubUserType } from "../../model/userModel.ts";
-import { contentSkeletonData, ContentType } from "../../model/contentModel.ts";
+import { ContentType } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
@@ -11,6 +11,7 @@ import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
 import { useContentCreationDrawerStore } from "../../store/store.ts";
 import { InfoType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
+import { contentSkeletonData } from "../../model/contentTestData.ts";
 
 type ContentPageProps = {
   user: GithubUserType | null | undefined;
