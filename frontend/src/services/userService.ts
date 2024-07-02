@@ -5,11 +5,11 @@ import { processSingleGithubUserSynced } from "./githubService.ts";
 
 function processSingleAppUser(rawAppUser: AppUserType): AppUserType {
   const githubUser = processSingleGithubUserSynced(
-    rawAppUser.githubUserProfilSynced
+    rawAppUser.githubUserProfileSynced
   );
   return {
     ...rawAppUser,
-    githubUserProfilSynced: githubUser,
+    githubUserProfileSynced: githubUser,
     githubUserProfileSyncedAt: new Date(rawAppUser.githubUserProfileSyncedAt),
     githubUserProfileUpdatedAt: new Date(rawAppUser.githubUserProfileUpdatedAt),
     createdAt: new Date(rawAppUser.createdAt),

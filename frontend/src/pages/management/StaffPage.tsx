@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../../services/userService.ts";
 import { InfoType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
+import StaffTable from "../../components/staff/StaffTable/StaffTable.tsx";
 
 type StaffPageProps = {
   user: GithubUserType | null | undefined;
@@ -51,7 +52,7 @@ export default function StaffPage({ user }: Readonly<StaffPageProps>) {
           <NoData />
         </VStack>
       ) : (
-        <>Test</>
+        <StaffTable appUsers={appUsers} />
       )}
     </DefaultPageTemplate>
   );
