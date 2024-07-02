@@ -3,6 +3,7 @@ package com.aljoschazoeller.backend.auth;
 import com.aljoschazoeller.backend.exceptions.GithubProfileNotFoundException;
 import com.aljoschazoeller.backend.user.domain.GithubUserProfile;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -11,8 +12,8 @@ import org.springframework.web.client.RestClient;
 public class GithubService {
     private final RestClient restClient;
 
-    public GithubService(RestClient.Builder restClientBuilder) {
-        this.restClient = restClientBuilder.baseUrl("https://api.github.com").build();
+    public GithubService(@Value("${https://api.github.com}") String url) {
+        this.restClient = RestClient.create(url);
     }
 
     public GithubUserProfile getUserProfile(Integer githubId) throws GithubProfileNotFoundException {
