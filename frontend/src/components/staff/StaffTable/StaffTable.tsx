@@ -5,7 +5,7 @@ import {
   Checkbox,
   HStack,
   Icon,
-  IconButton,
+  Link,
   Table,
   TableProps,
   Tbody,
@@ -16,7 +16,6 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { IoArrowDown } from "react-icons/io5";
 import { AppUserType } from "../../../model/userModel.ts";
 
@@ -44,9 +43,8 @@ export default function StaffTable({
           </Th>
           <Th>Status</Th>
           <Th>Email</Th>
-          <Th>Role</Th>
+          <Th>Bio</Th>
           <Th>Registered&nbsp;at</Th>
-          <Th></Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -64,9 +62,14 @@ export default function StaffTable({
                   <Text fontWeight="medium">
                     {appUser.githubUserProfileSynced.name}
                   </Text>
-                  <Text color="fg.muted">
-                    {appUser.githubUserProfileSynced.login}
-                  </Text>
+                  <Tooltip label="GitHub Profile">
+                    <Link
+                      href={appUser.githubUserProfileSynced.html_url}
+                      isExternal
+                    >
+                      {appUser.githubUserProfileSynced.login}
+                    </Link>
+                  </Tooltip>
                 </Box>
               </HStack>
             </Td>
@@ -98,20 +101,6 @@ export default function StaffTable({
                   {appUser.createdAt.toLocaleDateString()}
                 </Text>
               </Tooltip>
-            </Td>
-            <Td>
-              <HStack spacing="1">
-                <IconButton
-                  icon={<FiTrash2 />}
-                  variant="tertiary"
-                  aria-label="Delete member"
-                />
-                <IconButton
-                  icon={<FiEdit2 />}
-                  variant="tertiary"
-                  aria-label="Edit member"
-                />
-              </HStack>
             </Td>
           </Tr>
         ))}
