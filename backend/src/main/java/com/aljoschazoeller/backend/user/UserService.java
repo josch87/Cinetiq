@@ -86,29 +86,6 @@ public class UserService {
         return userRepository.save(appUserToSave);
     }
 
-    private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
-        this.getAppUserById(appUser.id());
-
-        AppUser updatedAppUser;
-        GithubUserProfileSyncStatus returnValue;
-        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
-
-        if (isGithubUpdatedSinceLastSync) {
-            updatedAppUser = appUser
-                    .withGithubUserProfileSynced(currentGithubUserProfile)
-                    .withGithubUserProfileSyncedAt(currentTime)
-                    .withGithubUserProfileUpdatedAt(currentTime);
-            returnValue = GithubUserProfileSyncStatus.UPDATED;
-        } else {
-            updatedAppUser = appUser
-                    .withGithubUserProfileSyncedAt(currentTime);
-            returnValue = GithubUserProfileSyncStatus.NOT_UPDATED;
-        }
-
-        userRepository.save(updatedAppUser);
-        return returnValue;
-    }
-
     public SyncedGithubProfilesDTO syncGithubUserProfiles() {
         List<AppUser> appUsers = this.getAllUsers();
 
@@ -131,5 +108,28 @@ public class UserService {
                 notUpdated.get(),
                 notFound.get()
         );
+    }
+
+    private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
+        this.getAppUserById(appUser.id());
+
+        AppUser updatedAppUser;
+        GithubUserProfileSyncStatus returnValue;
+        boolean isGithubUpdatedSinceLastSync = currentGithubUserProfile.updated_at().isAfter(appUser.githubUserProfileSynced().updated_at());
+
+        if (isGithubUpdatedSinceLastSync) {
+            updatedAppUser = appUser
+                    .withGithubUserProfileSynced(currentGithubUserProfile)
+                    .withGithubUserProfileSyncedAt(currentTime)
+                    .withGithubUserProfileUpdatedAt(currentTime);
+            returnValue = GithubUserProfileSyncStatus.UPDATED;
+        } else {
+            updatedAppUser = appUser
+                    .withGithubUserProfileSyncedAt(currentTime);
+            returnValue = GithubUserProfileSyncStatus.NOT_UPDATED;
+        }
+
+        userRepository.save(updatedAppUser);
+        return returnValue;
     }
 }
