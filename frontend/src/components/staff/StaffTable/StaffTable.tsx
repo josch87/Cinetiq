@@ -52,6 +52,7 @@ export default function StaffTable({
       </Thead>
       <Tbody>
         {appUsers
+          .slice()
           .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
           .map((appUser) => (
             <Tr key={appUser.id}>
