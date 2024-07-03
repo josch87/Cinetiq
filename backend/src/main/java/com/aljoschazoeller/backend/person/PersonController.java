@@ -21,6 +21,13 @@ public class PersonController {
     private final PersonService personService;
     private final UserService userService;
 
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Person> getPersonById(@PathVariable String id) {
+        Person person = personService.getPersonById(id);
+        return new ApiResponse<>(person);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<Person> createPerson(Principal principal, @Valid @RequestBody NewPersonDTO body) {
@@ -37,7 +44,7 @@ public class PersonController {
                 .createdAt(currentTime)
                 .build();
 
-        Person savedPerson = personService.createContent(personToSave);
+        Person savedPerson = personService.createPerson(personToSave);
 
         return new ApiResponse<>(savedPerson);
     }

@@ -1,5 +1,6 @@
 package com.aljoschazoeller.backend.person;
 
+import com.aljoschazoeller.backend.exceptions.PersonNotFoundException;
 import com.aljoschazoeller.backend.person.domain.Person;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,12 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    public Person createContent(Person person) {
+    public Person getPersonById(String id) {
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException("No person found with ID '" + id + "'"));
+    }
+
+    public Person createPerson(Person person) {
         return personRepository.save(person);
     }
 }

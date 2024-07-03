@@ -1,7 +1,6 @@
 package com.aljoschazoeller.backend.person;
 
 import com.aljoschazoeller.backend.api.ApiResponse;
-import com.aljoschazoeller.backend.content.domain.Content;
 import com.aljoschazoeller.backend.person.domain.Person;
 import com.aljoschazoeller.backend.user.UserRepository;
 import com.aljoschazoeller.backend.user.domain.AppUser;
@@ -20,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -94,7 +94,27 @@ class PersonControllerTest {
         });
         Person returnedPerson = apiResponse.getData();
 
-
+        mockMvc.perform(get("/api/people/" + returnedPerson.id()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "status": "ACTIVE",
+                                "statusUpdatedAt": null,
+                                "statusUpdatedBy": null,
+                                "firstName": "Chuck",
+                                "lastName": "Norris",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """));
 
     }
 }
