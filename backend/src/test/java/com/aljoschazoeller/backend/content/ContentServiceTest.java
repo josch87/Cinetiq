@@ -297,8 +297,8 @@ class ContentServiceTest {
         Content deletedContent = new Content(
                 "1",
                 ContentStatus.DELETED,
-                Instant.parse("2024-06-24T22:10:05.108Z"),
                 statusUpdatedByUser,
+                Instant.parse("2024-06-24T22:10:05.108Z"),
                 ContentType.MOVIE,
                 "Original Title",
                 "English Title",
