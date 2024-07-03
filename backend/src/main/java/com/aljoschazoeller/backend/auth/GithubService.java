@@ -22,7 +22,7 @@ public class GithubService {
                 .uri("/user/{githubId}", githubId)
                 .retrieve()
                 .onStatus(status -> status.isSameCodeAs(HttpStatusCode.valueOf(404)),
-                        (request, response) -> {
+                        (_, response) -> {
                             throw new GithubProfileNotFoundException(response.getStatusCode(), response.getBody().toString());
                         })
                 .body(GithubUserProfile.class);

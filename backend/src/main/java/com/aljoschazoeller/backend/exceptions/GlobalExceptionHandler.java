@@ -43,4 +43,10 @@ public class GlobalExceptionHandler {
     public String handleInvalidContentStatusException(InvalidContentStatusException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleUserNotFoundException(UserNotFoundException exception) {
+        return exception.getMessage();
+    }
 }
