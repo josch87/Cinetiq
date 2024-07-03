@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -40,6 +41,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/content").authenticated()
                         .requestMatchers("/api/content/*").authenticated()
+                        .requestMatchers("/api/users").authenticated()
+                        .requestMatchers("/api/users/*").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
@@ -52,6 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request) {
+        Instant currentTime = Instant.now();
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
         return userRequest -> {
@@ -59,11 +63,11 @@ public class SecurityConfig {
 
             AppUser appUser;
             try {
-                appUser = userService.findByGithubId(oAuth2User.getName());
-                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
+                appUser = userService.syncGithubUserProfile(oAuth2User);
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request), currentTime);
             } catch (UserNotFoundException exception) {
-                appUser = userService.register(oAuth2User);
-                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request));
+                appUser = userService.register(oAuth2User, currentTime);
+                loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request), currentTime);
             }
 
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());

@@ -8,6 +8,7 @@ import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,23 +18,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/content")
+@RequiredArgsConstructor
 public class ContentController {
 
     private final ContentService contentService;
     private final UserService userService;
 
-    public ContentController(ContentService contentService, UserService userService) {
-        this.contentService = contentService;
-        this.userService = userService;
-    }
-
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<List<Content>> getContent() {
         List<Content> content = contentService.getAllActiveContent();
         return new ApiResponse<>(content);
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<Content> getContentById(@PathVariable String id) {
         Content content = contentService.getContentById(id);
         return new ApiResponse<>(content);

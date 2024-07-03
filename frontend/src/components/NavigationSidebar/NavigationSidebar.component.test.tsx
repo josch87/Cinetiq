@@ -1,40 +1,35 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NavigationSidebar from "./NavigationSidebar.tsx";
-import { githubUserType } from "../../model/userModel.ts";
 import { MemoryRouter } from "react-router-dom";
-
-const user: githubUserType = {
-  id: "11111",
-  name: "Chuck Norris",
-};
+import { githubUserLoggedIn } from "../../model/githubTestData.ts";
 
 test("NavigationSidebar renders the name of the user", () => {
   render(
     <MemoryRouter>
-      <NavigationSidebar user={user} />
+      <NavigationSidebar user={githubUserLoggedIn} />
     </MemoryRouter>
   );
-  const name = screen.getByText(/chuck norris/i);
+  const name = screen.getByText(/loggedin name/i);
   expect(name).toBeInTheDocument();
 });
 
 test("NavigationSidebar renders the users initials when no Avatar image loaded", () => {
   render(
     <MemoryRouter>
-      <NavigationSidebar user={user} />
+      <NavigationSidebar user={githubUserLoggedIn} />
     </MemoryRouter>
   );
   const avatar = screen.getByRole("img", {
-    name: /chuck norris/i,
+    name: /loggedin name/i,
   });
-  expect(avatar.textContent).toBe("CN");
+  expect(avatar.textContent).toBe("ln");
 });
 
 test("NavigationSidebar renders a logout button", () => {
   render(
     <MemoryRouter>
-      <NavigationSidebar user={user} />
+      <NavigationSidebar user={githubUserLoggedIn} />
     </MemoryRouter>
   );
   const logoutText = screen.getByText(/logout/i);

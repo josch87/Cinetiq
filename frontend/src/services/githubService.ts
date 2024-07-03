@@ -1,9 +1,22 @@
 import axios from "axios";
 import useSWR from "swr";
-import { githubUserType } from "../model/userModel.ts";
+import {
+  GithubUserAuthType,
+  GithubUserSyncedType,
+} from "../model/githubModel.ts";
+
+export function processSingleGithubUserSynced(
+  rawGithubUser: GithubUserSyncedType
+): GithubUserSyncedType {
+  return {
+    ...rawGithubUser,
+    created_at: rawGithubUser.created_at,
+    updated_at: rawGithubUser.updated_at,
+  };
+}
 
 export function useGithubUserById(githubId: string | undefined): {
-  githubUser: githubUserType | undefined;
+  githubUser: GithubUserAuthType | undefined;
   isLoading: boolean;
   isError: Error | undefined;
 } {

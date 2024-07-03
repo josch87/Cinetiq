@@ -1,18 +1,20 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
-import { githubUserType } from "../../model/userModel.ts";
-import { contentSkeletonData, ContentType } from "../../model/contentModel.ts";
+import { ContentType } from "../../model/contentModel.ts";
 import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
-import ContentResultHeader from "../../components/content/ContentResult/ContentResultHeader.tsx";
+import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
 import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
 import { useContentCreationDrawerStore } from "../../store/store.ts";
 import { InfoType } from "../../model/apiModel.ts";
+import { AxiosError } from "axios";
+import { contentSkeletonData } from "../../model/contentTestData.ts";
+import { GithubUserAuthType } from "../../model/githubModel.ts";
 
 type ContentPageProps = {
-  user: githubUserType | null | undefined;
+  user: GithubUserAuthType | null | undefined;
 };
 
 export default function ContentPage({ user }: Readonly<ContentPageProps>) {
@@ -30,10 +32,10 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
       .then((response) => {
         if (response) {
           setInfo(response.info);
-          setContent(response.content);
+          setContent(response.data);
         }
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         console.error(error.message);
         setInfo(null);
         setContent(null);
@@ -51,7 +53,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         pageSubtitle="Display all content"
         user={user}
       >
-        <ContentResultHeader info={info} />
+        <ResultHeader info={info} />
 
         <Flex flexDirection="column" gap={4}>
           <Skeleton>
@@ -83,7 +85,7 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         </VStack>
       ) : (
         <>
-          <ContentResultHeader info={info} />
+          <ResultHeader info={info} />
           <ContentResultBody content={content} />
         </>
       )}

@@ -9,32 +9,24 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FiChevronDown } from "react-icons/fi";
-import { FaFilm } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
-import { useContentCreationDrawerStore } from "../../store/store.ts";
+import { IconType } from "react-icons";
 
-export const ContentCollapse = () => {
-  const navigate = useNavigate();
+type CollapseProps = {
+  title: string;
+  icon: IconType;
+  menuItems: {
+    id: number;
+    title: string;
+    onClick: () => void;
+  }[];
+};
+
+export default function NavigationSidebarCollapse({
+  title,
+  icon,
+  menuItems,
+}: Readonly<CollapseProps>) {
   const { isOpen, onToggle } = useDisclosure();
-
-  const onOpenContentCreationDrawer = useContentCreationDrawerStore(
-    (state) => state.onOpen
-  );
-
-  const data = [
-    {
-      id: 1,
-      title: "All Content",
-      onClick: () => {
-        navigate("/content");
-      },
-    },
-    {
-      id: 2,
-      title: "Create content",
-      onClick: onOpenContentCreationDrawer,
-    },
-  ];
 
   return (
     <Box>
@@ -45,14 +37,14 @@ export const ContentCollapse = () => {
         width="full"
       >
         <HStack spacing="3">
-          <Icon as={FaFilm} />
-          <Text as="span">Content</Text>
+          <Icon as={icon} />
+          <Text as="span">{title}</Text>
         </HStack>
         <PopoverIcon isOpen={isOpen} />
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Stack spacing="1" alignItems="stretch" ps="8" py="1">
-          {data.map((item) => (
+          {menuItems.map((item) => (
             <Button
               key={item.id}
               variant="tertiary"
@@ -66,7 +58,7 @@ export const ContentCollapse = () => {
       </Collapse>
     </Box>
   );
-};
+}
 
 export const PopoverIcon = (props: { isOpen: boolean }) => {
   const iconStyles = {

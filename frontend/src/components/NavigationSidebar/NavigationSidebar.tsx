@@ -12,26 +12,57 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { ContentCollapse } from "./ContentCollapse.tsx";
 import { SidebarButton } from "./SidebarButton.tsx";
-import { githubUserType } from "../../model/userModel.ts";
 import {
   FaArrowRightFromBracket,
   FaBorderAll,
+  FaBriefcase,
   FaEllipsisVertical,
+  FaFilm,
 } from "react-icons/fa6";
 import { logout } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
+import { GithubUserAuthType } from "../../model/githubModel.ts";
+import { useContentCreationDrawerStore } from "../../store/store.ts";
+import NavigationSidebarCollapse from "./NavigationSidebarCollapse.tsx";
 
 type NavigationSidebarProps = {
-  user: githubUserType;
+  user: GithubUserAuthType;
 };
 
 export default function NavigationSidebar({
   user,
 }: Readonly<NavigationSidebarProps>) {
   const navigate = useNavigate();
+  const onOpenContentCreationDrawer = useContentCreationDrawerStore(
+    (state) => state.onOpen
+  );
+
+  const contentCollapseItems = [
+    {
+      id: 1,
+      title: "All Content",
+      onClick: () => {
+        navigate("/content");
+      },
+    },
+    {
+      id: 2,
+      title: "Create content",
+      onClick: onOpenContentCreationDrawer,
+    },
+  ];
+
+  const managementCollapseItems = [
+    {
+      id: 1,
+      title: "Staff",
+      onClick: () => {
+        navigate("/staff");
+      },
+    },
+  ];
 
   return (
     <Flex as="section" minH="100vh">
@@ -54,7 +85,16 @@ export default function NavigationSidebar({
             >
               Dashboard
             </SidebarButton>
-            <ContentCollapse />
+            <NavigationSidebarCollapse
+              title="Content"
+              icon={FaFilm}
+              menuItems={contentCollapseItems}
+            />
+            <NavigationSidebarCollapse
+              title="Management"
+              icon={FaBriefcase}
+              menuItems={managementCollapseItems}
+            />
           </Stack>
         </Stack>
         <Stack spacing="4" divider={<StackDivider />}>

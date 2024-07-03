@@ -1,15 +1,14 @@
-export type appUserType = {
+import { GithubUserSyncedType } from "./githubModel.ts";
+
+export type AppUserType = {
   id: string;
   githubId: string;
+  githubUserProfileSynced: GithubUserSyncedType;
+  githubUserProfileSyncedAt: Date;
+  githubUserProfileUpdatedAt: Date;
+  githubUserProfileActive: boolean;
+  status: AppUserStatusENUM;
   createdAt: Date;
 };
 
-export type githubUserType = {
-  id: string;
-  username?: string;
-  avatarUrl?: string;
-  name?: string;
-  company?: string;
-  location?: string;
-  bio?: string;
-};
+type AppUserStatusENUM = "ACTIVE" | "INACTIVE";

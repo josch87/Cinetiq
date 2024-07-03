@@ -1,6 +1,6 @@
 package com.aljoschazoeller.backend.auth.domain;
 
-public record GithubUser(
+public record LoggedInGithubUser(
         String id,
         String username,
         String avatarUrl,

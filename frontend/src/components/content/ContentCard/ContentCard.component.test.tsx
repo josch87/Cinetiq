@@ -1,55 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentCard from "./ContentCard.tsx";
-import { ContentType } from "../../../model/contentModel.ts";
 import { userEvent } from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { appUserType } from "../../../model/userModel.ts";
-
-const user: appUserType = {
-  id: "appUser-id-1",
-  githubId: "github-id-1",
-  createdAt: new Date("2024-06-10T15:10:05.217Z"),
-};
-
-const contentMovie: ContentType = {
-  id: "1",
-  status: "ACTIVE",
-  statusUpdatedAt: null,
-  statusUpdatedBy: null,
-  contentType: "MOVIE",
-  originalTitle: "Original title",
-  englishTitle: "English title",
-  germanTitle: "German title",
-  createdAt: new Date("2024-06-20T18:20:05.208Z"),
-  createdBy: user,
-};
-
-const contentExhibition: ContentType = {
-  id: "1",
-  status: "ACTIVE",
-  statusUpdatedAt: null,
-  statusUpdatedBy: null,
-  contentType: "EXHIBITION",
-  originalTitle: "Original title",
-  englishTitle: "",
-  germanTitle: "German title",
-  createdAt: new Date("2024-06-20T18:20:05.208Z"),
-  createdBy: user,
-};
-
-const contentSeries: ContentType = {
-  id: "1",
-  status: "ACTIVE",
-  statusUpdatedAt: null,
-  statusUpdatedBy: null,
-  contentType: "SERIES",
-  originalTitle: "Original title",
-  englishTitle: "",
-  germanTitle: "",
-  createdAt: new Date("2024-06-20T18:20:05.208Z"),
-  createdBy: user,
-};
+import {
+  contentExhibition,
+  contentMovie,
+  contentSeries,
+} from "../../../model/contentTestData.ts";
 
 test("ContentCard renders the english title of the content", () => {
   render(
@@ -57,7 +15,7 @@ test("ContentCard renders the english title of the content", () => {
       <ContentCard content={contentMovie} />
     </MemoryRouter>
   );
-  const title = screen.getByText(/english title/i);
+  const title = screen.getByText(/english movie title/i);
   expect(title).toBeInTheDocument();
 });
 
@@ -67,7 +25,7 @@ test("ContentCard renders the german title of the content", () => {
       <ContentCard content={contentExhibition} />
     </MemoryRouter>
   );
-  const title = screen.getByText(/german title/i);
+  const title = screen.getByText(/german exhibition title/i);
   expect(title).toBeInTheDocument();
 });
 
@@ -77,7 +35,7 @@ test("ContentCard renders the original title of the content", () => {
       <ContentCard content={contentSeries} />
     </MemoryRouter>
   );
-  const title = screen.getByText(/original title/i);
+  const title = screen.getByText(/original series title/i);
   expect(title).toBeInTheDocument();
 });
 
@@ -119,7 +77,9 @@ test("ContentCard renders a tooltip for the content type 'movie' on icon hover",
   );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-movie");
   await userEvent.hover(svgIcon);
-  const tooltipElement = screen.getByText(/movie/i);
+  const tooltipElement = screen.getByRole("tooltip", {
+    name: /movie/i,
+  });
   expect(tooltipElement).toBeInTheDocument();
 });
 
@@ -131,7 +91,9 @@ test("ContentCard renders a tooltip for the content type 'Series' on icon hover"
   );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-series");
   await userEvent.hover(svgIcon);
-  const tooltipElement = screen.getByText(/series/i);
+  const tooltipElement = screen.getByRole("tooltip", {
+    name: /series/i,
+  });
   expect(tooltipElement).toBeInTheDocument();
 });
 
@@ -143,6 +105,8 @@ test("ContentCard renders a tooltip for the content type 'Exhibition' on icon ho
   );
   const svgIcon = screen.getByTestId("svg-icon-contenttype-exhibition");
   await userEvent.hover(svgIcon);
-  const tooltipElement = screen.getByText(/exhibition/i);
+  const tooltipElement = screen.getByRole("tooltip", {
+    name: /exhibition/i,
+  });
   expect(tooltipElement).toBeInTheDocument();
 });
