@@ -147,7 +147,7 @@ class UserServiceTest {
                 .build();
 
         when(mockGithubService.getUserProfile(1)).thenThrow(GithubProfileNotFoundException.class);
-        when(mockUserRepository.findById("1")).thenReturn(Optional.of(user));
+        when(mockUserRepository.existsById("1")).thenReturn(true);
         GithubUserProfileSyncStatus expected = GithubUserProfileSyncStatus.NOT_FOUND;
 
         //WHEN
@@ -155,6 +155,7 @@ class UserServiceTest {
 
         //THEN
         verify(mockGithubService, times(1)).getUserProfile(1);
+        verify(mockUserRepository, times(1)).existsById("1");
         assertEquals(expected, actual);
     }
 
@@ -184,7 +185,7 @@ class UserServiceTest {
                 .build();
 
         when(mockGithubService.getUserProfile(1)).thenReturn(githubUserProfile);
-        when(mockUserRepository.findById("1")).thenReturn(Optional.of(user));
+        when(mockUserRepository.existsById("1")).thenReturn(true);
         GithubUserProfileSyncStatus expected = GithubUserProfileSyncStatus.NOT_UPDATED;
 
         //WHEN
@@ -192,6 +193,7 @@ class UserServiceTest {
 
         //THEN
         verify(mockGithubService, times(1)).getUserProfile(1);
+        verify(mockUserRepository, times(1)).existsById("1");
         assertEquals(expected, actual);
     }
 
@@ -236,7 +238,7 @@ class UserServiceTest {
         );
 
         when(mockGithubService.getUserProfile(1)).thenReturn(currentGithubUserProfile);
-        when(mockUserRepository.findById("1")).thenReturn(Optional.of(user));
+        when(mockUserRepository.existsById("1")).thenReturn(true);
         GithubUserProfileSyncStatus expected = GithubUserProfileSyncStatus.UPDATED;
 
         //WHEN
@@ -244,6 +246,7 @@ class UserServiceTest {
 
         //THEN
         verify(mockGithubService, times(1)).getUserProfile(1);
+        verify(mockUserRepository, times(1)).existsById("1");
         assertEquals(expected, actual);
     }
 }
