@@ -45,8 +45,8 @@ public class PersonController {
         AppUser appUser = userService.findByGithubId(githubId);
 
         Person personToSave = Person.builder()
-                .firstName(body.firstName())
-                .lastName(body.lastName())
+                .firstName(body.firstName().trim())
+                .lastName(body.lastName().trim())
                 .status(PersonStatus.ACTIVE)
                 .createdBy(appUser)
                 .createdAt(currentTime)

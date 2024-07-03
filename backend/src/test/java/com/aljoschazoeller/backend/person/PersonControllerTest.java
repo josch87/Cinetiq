@@ -299,6 +299,78 @@ class PersonControllerTest {
                             }
                         }
                         """));
+    }
 
+    @Test
+    @WithMockUser
+    @DirtiesContext
+    void createPersonTest_whenFirstAndLastNameEmptyString_thenReturnBadRequest() throws Exception {
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("user")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(post("/api/people")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "firstName": "    ",
+                                    "lastName": ""
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("""
+                        {
+                             "errors": {
+                                 "lastName": "Last name must have at least one non-whitespace character",
+                                 "firstName": "First name must have at least one non-whitespace character"
+                             }
+                         }
+                        """));
+    }
+
+    @Test
+    @WithMockUser
+    @DirtiesContext
+    void createPersonTest_whenLeadingOrTrailingSpaces_thenTrimString() throws Exception {
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("user")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(post("/api/people")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "firstName": "  f  ",
+                                    "lastName": "  l   "
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "status": "ACTIVE",
+                                "statusUpdatedBy": null,
+                                "statusUpdatedAt": null,
+                                "firstName": "f",
+                                "lastName": "l",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """));
     }
 }
