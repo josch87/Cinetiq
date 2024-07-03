@@ -1,8 +1,12 @@
 package com.aljoschazoeller.backend.user;
 
+import com.aljoschazoeller.backend.api.ApiResponse;
 import com.aljoschazoeller.backend.user.domain.AppUser;
 import com.aljoschazoeller.backend.user.domain.AppUserStatus;
 import com.aljoschazoeller.backend.user.domain.GithubUserProfile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -16,14 +20,15 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.IOException;
 import java.time.Instant;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -276,10 +281,10 @@ class UserControllerTest {
                             "login": "github username",
                             "id": 1212,
                             "node_id": "MDQ6VXNlcjMzNTExOTE1",
-                            "avatar_url": "avatarUrl",
+                            "avatar_url": "avatarUrl new",
                             "gravatar_id": "",
-                            "url": "url",
-                            "html_url": "htmlUrl",
+                            "url": "url new",
+                            "html_url": "htmlUrl new",
                             "followers_url": "https://api.github.com/users/josch87/followers",
                             "following_url": "https://api.github.com/users/josch87/following{/other_user}",
                             "gists_url": "https://api.github.com/users/josch87/gists{/gist_id}",
@@ -319,5 +324,50 @@ class UserControllerTest {
                             "notFoundUsers": 0
                         }
                         """));
+
+        MvcResult result = mockMvc.perform(get("/api/users/appUser-id-1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "id": "appUser-id-1",
+                                "githubId": "1212",
+                                "githubUserProfileSynced": {
+                                    "login": "github username",
+                                    "id": 1212,
+                                    "avatar_url": "avatarUrl new",
+                                    "url": "url new",
+                                    "html_url": "htmlUrl new",
+                                    "name": "github name",
+                                    "company": "github company",
+                                    "blog": "github blog",
+                                    "location": "github location",
+                                    "email": "github email",
+                                    "bio": "github bio",
+                                    "created_at": "2020-12-12T12:16:51Z",
+                                    "updated_at": "2024-05-15T12:15:42Z"
+                                },
+                                "githubUserProfileActive": true,
+                                "status": "ACTIVE",
+                                "createdAt": "2024-02-16T22:17:53.812Z"
+                            }
+                        }
+                        """))
+                .andExpect(jsonPath("$.data.githubUserProfileSyncedAt").exists())
+                .andExpect(jsonPath("$.data.githubUserProfileUpdatedAt").exists())
+                .andReturn();
+
+        ObjectMapper objectMapper= new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ApiResponse<AppUser> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+
+        AppUser savedAppUser = apiResponse.getData();
+
+        assertTrue(savedAppUser.githubUserProfileSyncedAt().isAfter(appUser.githubUserProfileSyncedAt()));
+        assertTrue(savedAppUser.githubUserProfileUpdatedAt().isAfter(appUser.githubUserProfileUpdatedAt()));
     }
 }

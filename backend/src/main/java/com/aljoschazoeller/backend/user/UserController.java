@@ -23,6 +23,13 @@ public class UserController {
         return new ApiResponse<>(appUsers);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<AppUser> getAppUserById(@PathVariable String id) {
+        AppUser appUser = userService.getAppUserById(id);
+        return new ApiResponse<>(appUser);
+    }
+
     @PostMapping("/sync-github-profiles")
     @ResponseStatus(HttpStatus.OK)
     public SyncedGithubProfilesDTO syncGithubUserProfiles() {
