@@ -21,9 +21,10 @@ public class GithubService {
                 .get()
                 .uri("/user/{githubId}", githubId)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((_, response) -> {
-                    throw new GithubProfileNotFoundException(response.getStatusCode(), response.getBody().toString());
-                }))
+                .onStatus(status -> status.isSameCodeAs(HttpStatusCode.valueOf(404)),
+                        (request, response) -> {
+                            throw new GithubProfileNotFoundException(response.getStatusCode(), response.getBody().toString());
+                        })
                 .body(GithubUserProfile.class);
     }
 }
