@@ -89,10 +89,9 @@ class UserControllerTest {
                 .andExpect(content().string("No appUser found with ID 'appUser-id-1'"));
     }
 
-
     @Test
-    @DirtiesContext
     @WithMockUser
+    @DirtiesContext
     void getAppUserByIdTest_whenAppUserFound_thenReturnAppUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
                 "github username",
@@ -157,7 +156,6 @@ class UserControllerTest {
                         }
                         """));
     }
-
 
     @Test
     @WithMockUser

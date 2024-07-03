@@ -37,6 +37,10 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("No appUser found with GitHub ID '" + githubId + "'"));
     }
 
+    public boolean checkIfUserExistsById(String id) {
+        return userRepository.existsById(id);
+    }
+
     public AppUser register(OAuth2User oAuth2User, Instant registeredAt) {
         GithubUserProfile githubUserProfile = GithubMapper.mapOAuth2UserToGithubUserProfile(oAuth2User);
 
@@ -80,7 +84,8 @@ public class UserService {
     }
 
     private AppUser setGithubUserProfileInactive(AppUser appUser) {
-        this.getAppUserById(appUser.id());
+        assert this.checkIfUserExistsById(appUser.id());
+
         AppUser appUserToSave = appUser.withGithubUserProfileActive(false);
 
         return userRepository.save(appUserToSave);
@@ -111,7 +116,7 @@ public class UserService {
     }
 
     private GithubUserProfileSyncStatus updateGithubUserProfile(AppUser appUser, Instant currentTime, GithubUserProfile currentGithubUserProfile) {
-        this.getAppUserById(appUser.id());
+        assert this.checkIfUserExistsById(appUser.id());
 
         AppUser updatedAppUser;
         GithubUserProfileSyncStatus returnValue;
