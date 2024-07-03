@@ -27,7 +27,7 @@ import { useEffect, useRef } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaPen } from "react-icons/fa6";
-import { useContentStore } from "../../../store/store.ts";
+import { useContentStore } from "../../../store/contentStore.ts";
 import { processSingleContent } from "../../../services/contentService.ts";
 
 type ContentModalEditTitlesProps = {
