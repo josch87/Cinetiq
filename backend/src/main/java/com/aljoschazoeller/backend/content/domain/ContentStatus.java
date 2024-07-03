@@ -4,5 +4,5 @@ public enum ContentStatus {
     ACTIVE,
     DELETED,
     MERGED,
-    ARCHIVED
+    ARCHIVED,
 }
