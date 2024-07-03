@@ -33,6 +33,103 @@ class PersonControllerTest {
     private UserRepository userRepository;
 
     @Test
+    void getPeopleTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/people"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    @WithMockUser
+    void getPeopleTest_whenNoPersonInDatabase_thenReturnEmptyList() throws Exception {
+        mockMvc.perform(get("/api/people"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": 0
+                            },
+                            "data": []
+                        }
+                        """));
+    }
+
+    @Test
+    @WithMockUser
+    void getPeopleTest_whenOnePersonInDatabase_thenReturnListOfOne() throws Exception {
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("user")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        MvcResult result = mockMvc.perform(post("/api/people")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "firstName": "Chuck",
+                                    "lastName": "Norris"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": null
+                            },
+                            "data": {
+                                "status": "ACTIVE",
+                                "statusUpdatedAt": null,
+                                "statusUpdatedBy": null,
+                                "firstName": "Chuck",
+                                "lastName": "Norris",
+                                "createdBy": {
+                                    "id": "appUser-id-1",
+                                    "githubId": "user",
+                                    "createdAt": "2024-06-20T15:10:05.022Z"
+                                }
+                            }
+                        }
+                        """))
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ApiResponse<Person> apiResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        Person returnedPerson = apiResponse.getData();
+
+        mockMvc.perform(get("/api/people"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "info": {
+                                "count": 1
+                            },
+                            "data":
+                              [
+                                {
+                                    "status": "ACTIVE",
+                                    "statusUpdatedAt": null,
+                                    "statusUpdatedBy": null,
+                                    "firstName": "Chuck",
+                                    "lastName": "Norris",
+                                    "createdBy": {
+                                        "id": "appUser-id-1",
+                                        "githubId": "user",
+                                        "createdAt": "2024-06-20T15:10:05.022Z"
+                                    }
+                                }
+                            ]
+                        }
+                        """))
+                .andExpect(jsonPath("$.data[0].id").value(returnedPerson.id()))
+                .andExpect(jsonPath("$.data[0].createdAt").exists());
+    }
+
+    @Test
     void getPersonByIdTest_whenNotAuthenticated_thenReturnUnauthorized() throws Exception {
         mockMvc.perform(get("/api/people/1"))
                 .andExpect(status().isUnauthorized())
@@ -115,7 +212,7 @@ class PersonControllerTest {
     void getPersonById_whenPersonNotInDatabase_thenReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/people/non-existing-id"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No person found with ID 'non-existing-id'"));
+                .andExpect(content().string("No person found with ID 'non-existing-id'."));
     }
 
     @Test

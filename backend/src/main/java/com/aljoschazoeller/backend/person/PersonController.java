@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/people")
@@ -20,6 +21,13 @@ import java.time.Instant;
 public class PersonController {
     private final PersonService personService;
     private final UserService userService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<List<Person>> getPeople() {
+        List<Person> people = personService.getAllActivePeople();
+        return new ApiResponse<>(people);
+    }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)

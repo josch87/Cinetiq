@@ -35,10 +35,10 @@ class ContentServiceTest {
     @Test
     void getAllContentTest_whenNoActiveContentInDatabase_thenReturnEmptyList() {
         //GIVEN
+        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.emptyList());
 
         //WHEN
         List<Content> actual = contentService.getAllActiveContent();
-        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.emptyList());
 
 
         //THEN
@@ -75,9 +75,14 @@ class ContentServiceTest {
 
     @Test
     void getContentByIdTest_whenContentNotFound_thenThrowContentNotFoundException() {
+        //GIVEN
+        when(mockContentRepository.findById("-1")).thenReturn(Optional.empty());
 
+        //WHEN
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.getContentById("-1"));
-        verify(mockContentRepository).findById("-1");
+
+        //THEN
+        verify(mockContentRepository, times(1)).findById("-1");
         assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
@@ -158,7 +163,7 @@ class ContentServiceTest {
     }
 
     @Test
-    void updateContentByIdTest_whenContentIsDeleted_thenThrowInvalidContentStautsException() {
+    void updateContentByIdTest_whenContentIsDeleted_thenThrowInvalidContentStatusException() {
         //GIVEN
         Instant currentTime = Instant.now();
         Principal mockPrincipal = mock(Principal.class);
