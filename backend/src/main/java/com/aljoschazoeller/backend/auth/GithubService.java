@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 public class GithubService {
     private final RestClient restClient;
 
-    public GithubService(@Value("${https://api.github.com}") String url) {
+    public GithubService(@Value("${github.api.url}") String url) {
         this.restClient = RestClient.create(url);
     }
 
