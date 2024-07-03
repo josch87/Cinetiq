@@ -166,7 +166,7 @@ export default function ContentCreationDrawer() {
                 </FormControl>
 
                 <FormControl isInvalid={!!errors.englishTitle?.message}>
-                  <FormLabel optionalIndicator>English Title</FormLabel>
+                  <FormLabel>English Title</FormLabel>
                   <Input
                     {...register("englishTitle")}
                     type="text"

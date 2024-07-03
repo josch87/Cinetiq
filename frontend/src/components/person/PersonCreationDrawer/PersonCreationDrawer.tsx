@@ -18,7 +18,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
@@ -33,7 +33,7 @@ import { usePersonCreationDrawerStore } from "../../../store/personStore.ts";
 export default function PersonCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
-  const firstDrawerField = useRef<HTMLSelectElement>(null);
+  const firstDrawerField = useRef<HTMLInputElement>(null);
   const personCreationDrawerStore = usePersonCreationDrawerStore();
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
     useDisclosure();
@@ -41,6 +41,7 @@ export default function PersonCreationDrawer() {
     register,
     handleSubmit,
     formState: { errors, isDirty },
+    control,
     reset,
   } = useForm<NewPersonType>({
     mode: "onChange",
@@ -115,25 +116,33 @@ export default function PersonCreationDrawer() {
 
                 <FormControl isInvalid={!!errors.firstName?.message} isRequired>
                   <FormLabel>First name</FormLabel>
-                  <Input
-                    {...register("firstName", {
+                  <Controller
+                    name="firstName"
+                    control={control}
+                    rules={{
                       required: "First name is required.",
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
                           "First name must have at least one non-whitespace character.",
                       },
-                    })}
-                    type="text"
-                    focusBorderColor="teal.600"
+                    }}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        ref={firstDrawerField}
+                        type="text"
+                        focusBorderColor="teal.600"
+                      />
+                    )}
                   />
                   <FormErrorMessage>
                     {errors.firstName?.message}
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.lastName?.message}>
-                  <FormLabel optionalIndicator>Last name</FormLabel>
+                <FormControl isInvalid={!!errors.lastName?.message} isRequired>
+                  <FormLabel>Last name</FormLabel>
                   <Input
                     {...register("lastName", {
                       required: "Last name is required.",
