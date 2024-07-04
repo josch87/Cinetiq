@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/content/*").authenticated()
                         .requestMatchers("/api/users").authenticated()
                         .requestMatchers("/api/users/*").authenticated()
+                        .requestMatchers("/api/people").authenticated()
+                        .requestMatchers("/api/people/*").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))

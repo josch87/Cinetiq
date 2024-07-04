@@ -35,10 +35,10 @@ class ContentServiceTest {
     @Test
     void getAllContentTest_whenNoActiveContentInDatabase_thenReturnEmptyList() {
         //GIVEN
+        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.emptyList());
 
         //WHEN
         List<Content> actual = contentService.getAllActiveContent();
-        when(mockContentRepository.findContentByStatus(ContentStatus.ACTIVE)).thenReturn(Collections.emptyList());
 
 
         //THEN
@@ -75,9 +75,14 @@ class ContentServiceTest {
 
     @Test
     void getContentByIdTest_whenContentNotFound_thenThrowContentNotFoundException() {
+        //GIVEN
+        when(mockContentRepository.findById("-1")).thenReturn(Optional.empty());
 
+        //WHEN
         ContentNotFoundException exception = assertThrows(ContentNotFoundException.class, () -> contentService.getContentById("-1"));
-        verify(mockContentRepository).findById("-1");
+
+        //THEN
+        verify(mockContentRepository, times(1)).findById("-1");
         assertEquals("No content found with ID '-1'.", exception.getMessage());
     }
 
@@ -136,13 +141,13 @@ class ContentServiceTest {
                 currentTime
         );
 
-        when(mockContentRepository.save(newContent)).thenReturn(savedContent);
+        when(mockContentRepository.insert(newContent)).thenReturn(savedContent);
 
         //WHEN
         Content actual = contentService.createContent(newContent);
 
         //THEN
-        verify(mockContentRepository, times(1)).save(newContent);
+        verify(mockContentRepository, times(1)).insert(newContent);
         assertEquals(savedContent, actual);
     }
 
@@ -158,7 +163,7 @@ class ContentServiceTest {
     }
 
     @Test
-    void updateContentByIdTest_whenContentIsDeleted_thenThrowInvalidContentStautsException() {
+    void updateContentByIdTest_whenContentIsDeleted_thenThrowInvalidContentStatusException() {
         //GIVEN
         Instant currentTime = Instant.now();
         Principal mockPrincipal = mock(Principal.class);
@@ -297,8 +302,8 @@ class ContentServiceTest {
         Content deletedContent = new Content(
                 "1",
                 ContentStatus.DELETED,
-                Instant.parse("2024-06-24T22:10:05.108Z"),
                 statusUpdatedByUser,
+                Instant.parse("2024-06-24T22:10:05.108Z"),
                 ContentType.MOVIE,
                 "Original Title",
                 "English Title",

@@ -24,7 +24,7 @@ import { logout } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
 import { GithubUserAuthType } from "../../model/githubModel.ts";
-import { useContentCreationDrawerStore } from "../../store/store.ts";
+import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
 import NavigationSidebarCollapse from "./NavigationSidebarCollapse.tsx";
 
 type NavigationSidebarProps = {
@@ -38,6 +38,9 @@ export default function NavigationSidebar({
   const onOpenContentCreationDrawer = useContentCreationDrawerStore(
     (state) => state.onOpen
   );
+  /*  const onOpenPersonCreationDrawer = usePersonCreationDrawerStore(
+    (state) => state.onOpen
+  );*/
 
   const contentCollapseItems = [
     {
@@ -53,6 +56,21 @@ export default function NavigationSidebar({
       onClick: onOpenContentCreationDrawer,
     },
   ];
+
+  /*  const peopleCollapseItems = [
+    {
+      id: 1,
+      title: "All people",
+      onClick: () => {
+        navigate("/people");
+      },
+    },
+    {
+      id: 2,
+      title: "Create person",
+      onClick: onOpenPersonCreationDrawer,
+    },
+  ];*/
 
   const managementCollapseItems = [
     {
@@ -90,6 +108,14 @@ export default function NavigationSidebar({
               icon={FaFilm}
               menuItems={contentCollapseItems}
             />
+            {
+              //TODO: Add NavigationSidebarCollapse
+              /*<NavigationSidebarCollapse
+              title="People"
+              icon={FaUserGroup}
+              menuItems={peopleCollapseItems}
+            />*/
+            }
             <NavigationSidebarCollapse
               title="Management"
               icon={FaBriefcase}

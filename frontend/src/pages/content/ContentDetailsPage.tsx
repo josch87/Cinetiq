@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 import ContentDetailsBody from "../../components/content/ContentDetailsBody/ContentDetailsBody.tsx";
-import { useContentStore } from "../../store/store.ts";
+import { useContentStore } from "../../store/contentStore.ts";
 import { GithubUserAuthType } from "../../model/githubModel.ts";
 
 type ContentDetailsPageProps = {

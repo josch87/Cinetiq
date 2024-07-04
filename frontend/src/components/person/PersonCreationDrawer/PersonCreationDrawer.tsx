@@ -10,33 +10,31 @@ import {
   DrawerOverlay,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   Heading,
   Icon,
   Input,
-  Select,
   Stack,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useContentCreationDrawerStore } from "../../../store/contentStore.ts";
 import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
 import CancelContentCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
 import { ApiResponseType } from "../../../model/apiModel.ts";
-import { FaRegSquarePlus } from "react-icons/fa6";
+import { FaPerson } from "react-icons/fa6";
+import { NewPersonType, PersonType } from "../../../model/personModel.ts";
+import { usePersonCreationDrawerStore } from "../../../store/personStore.ts";
 
-export default function ContentCreationDrawer() {
+export default function PersonCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
-  const firstDrawerField = useRef<HTMLSelectElement>(null);
-  const contentCreationDrawerStore = useContentCreationDrawerStore();
+  const firstDrawerField = useRef<HTMLInputElement>(null);
+  const personCreationDrawerStore = usePersonCreationDrawerStore();
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
     useDisclosure();
   const {
@@ -45,28 +43,26 @@ export default function ContentCreationDrawer() {
     formState: { errors, isDirty },
     control,
     reset,
-  } = useForm<NewContentType>({
+  } = useForm<NewPersonType>({
     mode: "onChange",
     defaultValues: {
-      contentType: "",
-      englishTitle: "",
-      germanTitle: "",
-      originalTitle: "",
+      firstName: "",
+      lastName: "",
     },
   });
 
-  function handleFormSubmit(data: NewContentType) {
+  function handleFormSubmit(data: NewPersonType) {
     axios
-      .post("/api/content", data)
-      .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
+      .post("/api/people", data)
+      .then((response: AxiosResponse<ApiResponseType<PersonType>>) => {
         toast({
           title: "Success",
-          description: "Created content",
+          description: "Created person",
           status: "success",
           isClosable: true,
         });
-        navigate(`/content/${response.data.data.id}`);
-        contentCreationDrawerStore.onClose();
+        navigate(`/people/${response.data.data.id}`);
+        personCreationDrawerStore.onClose();
         reset();
       })
       .catch((error: AxiosError) => {
@@ -77,14 +73,14 @@ export default function ContentCreationDrawer() {
   function handleConfirmedCancel() {
     cancelAlertDialogDisclosure.onClose();
     reset();
-    contentCreationDrawerStore.onClose();
+    personCreationDrawerStore.onClose();
   }
 
   return (
     <Drawer
-      isOpen={contentCreationDrawerStore.isOpen}
+      isOpen={personCreationDrawerStore.isOpen}
       placement="right"
-      onClose={contentCreationDrawerStore.onClose}
+      onClose={personCreationDrawerStore.onClose}
       size="lg"
       initialFocusRef={firstDrawerField}
     >
@@ -92,9 +88,9 @@ export default function ContentCreationDrawer() {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader color="teal" display="flex" alignItems="center" gap={2}>
-          <Icon as={FaRegSquarePlus} />
+          <Icon as={FaPerson} />
           <Heading fontSize="2xl" color="teal.600">
-            Create new content
+            Create new person
           </Heading>
         </DrawerHeader>
 
@@ -106,31 +102,6 @@ export default function ContentCreationDrawer() {
             onSubmit={handleSubmit(handleFormSubmit)}
           >
             <Stack spacing={5}>
-              <FormControl isInvalid={!!errors.contentType?.message} isRequired>
-                <FormLabel>Content Type</FormLabel>
-                <Controller
-                  name="contentType"
-                  control={control}
-                  rules={{ required: "You need to specify a type." }}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      placeholder="Select a type"
-                      focusBorderColor="teal.600"
-                      ref={firstDrawerField}
-                    >
-                      <option value="MOVIE">Movie</option>
-                      <option value="SERIES">Series</option>
-                      <option value="EXHIBITION">Exhibition</option>
-                    </Select>
-                  )}
-                />
-                <FormHelperText>This can not be changed later.</FormHelperText>
-                <FormErrorMessage>
-                  {errors.contentType?.message}
-                </FormErrorMessage>
-              </FormControl>
-
               <Stack
                 as="fieldset"
                 px={4}
@@ -140,52 +111,62 @@ export default function ContentCreationDrawer() {
                 spacing={4}
               >
                 <FormLabel as="legend" fontSize="lg" color="teal.600">
-                  Titles
+                  Names
                 </FormLabel>
 
-                <FormControl
-                  isInvalid={!!errors.originalTitle?.message}
-                  isRequired
-                >
-                  <FormLabel>Original Title</FormLabel>
-                  <Input
-                    {...register("originalTitle", {
-                      required: "Original title is required.",
+                <FormControl isInvalid={!!errors.firstName?.message} isRequired>
+                  <FormLabel>First name</FormLabel>
+                  <Controller
+                    name="firstName"
+                    control={control}
+                    rules={{
+                      required: "First name is required.",
+                      maxLength: {
+                        value: 50,
+                        message:
+                          "First name can be a maximum of 50 characters long.",
+                      },
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
-                          "Title must have at least one non-whitespace character.",
+                          "First name must have at least one non-whitespace character.",
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        ref={firstDrawerField}
+                        type="text"
+                        focusBorderColor="teal.600"
+                      />
+                    )}
+                  />
+                  <FormErrorMessage>
+                    {errors.firstName?.message}
+                  </FormErrorMessage>
+                </FormControl>
+
+                <FormControl isInvalid={!!errors.lastName?.message} isRequired>
+                  <FormLabel>Last name</FormLabel>
+                  <Input
+                    {...register("lastName", {
+                      required: "Last name is required.",
+                      maxLength: {
+                        value: 50,
+                        message:
+                          "Last name can be a maximum of 50 characters long.",
+                      },
+                      validate: {
+                        notOnlySpaces: (value) =>
+                          value.trim() !== "" ||
+                          "Last name must have at least one non-whitespace character.",
                       },
                     })}
                     type="text"
                     focusBorderColor="teal.600"
                   />
                   <FormErrorMessage>
-                    {errors.originalTitle?.message}
-                  </FormErrorMessage>
-                </FormControl>
-
-                <FormControl isInvalid={!!errors.englishTitle?.message}>
-                  <FormLabel>English Title</FormLabel>
-                  <Input
-                    {...register("englishTitle")}
-                    type="text"
-                    focusBorderColor="teal.600"
-                  />
-                  <FormErrorMessage>
-                    {errors.englishTitle?.message}
-                  </FormErrorMessage>
-                </FormControl>
-
-                <FormControl isInvalid={!!errors.germanTitle?.message}>
-                  <FormLabel>German Title</FormLabel>
-                  <Input
-                    {...register("germanTitle")}
-                    type="text"
-                    focusBorderColor="teal.600"
-                  />
-                  <FormErrorMessage>
-                    {errors.germanTitle?.message}
+                    {errors.lastName?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Stack>
@@ -201,7 +182,7 @@ export default function ContentCreationDrawer() {
               if (isDirty) {
                 cancelAlertDialogDisclosure.onOpen();
               } else {
-                contentCreationDrawerStore.onClose();
+                personCreationDrawerStore.onClose();
                 reset();
               }
             }}

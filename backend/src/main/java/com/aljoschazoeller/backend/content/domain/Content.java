@@ -15,9 +15,9 @@ public record Content(
         String id,
 
         ContentStatus status,
-        Instant statusUpdatedAt,
         @DBRef
         AppUser statusUpdatedBy,
+        Instant statusUpdatedAt,
 
         ContentType contentType,
         String originalTitle,

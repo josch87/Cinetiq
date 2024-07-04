@@ -40,7 +40,10 @@ public class ContentService {
     }
 
     public Content createContent(Content content) {
-        return contentRepository.save(content);
+        if (content.id() != null) {
+            throw new IllegalArgumentException("ID must be NULL in order to create new content.");
+        }
+        return contentRepository.insert(content);
     }
 
 

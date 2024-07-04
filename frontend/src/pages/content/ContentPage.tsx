@@ -7,7 +7,7 @@ import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
 import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
 import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
-import { useContentCreationDrawerStore } from "../../store/store.ts";
+import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
 import { InfoType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
 import { contentSkeletonData } from "../../model/contentTestData.ts";

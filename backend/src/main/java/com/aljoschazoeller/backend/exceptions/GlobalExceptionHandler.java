@@ -49,4 +49,10 @@ public class GlobalExceptionHandler {
     public String handleUserNotFoundException(UserNotFoundException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(PersonNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handlePersonNotFoundException(PersonNotFoundException exception) {
+        return exception.getMessage();
+    }
 }
