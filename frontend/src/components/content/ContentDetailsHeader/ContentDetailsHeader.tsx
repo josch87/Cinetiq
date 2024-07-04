@@ -35,7 +35,7 @@ export default function ContentDetailsHeader({
               </Heading>
             </Stack>
             <Text textStyle="sm" color="fg.muted">
-              {`Created on ${content.createdAt.toDateString()}`}
+              {`Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`}
             </Text>
           </Stack>
           <HStack gap={6}>

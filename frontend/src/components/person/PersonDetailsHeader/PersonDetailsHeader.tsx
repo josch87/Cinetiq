@@ -32,7 +32,7 @@ export default function PersonDetailsHeader({
               </Heading>
             </Stack>
             <Text textStyle="sm" color="fg.muted">
-              {`Created on ${person.createdAt.toDateString()}`}
+              {`Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`}
             </Text>
           </Stack>
         </Stack>
