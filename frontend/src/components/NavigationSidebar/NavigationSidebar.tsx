@@ -108,12 +108,14 @@ export default function NavigationSidebar({
               icon={FaFilm}
               menuItems={contentCollapseItems}
             />
-            //TODO: Add NavigationSidebarCollapse
-            {/*<NavigationSidebarCollapse
+            {
+              //TODO: Add NavigationSidebarCollapse
+              /*<NavigationSidebarCollapse
               title="People"
               icon={FaUserGroup}
               menuItems={peopleCollapseItems}
-            />*/}
+            />*/
+            }
             <NavigationSidebarCollapse
               title="Management"
               icon={FaBriefcase}
