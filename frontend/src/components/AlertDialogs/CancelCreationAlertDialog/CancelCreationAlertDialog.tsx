@@ -20,13 +20,31 @@ export type CancelAlertDialogDisclosureType = {
 type CancelContentCreationAlertDialogProps = {
   cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType;
   handleConfirmedCancel: () => void;
+  entity: "CONTENT" | "PERSON";
 };
 
-export default function CancelContentCreationAlertDialog({
+export default function CancelCreationAlertDialog({
   cancelAlertDialogDisclosure,
   handleConfirmedCancel,
+  entity,
 }: Readonly<CancelContentCreationAlertDialogProps>) {
   const firstField = useRef<HTMLButtonElement>(null);
+
+  let heading;
+  let description;
+
+  switch (entity) {
+    case "CONTENT":
+      heading = "Cancel Content Creation";
+      description =
+        "Are you sure you want to cancel creating new content? All entered data will be lost.";
+      break;
+    case "PERSON":
+      heading = "Cancel Person Creation";
+      description =
+        "Are you sure you want to cancel creating a new person? All entered data will be lost.";
+      break;
+  }
 
   return (
     <AlertDialog
@@ -37,15 +55,12 @@ export default function CancelContentCreationAlertDialog({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Cancel Content Creation
+            {heading}
           </AlertDialogHeader>
 
           <AlertDialogBody>
             <Stack spacing={4}>
-              <Text>
-                Are you sure you want to cancel creating new content? All
-                entered data will be lost.
-              </Text>
+              <Text>{description}</Text>
               <Text as="em" fontSize="xs">
                 Hint: If you wish to continue at a later time consider only
                 closing the drawer instead.

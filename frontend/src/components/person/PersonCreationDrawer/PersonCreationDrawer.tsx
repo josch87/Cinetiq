@@ -22,9 +22,9 @@ import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import CancelContentCreationAlertDialog, {
+import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
-} from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
+} from "../../AlertDialogs/CancelCreationAlertDialog/CancelCreationAlertDialog.tsx";
 import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaPerson } from "react-icons/fa6";
 import { NewPersonType, PersonType } from "../../../model/personModel.ts";
@@ -195,9 +195,10 @@ export default function PersonCreationDrawer() {
         </DrawerFooter>
       </DrawerContent>
 
-      <CancelContentCreationAlertDialog
+      <CancelCreationAlertDialog
         cancelAlertDialogDisclosure={cancelAlertDialogDisclosure}
         handleConfirmedCancel={handleConfirmedCancel}
+        entity="PERSON"
       />
     </Drawer>
   );
