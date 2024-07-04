@@ -19,6 +19,7 @@ import {
   FaBriefcase,
   FaEllipsisVertical,
   FaFilm,
+  FaUserGroup,
 } from "react-icons/fa6";
 import { logout } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +58,7 @@ export default function NavigationSidebar({
     },
   ];
 
-  /*  const peopleCollapseItems = [
+  const peopleCollapseItems = [
     {
       id: 1,
       title: "All people",
@@ -65,12 +66,12 @@ export default function NavigationSidebar({
         navigate("/people");
       },
     },
-    {
+    /* {
       id: 2,
       title: "Create person",
       onClick: onOpenPersonCreationDrawer,
-    },
-  ];*/
+    },*/
+  ];
 
   const managementCollapseItems = [
     {
@@ -108,14 +109,11 @@ export default function NavigationSidebar({
               icon={FaFilm}
               menuItems={contentCollapseItems}
             />
-            {
-              //TODO: Add NavigationSidebarCollapse
-              /*<NavigationSidebarCollapse
+            <NavigationSidebarCollapse
               title="People"
               icon={FaUserGroup}
               menuItems={peopleCollapseItems}
-            />*/
-            }
+            />
             <NavigationSidebarCollapse
               title="Management"
               icon={FaBriefcase}

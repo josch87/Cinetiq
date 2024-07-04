@@ -5,8 +5,8 @@ export type PersonStatusEnum = "ACTIVE" | "DELETED" | "MERGED" | "ARCHIVED";
 export type PersonType = {
   id: string;
   status: PersonStatusEnum;
-  statusUpdatedAt: Date | null;
-  statusUpdatedBy: AppUserType | null;
+  statusUpdatedAt?: Date;
+  statusUpdatedBy?: AppUserType;
   firstName: string;
   lastName: string;
   createdBy: AppUserType;

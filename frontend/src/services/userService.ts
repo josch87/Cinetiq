@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiResponseType } from "../model/apiModel.ts";
 import { processSingleGithubUserSynced } from "./githubService.ts";
 
-function processSingleAppUser(rawAppUser: AppUserType): AppUserType {
+export function processSingleAppUser(rawAppUser: AppUserType): AppUserType {
   const githubUser = processSingleGithubUserSynced(
     rawAppUser.githubUserProfileSynced
   );
@@ -22,7 +22,7 @@ function processAppUserArray(rawAppUsers: AppUserType[]): AppUserType[] {
   });
 }
 
-export const getUsers = (): Promise<ApiResponseType<AppUserType[]> | null> => {
+export function getUsers(): Promise<ApiResponseType<AppUserType[]> | null> {
   return axios
     .get("/api/users")
     .then((response: AxiosResponse<ApiResponseType<AppUserType[]>, any>) => {
@@ -37,4 +37,4 @@ export const getUsers = (): Promise<ApiResponseType<AppUserType[]> | null> => {
       console.error(error.message);
       return null;
     });
-};
+}
