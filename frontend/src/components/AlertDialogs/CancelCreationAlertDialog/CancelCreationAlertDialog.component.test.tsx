@@ -5,7 +5,7 @@ import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "./CancelCreationAlertDialog.tsx";
 
-test("CancelContentCreationAlertDialog renders a heading", () => {
+test("CancelContentCreationAlertDialog renders a heading for 'CONTENT'", () => {
   const mockedHandleConfirmedCancel = jest.fn();
   const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
     isOpen: true,
@@ -25,7 +25,27 @@ test("CancelContentCreationAlertDialog renders a heading", () => {
   expect(heading).toBeInTheDocument();
 });
 
-test("CancelContentCreationAlertDialog renders a description", () => {
+test("CancelContentCreationAlertDialog renders a heading for 'PERSON'", () => {
+  const mockedHandleConfirmedCancel = jest.fn();
+  const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
+    isOpen: true,
+    onOpen: jest.fn(),
+    onClose: jest.fn(),
+  };
+
+  render(
+    <CancelCreationAlertDialog
+      cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
+      handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="PERSON"
+    />
+  );
+
+  const heading = screen.getByText(/cancel person creation/i);
+  expect(heading).toBeInTheDocument();
+});
+
+test("CancelContentCreationAlertDialog renders a description for 'CONTENT'", () => {
   const mockedHandleConfirmedCancel = jest.fn();
   const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
     isOpen: true,
@@ -43,6 +63,28 @@ test("CancelContentCreationAlertDialog renders a description", () => {
 
   const description = screen.getByText(
     "Are you sure you want to cancel creating new content? All entered data will be lost."
+  );
+  expect(description).toBeInTheDocument();
+});
+
+test("CancelContentCreationAlertDialog renders a description for 'PERSON'", () => {
+  const mockedHandleConfirmedCancel = jest.fn();
+  const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
+    isOpen: true,
+    onOpen: jest.fn(),
+    onClose: jest.fn(),
+  };
+
+  render(
+    <CancelCreationAlertDialog
+      cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
+      handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="PERSON"
+    />
+  );
+
+  const description = screen.getByText(
+    "Are you sure you want to cancel creating a new person? All entered data will be lost."
   );
   expect(description).toBeInTheDocument();
 });
