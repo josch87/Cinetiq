@@ -121,6 +121,11 @@ export default function PersonCreationDrawer() {
                     control={control}
                     rules={{
                       required: "First name is required.",
+                      maxLength: {
+                        value: 50,
+                        message:
+                          "First name can be a maximum of 50 characters long.",
+                      },
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||
@@ -146,6 +151,11 @@ export default function PersonCreationDrawer() {
                   <Input
                     {...register("lastName", {
                       required: "Last name is required.",
+                      maxLength: {
+                        value: 50,
+                        message:
+                          "Last name can be a maximum of 50 characters long.",
+                      },
                       validate: {
                         notOnlySpaces: (value) =>
                           value.trim() !== "" ||

@@ -25,6 +25,9 @@ public class PersonService {
     }
 
     public Person createPerson(Person person) {
-        return personRepository.save(person);
+        if (person.id() != null) {
+            throw new IllegalArgumentException("ID must be NULL in order to create a new person.");
+        }
+        return personRepository.insert(person);
     }
 }
