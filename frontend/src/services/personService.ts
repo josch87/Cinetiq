@@ -43,3 +43,21 @@ export function getPeople(): Promise<ApiResponseType<PersonType[]> | null> {
       return null;
     });
 }
+
+export function getPersonById(
+  id: string
+): Promise<ApiResponseType<PersonType> | null> {
+  return axios
+    .get(`/api/people/${id}`)
+    .then((response) => {
+      const person = processSinglePerson(response.data.data);
+      return {
+        info: response.data.info,
+        data: person,
+      };
+    })
+    .catch((error: AxiosError) => {
+      console.error(error.message);
+      return null;
+    });
+}
