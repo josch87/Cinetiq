@@ -141,13 +141,13 @@ class ContentServiceTest {
                 currentTime
         );
 
-        when(mockContentRepository.save(newContent)).thenReturn(savedContent);
+        when(mockContentRepository.insert(newContent)).thenReturn(savedContent);
 
         //WHEN
         Content actual = contentService.createContent(newContent);
 
         //THEN
-        verify(mockContentRepository, times(1)).save(newContent);
+        verify(mockContentRepository, times(1)).insert(newContent);
         assertEquals(savedContent, actual);
     }
 

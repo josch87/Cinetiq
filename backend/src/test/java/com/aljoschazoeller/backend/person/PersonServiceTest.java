@@ -92,6 +92,14 @@ class PersonServiceTest {
     @Test
     void createPersonTest_whenPersonPosted_thenReturnContent() {
         //GIVEN
+        Person personToSave = Person.builder()
+                .status(PersonStatus.ACTIVE)
+                .firstName("John")
+                .lastName("Doe")
+                .createdBy(AppUser.builder().id("appUser-id-1").build())
+                .createdAt(Instant.parse("2024-07-03T20:17:18.151Z"))
+                .build();
+
         Person expected = Person.builder()
                 .id("1")
                 .status(PersonStatus.ACTIVE)
@@ -101,13 +109,13 @@ class PersonServiceTest {
                 .createdAt(Instant.parse("2024-07-03T20:17:18.151Z"))
                 .build();
 
-        when(mockPersonRepository.save(expected)).thenReturn(expected);
+        when(mockPersonRepository.insert(personToSave)).thenReturn(expected);
 
         //WHEN
-        Person actual = personService.createPerson(expected);
+        Person actual = personService.createPerson(personToSave);
 
         //THEN
-        verify(mockPersonRepository, times(1)).save(expected);
+        verify(mockPersonRepository, times(1)).insert(personToSave);
         assertEquals(expected, actual);
     }
 }
