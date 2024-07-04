@@ -4,6 +4,7 @@ import { usePersonStore } from "../../store/personStore.ts";
 import { useEffect } from "react";
 import { getPersonById } from "../../services/personService.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
+import PersonDetailsHeader from "../../components/person/PersonDetailsHeader/PersonDetailsHeader.tsx";
 
 type PersonDetailsPageProps = {
   user: GithubUserAuthType | null | undefined;
@@ -43,7 +44,7 @@ export default function PersonDetailsPage({
         user={user}
         warning={person.status != "ACTIVE"}
       >
-        Test
+        <PersonDetailsHeader person={person} />
       </DefaultPageTemplate>
     );
   }
