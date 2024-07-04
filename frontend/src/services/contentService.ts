@@ -1,11 +1,20 @@
 import axios, { AxiosError } from "axios";
 import { ContentType } from "../model/contentModel.ts";
 import { ApiResponseType, InfoType } from "../model/apiModel.ts";
+import { AppUserType } from "../model/userModel.ts";
+import { processSingleAppUser } from "./userService.ts";
 
 export function processSingleContent(rawContent: ContentType): ContentType {
+  const createdBy: AppUserType = processSingleAppUser(rawContent.createdBy);
+  const statusUpdatedBy = rawContent.statusUpdatedBy
+    ? processSingleAppUser(rawContent.statusUpdatedBy)
+    : null;
+
   return {
     ...rawContent,
     createdAt: new Date(rawContent.createdAt),
+    createdBy: createdBy,
+    statusUpdatedBy: statusUpdatedBy,
     statusUpdatedAt: rawContent.statusUpdatedAt
       ? new Date(rawContent.statusUpdatedAt)
       : null,

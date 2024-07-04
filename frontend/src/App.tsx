@@ -11,6 +11,7 @@ import ContentCreationDrawer from "./components/content/ContentCreationDrawer/Co
 import StaffPage from "./pages/management/StaffPage.tsx";
 import { GithubUserAuthType } from "./model/githubModel.ts";
 import PersonCreationDrawer from "./components/person/PersonCreationDrawer/PersonCreationDrawer.tsx";
+import PeoplePage from "./pages/person/PeoplePage.tsx";
 
 function App() {
   const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
@@ -33,6 +34,7 @@ function App() {
             element={<ContentDetailsPage user={user} />}
           />
           <Route path="/staff" element={<StaffPage user={user} />} />
+          <Route path="/people" element={<PeoplePage user={user} />} />
         </Route>
       </Routes>
       <ContentCreationDrawer />

@@ -29,7 +29,7 @@ export default function StaffTable({
   appUsers,
 }: Readonly<StaffTableProps>) {
   return (
-    <Table {...tableProps}>
+    <Table {...tableProps} bgcolor="white" borderRadius="md">
       <Thead>
         <Tr>
           <Th>
@@ -80,14 +80,12 @@ export default function StaffTable({
                 </HStack>
               </Td>
               <Td>
-                {
-                  <Badge
-                    size="sm"
-                    colorScheme={appUser.status === "ACTIVE" ? "green" : "red"}
-                  >
-                    {appUser.status}
-                  </Badge>
-                }
+                <Badge
+                  size="sm"
+                  colorScheme={appUser.status === "ACTIVE" ? "green" : "red"}
+                >
+                  {appUser.status}
+                </Badge>
               </Td>
               <Td>
                 <Text color="fg.muted">
