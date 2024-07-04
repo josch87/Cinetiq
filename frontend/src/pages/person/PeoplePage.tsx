@@ -8,7 +8,7 @@ import { InfoType } from "../../model/apiModel.ts";
 import { PersonType } from "../../model/personModel.ts";
 import { getPeople } from "../../services/personService.ts";
 import NoData from "../../components/NoData/NoData.tsx";
-import PersonTable from "../../components/person/PersonTable.tsx";
+import PersonTable from "../../components/person/PersonTable/PersonTable.tsx";
 import { peopleSkeletonData } from "../../model/personTestData.ts";
 
 type PeoplePageProps = {

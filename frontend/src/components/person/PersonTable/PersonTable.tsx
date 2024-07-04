@@ -11,7 +11,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { PersonType } from "../../model/personModel.ts";
+import { PersonType } from "../../../model/personModel.ts";
 import { IoArrowDown } from "react-icons/io5";
 
 type PersonTableProps = {
