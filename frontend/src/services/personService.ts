@@ -8,7 +8,7 @@ function processSinglePerson(rawPerson: PersonType): PersonType {
   const createdBy: AppUserType = processSingleAppUser(rawPerson.createdBy);
   const statusUpdatedBy = rawPerson.statusUpdatedBy
     ? processSingleAppUser(rawPerson.statusUpdatedBy)
-    : null;
+    : undefined;
 
   return {
     ...rawPerson,
@@ -17,7 +17,7 @@ function processSinglePerson(rawPerson: PersonType): PersonType {
     statusUpdatedBy: statusUpdatedBy,
     statusUpdatedAt: rawPerson.statusUpdatedAt
       ? new Date(rawPerson.statusUpdatedAt)
-      : null,
+      : undefined,
   };
 }
 
