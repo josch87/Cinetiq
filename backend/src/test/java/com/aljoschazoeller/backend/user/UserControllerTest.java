@@ -235,7 +235,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(value = "1212")
     @DirtiesContext
     void syncGithubUserProfilesTest_whenNoChangesOnGithubSinceLastSync_thenNoUpdatedUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -319,7 +319,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(value="1212")
     @DirtiesContext
     void syncGithubUserProfilesTest_whenChangesOnGithubSinceLastSync_thenOneUpdatedUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -355,7 +355,7 @@ class UserControllerTest {
                 .setBody("""
                         {
                             "login": "github username",
-                            "id": 1212,
+                            "id": "1212",
                             "node_id": "MDQ6VXNlcjMzNTExOTE1",
                             "avatar_url": "avatarUrl new",
                             "gravatar_id": "",
