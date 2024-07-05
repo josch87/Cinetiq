@@ -1,75 +1,60 @@
-import { GithubUserAuthType } from "../../model/githubModel.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
-import { Skeleton, VStack } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { InfoType } from "../../model/apiModel.ts";
+import { ApiResponseType } from "../../model/apiModel.ts";
 import { PersonType } from "../../model/personModel.ts";
 import { getPeople } from "../../services/personService.ts";
 import NoData from "../../components/NoData/NoData.tsx";
 import PersonTable from "../../components/person/PersonTable/PersonTable.tsx";
-import { peopleSkeletonData } from "../../model/personTestData.ts";
+import { usePersonCreationDrawerStore } from "../../store/personStore.ts";
 
-type PeoplePageProps = {
-  user: GithubUserAuthType | null | undefined;
-};
+export default function PeoplePage() {
+  const [peopleResponse, setPeopleResponse] = useState<
+    ApiResponseType<PersonType[]> | undefined | null
+  >(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-export default function PeoplePage({ user }: Readonly<PeoplePageProps>) {
-  const [info, setInfo] = useState<InfoType | undefined | null>(undefined);
-  const [people, setPeople] = useState<PersonType[] | undefined | null>(
-    undefined
+  const onPersonCreationDrawerStore = usePersonCreationDrawerStore(
+    (state) => state.onOpen
   );
 
   useEffect(() => {
     getPeople()
       .then((response) => {
         if (response) {
-          setInfo(response.info);
-          setPeople(response.data);
+          setPeopleResponse(response);
+          setIsLoading(false);
         }
       })
       .catch((error: AxiosError) => {
         console.error(error.message);
-        setInfo(null);
-        setPeople(null);
+        setPeopleResponse(null);
       });
   }, []);
 
-  if (info === null || people === null) {
+  if (peopleResponse === null) {
     return <>Some error occurred</>;
   }
 
-  if (info === undefined || people === undefined) {
-    return (
-      <DefaultPageTemplate
-        pageTitle="People"
-        pageSubtitle="Display all people"
-        user={user}
-      >
-        <ResultHeader info={info} />
-
-        <Skeleton>
-          <PersonTable people={peopleSkeletonData} />
-        </Skeleton>
-      </DefaultPageTemplate>
-    );
-  }
-
   return (
-    <DefaultPageTemplate
-      pageTitle="People"
-      pageSubtitle="Display all people"
-      user={user}
-    >
-      <ResultHeader info={info} />
-
-      {info.count === 0 ? (
+    <DefaultPageTemplate pageTitle="People" pageSubtitle="Display all people">
+      {peopleResponse?.info.count === 0 ? (
         <VStack gap={8}>
           <NoData />
+          <Button colorScheme="teal" onClick={onPersonCreationDrawerStore}>
+            Create a person
+          </Button>
         </VStack>
       ) : (
-        <PersonTable people={people} />
+        <>
+          <ResultHeader info={peopleResponse?.info} isLoading={isLoading} />
+          <PersonTable
+            people={peopleResponse?.data ?? []}
+            isLoading={isLoading}
+          />
+        </>
       )}
     </DefaultPageTemplate>
   );

@@ -19,6 +19,15 @@ export const benjaminFranklin: PersonType = {
   createdAt: new Date("2024-07-04T15:04:27"),
 };
 
+export const willSmith: PersonType = {
+  id: "2",
+  status: "ACTIVE",
+  firstName: "Will",
+  lastName: "Smith",
+  createdBy: appUser,
+  createdAt: new Date("2024-07-06T00:41:58"),
+};
+
 export const peopleArray: PersonType[] = [chuckNorris, benjaminFranklin];
 
 export const peopleSkeletonData: PersonType[] = [
