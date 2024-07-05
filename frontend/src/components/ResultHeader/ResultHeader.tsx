@@ -1,8 +1,9 @@
-import { Card, Skeleton, Text } from "@chakra-ui/react";
+import { Card, Skeleton } from "@chakra-ui/react";
 import { InfoType } from "../../model/apiModel.ts";
 
 type ContentFilterResultHeaderProps = {
   info: InfoType | undefined;
+  isLoading: boolean;
 };
 
 function pluralizeResults(count: number) {
@@ -11,19 +12,13 @@ function pluralizeResults(count: number) {
 
 export default function ResultHeader({
   info,
+  isLoading,
 }: Readonly<ContentFilterResultHeaderProps>) {
-  if (info === undefined || info.count === null) {
-    return (
-      <Card bgColor="gray.100" mb={4} fontSize="sm" p={2}>
-        <Skeleton noOfLines={1} fitContent>
-          <Text>{pluralizeResults(3)}</Text>
-        </Skeleton>
-      </Card>
-    );
-  }
   return (
     <Card bgColor="gray.100" mb={4} fontSize="sm" p={2}>
-      <span>{pluralizeResults(info.count)}</span>
+      <Skeleton noOfLines={1} fitContent isLoaded={!isLoading}>
+        <span>{pluralizeResults(info?.count ?? 0)}</span>
+      </Skeleton>
     </Card>
   );
 }

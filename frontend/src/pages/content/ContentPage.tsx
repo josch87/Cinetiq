@@ -1,27 +1,20 @@
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import { ContentType } from "../../model/contentModel.ts";
-import { Button, Flex, Skeleton, VStack } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getContent } from "../../services/contentService.ts";
 import ResultHeader from "../../components/ResultHeader/ResultHeader.tsx";
 import NoData from "../../components/NoData/NoData.tsx";
 import ContentResultBody from "../../components/content/ContentResult/ContentResultBody.tsx";
-import ContentCard from "../../components/content/ContentCard/ContentCard.tsx";
 import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
-import { InfoType } from "../../model/apiModel.ts";
+import { ApiResponseType } from "../../model/apiModel.ts";
 import { AxiosError } from "axios";
-import { contentSkeletonData } from "../../model/contentTestData.ts";
-import { GithubUserAuthType } from "../../model/githubModel.ts";
 
-type ContentPageProps = {
-  user: GithubUserAuthType | null | undefined;
-};
-
-export default function ContentPage({ user }: Readonly<ContentPageProps>) {
-  const [info, setInfo] = useState<InfoType | undefined | null>(undefined);
-  const [content, setContent] = useState<ContentType[] | undefined | null>(
-    undefined
-  );
+export default function ContentPage() {
+  const [contentResponse, setContentResponse] = useState<
+    ApiResponseType<ContentType[]> | undefined | null
+  >(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const onContentCreationDrawerOpen = useContentCreationDrawerStore(
     (state) => state.onOpen
@@ -31,52 +24,23 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
     getContent()
       .then((response) => {
         if (response) {
-          setInfo(response.info);
-          setContent(response.data);
+          setContentResponse(response);
+          setIsLoading(false);
         }
       })
       .catch((error: AxiosError) => {
         console.error(error.message);
-        setInfo(null);
-        setContent(null);
+        setContentResponse(null);
       });
   }, []);
 
-  if (info === null || content === null) {
+  if (contentResponse === null) {
     return <>Some error occurred</>;
   }
 
-  if (info === undefined || content === undefined) {
-    return (
-      <DefaultPageTemplate
-        pageTitle="Content"
-        pageSubtitle="Display all content"
-        user={user}
-      >
-        <ResultHeader info={info} />
-
-        <Flex flexDirection="column" gap={4}>
-          <Skeleton>
-            <ContentCard content={contentSkeletonData} />
-          </Skeleton>
-          <Skeleton>
-            <ContentCard content={contentSkeletonData} />
-          </Skeleton>
-          <Skeleton>
-            <ContentCard content={contentSkeletonData} />
-          </Skeleton>
-        </Flex>
-      </DefaultPageTemplate>
-    );
-  }
-
   return (
-    <DefaultPageTemplate
-      pageTitle="Content"
-      pageSubtitle="Display all content"
-      user={user}
-    >
-      {info.count === 0 ? (
+    <DefaultPageTemplate pageTitle="Content" pageSubtitle="Display all content">
+      {contentResponse && contentResponse.info.count === 0 ? (
         <VStack gap={8}>
           <NoData />
           <Button colorScheme="teal" onClick={onContentCreationDrawerOpen}>
@@ -85,8 +49,11 @@ export default function ContentPage({ user }: Readonly<ContentPageProps>) {
         </VStack>
       ) : (
         <>
-          <ResultHeader info={info} />
-          <ContentResultBody content={content} />
+          <ResultHeader info={contentResponse?.info} isLoading={isLoading} />
+          <ContentResultBody
+            content={contentResponse?.data ?? []}
+            isLoading={isLoading}
+          />
         </>
       )}
     </DefaultPageTemplate>
