@@ -6,7 +6,7 @@ import ContentDetailsActions from "../ContentDetailsActions/ContentDetailsAction
 import ContentStatus from "../ContentStatus/ContentStatus.tsx";
 
 type ContentDetailsHeaderProps = {
-  content: ContentType;
+  content?: ContentType;
   isLoading: boolean;
 };
 
@@ -32,23 +32,30 @@ export default function ContentDetailsHeader({
           <Stack spacing="1">
             <Stack flexDirection="row" alignItems="center">
               <Skeleton isLoaded={!isLoading}>
-                <ContentTypeIcon contentType={content.contentType} />
+                {content && (
+                  <ContentTypeIcon contentType={content.contentType} />
+                )}
               </Skeleton>
               <Skeleton isLoaded={!isLoading}>
                 <Heading fontSize="xl" fontWeight="bold">
-                  <ContentTitle content={content} />
+                  {content && <ContentTitle content={content} />}
                 </Heading>
               </Skeleton>
             </Stack>
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
-                {`Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`}
+                {content &&
+                  `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`}
               </Text>
             </Skeleton>
           </Stack>
           <HStack gap={6}>
-            <ContentStatus content={content} />
-            <ContentDetailsActions content={content} />
+            {content && (
+              <>
+                <ContentStatus content={content} />
+                <ContentDetailsActions content={content} />
+              </>
+            )}
           </HStack>
         </Stack>
       </Box>

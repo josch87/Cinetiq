@@ -39,16 +39,18 @@ export default function ContentDetailsPage() {
     }
   }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  if (content) {
-    return (
-      <DefaultPageTemplate
-        pageTitle="Content Details"
-        pageSubtitle="Display details of the content"
-        warning={content.status != "ACTIVE"}
-      >
-        <ContentDetailsHeader content={content} isLoading={isLoading} />
-        <ContentDetailsBody content={content} isLoading={isLoading} />
-      </DefaultPageTemplate>
-    );
+  if (content === null) {
+    return <>An error occurred</>;
   }
+
+  return (
+    <DefaultPageTemplate
+      pageTitle="Content Details"
+      pageSubtitle="Display details of the content"
+      warning={content ? content?.status != "ACTIVE" : false}
+    >
+      <ContentDetailsHeader content={content} isLoading={isLoading} />
+      <ContentDetailsBody content={content} isLoading={isLoading} />
+    </DefaultPageTemplate>
+  );
 }
