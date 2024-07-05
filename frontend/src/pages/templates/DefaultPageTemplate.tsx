@@ -8,14 +8,11 @@ import {
   useColorModeValue as mode,
   Text,
 } from "@chakra-ui/react";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner.tsx";
-import { GithubUserAuthType } from "../../model/githubModel.ts";
 
 type DefaultPageTemplateProps = {
   children: ReactNode;
   pageTitle: string;
   pageSubtitle: string;
-  user: GithubUserAuthType | null | undefined;
   warning?: boolean;
 };
 
@@ -23,13 +20,8 @@ export default function DefaultPageTemplate({
   children,
   pageTitle,
   pageSubtitle,
-  user,
   warning,
 }: Readonly<DefaultPageTemplateProps>) {
-  if (!user) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <Flex direction="column" width="100%">
       <Flex as="header" borderBottomWidth="1px">
