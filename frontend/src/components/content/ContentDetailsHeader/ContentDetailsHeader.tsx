@@ -4,6 +4,7 @@ import ContentTypeIcon from "../ContentTypeIcon/ContentTypeIcon.tsx";
 import ContentTitle from "../ContentTitle/ContentTitle.tsx";
 import ContentDetailsActions from "../ContentDetailsActions/ContentDetailsActions.tsx";
 import ContentStatus from "../ContentStatus/ContentStatus.tsx";
+import { contentMovie } from "../../../model/contentTestData.ts";
 
 type ContentDetailsHeaderProps = {
   content?: ContentType;
@@ -32,33 +33,32 @@ export default function ContentDetailsHeader({
           <Stack spacing="1">
             <Stack flexDirection="row" alignItems="center">
               <Skeleton isLoaded={!isLoading}>
-                {content && (
-                  <ContentTypeIcon contentType={content.contentType} />
-                )}
+                <ContentTypeIcon
+                  contentType={
+                    content ? content.contentType : contentMovie.contentType
+                  }
+                />
               </Skeleton>
               <Skeleton isLoaded={!isLoading}>
                 <Heading fontSize="xl" fontWeight="bold">
-                  {content && <ContentTitle content={content} />}
+                  <ContentTitle content={content ? content : contentMovie} />
                 </Heading>
               </Skeleton>
             </Stack>
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
-                {content &&
-                  `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`}
+                {content
+                  ? `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`
+                  : "Created on Fri Jun 28 2024 by Chuck Norris"}
               </Text>
             </Skeleton>
           </Stack>
           <HStack gap={6}>
-            {content && (
-              <>
-                <ContentStatus content={content} />
-                <ContentDetailsActions
-                  content={content}
-                  isLoading={isLoading}
-                />
-              </>
-            )}
+            <ContentStatus content={content ? content : contentMovie} />
+            <ContentDetailsActions
+              content={content ? content : contentMovie}
+              isLoading={isLoading}
+            />
           </HStack>
         </Stack>
       </Box>
