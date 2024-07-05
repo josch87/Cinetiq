@@ -38,15 +38,17 @@ export default function PersonDetailsPage() {
     }
   }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  if (person) {
-    return (
-      <DefaultPageTemplate
-        pageTitle={"Person Details"}
-        pageSubtitle="Display details of the person"
-        warning={person.status != "ACTIVE"}
-      >
-        <PersonDetailsHeader person={person} isLoading={isLoading} />
-      </DefaultPageTemplate>
-    );
+  if (person === null) {
+    return <>An error occurred</>;
   }
+
+  return (
+    <DefaultPageTemplate
+      pageTitle={"Person Details"}
+      pageSubtitle="Display details of the person"
+      warning={person ? person.status != "ACTIVE" : false}
+    >
+      <PersonDetailsHeader person={person} isLoading={isLoading} />
+    </DefaultPageTemplate>
+  );
 }

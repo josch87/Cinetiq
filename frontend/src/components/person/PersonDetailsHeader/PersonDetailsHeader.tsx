@@ -3,7 +3,7 @@ import { PersonType } from "../../../model/personModel.ts";
 import { FaPerson } from "react-icons/fa6";
 
 type PersonDetailsHeaderProps = {
-  person: PersonType;
+  person?: PersonType;
   isLoading: boolean;
 };
 
@@ -31,13 +31,17 @@ export default function PersonDetailsHeader({
               <FaPerson />
               <Skeleton isLoaded={!isLoading}>
                 <Heading fontSize="xl" fontWeight="bold">
-                  {`${person.firstName} ${person.lastName}`}
+                  {person
+                    ? `${person.firstName} ${person.lastName}`
+                    : "Chuck Norris"}
                 </Heading>
               </Skeleton>
             </Stack>
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
-                {`Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`}
+                {person
+                  ? `Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`
+                  : "Created on Thu Jul 04 2024 by Chuck Norris"}
               </Text>
             </Skeleton>
           </Stack>
