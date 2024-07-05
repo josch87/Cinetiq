@@ -14,7 +14,7 @@ public class ScheduledTasks {
         this.githubSyncService = githubSyncService;
     }
 
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void syncGithubUserProfiles() {
         githubSyncService.syncGithubUserProfiles(StartedBySystem.SCHEDULER, null);
     }
