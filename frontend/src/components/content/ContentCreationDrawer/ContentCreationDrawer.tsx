@@ -26,9 +26,9 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContentType, NewContentType } from "../../../model/contentModel.ts";
 import { useRef } from "react";
-import CancelContentCreationAlertDialog, {
+import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
-} from "../../AlertDialogs/CancelContentCreationAlertDialog/CancelContentCreationAlertDialog.tsx";
+} from "../../AlertDialogs/CancelCreationAlertDialog/CancelCreationAlertDialog.tsx";
 import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaRegSquarePlus } from "react-icons/fa6";
 
@@ -214,9 +214,10 @@ export default function ContentCreationDrawer() {
         </DrawerFooter>
       </DrawerContent>
 
-      <CancelContentCreationAlertDialog
+      <CancelCreationAlertDialog
         cancelAlertDialogDisclosure={cancelAlertDialogDisclosure}
         handleConfirmedCancel={handleConfirmedCancel}
+        entity="CONTENT"
       />
     </Drawer>
   );

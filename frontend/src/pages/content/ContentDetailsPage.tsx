@@ -25,7 +25,7 @@ export default function ContentDetailsPage({
       getContentById(id)
         .then((response) => {
           if (response) {
-            setContent(response.content);
+            setContent(response.data);
           } else {
             setContent(null);
           }

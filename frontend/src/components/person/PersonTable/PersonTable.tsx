@@ -2,6 +2,8 @@ import {
   Badge,
   HStack,
   Icon,
+  LinkBox,
+  LinkOverlay,
   Table,
   TableProps,
   Tbody,
@@ -11,6 +13,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import { PersonType } from "../../../model/personModel.ts";
 import { IoArrowDown } from "react-icons/io5";
 
@@ -55,9 +58,15 @@ export default function PersonTable({
             } else return 0;
           })
           .map((person) => (
-            <Tr key={person.id}>
+            <LinkBox as="tr" key={person.id}>
               <Td>
-                <Text fontWeight="medium">{person.lastName}</Text>
+                <LinkOverlay
+                  as={RouterLink}
+                  to={`/people/${person.id}`}
+                  fontWeight="medium"
+                >
+                  {person.lastName}
+                </LinkOverlay>
               </Td>
               <Td>
                 <Text fontWeight="medium">{person.firstName}</Text>
@@ -70,7 +79,7 @@ export default function PersonTable({
                   {person.status}
                 </Badge>
               </Td>
-            </Tr>
+            </LinkBox>
           ))}
       </Tbody>
     </Table>

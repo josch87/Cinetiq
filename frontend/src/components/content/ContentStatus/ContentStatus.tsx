@@ -1,7 +1,6 @@
 import { ContentStatusEnum, ContentType } from "../../../model/contentModel.ts";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { FaBoxArchive, FaCodeMerge, FaTrash } from "react-icons/fa6";
-import { useGithubUserById } from "../../../services/githubService.ts";
 
 type ContentStatusProps = {
   content: ContentType;
@@ -23,17 +22,19 @@ function getIcon(status: ContentStatusEnum) {
 export default function ContentStatus({
   content,
 }: Readonly<ContentStatusProps>) {
-  const { githubUser: statusUpdatedByGithubUser } = useGithubUserById(
-    content.statusUpdatedBy?.githubId
-  );
-
   if (content.status === "ACTIVE") {
     return null;
   }
 
   return (
     <Tooltip
-      label={`by ${statusUpdatedByGithubUser?.name} on ${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`}
+      label={`by 
+      ${
+        content.statusUpdatedBy?.githubUserProfileSynced.name
+          ? content.statusUpdatedBy?.githubUserProfileSynced.name
+          : content.statusUpdatedBy?.githubUserProfileSynced.login
+      } 
+      on ${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`}
     >
       <Flex gap={2} alignItems="center" border="1px solid red" px={2} py={1}>
         {getIcon(content.status)}

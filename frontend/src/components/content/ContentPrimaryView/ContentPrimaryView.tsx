@@ -8,7 +8,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ContentType } from "../../../model/contentModel.ts";
-import { useGithubUserById } from "../../../services/githubService.ts";
 import ContentPrimaryViewSection from "../ContentPrimaryViewSection/ContentPrimaryViewSection.tsx";
 
 type ContentPrimaryViewProps = {
@@ -18,14 +17,6 @@ type ContentPrimaryViewProps = {
 export default function ContentPrimaryView({
   content,
 }: Readonly<ContentPrimaryViewProps>) {
-  const { githubUser: contentAuthor } = useGithubUserById(
-    content.createdBy.githubId
-  );
-
-  const { githubUser: statusUpdatedByGithubUser } = useGithubUserById(
-    content.statusUpdatedBy?.githubId
-  );
-
   const titlesData = [
     { label: "English title", value: content.englishTitle },
     { label: "German title", value: content.germanTitle },
@@ -37,7 +28,10 @@ export default function ContentPrimaryView({
       label: "Created at",
       value: `${content.createdAt.toDateString()}, ${content.createdAt.toLocaleTimeString()}`,
     },
-    { label: "Created by", value: `${contentAuthor?.name} in Cinetiq` },
+    {
+      label: "Created by",
+      value: `${content.createdBy.githubUserProfileSynced?.name ? content.createdBy.githubUserProfileSynced?.name : content.createdBy.githubUserProfileSynced?.login} in Cinetiq`,
+    },
   ];
 
   const statusData = [
@@ -49,7 +43,12 @@ export default function ContentPrimaryView({
       label: "Updated at",
       value: `${content.statusUpdatedAt?.toDateString()}, ${content.statusUpdatedAt?.toLocaleTimeString()}`,
     },
-    { label: "Updated by", value: statusUpdatedByGithubUser?.name },
+    {
+      label: "Updated by",
+      value: content.statusUpdatedBy?.githubUserProfileSynced.name
+        ? content.statusUpdatedBy?.githubUserProfileSynced.name
+        : content.statusUpdatedBy?.githubUserProfileSynced.login,
+    },
   ];
 
   return (

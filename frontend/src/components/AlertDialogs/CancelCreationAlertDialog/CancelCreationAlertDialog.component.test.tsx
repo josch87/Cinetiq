@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import CancelContentCreationAlertDialog, {
+import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
-} from "./CancelContentCreationAlertDialog.tsx";
+} from "./CancelCreationAlertDialog.tsx";
 
-test("CancelContentCreationAlertDialog renders a heading", () => {
+test("CancelContentCreationAlertDialog renders a heading for 'CONTENT'", () => {
   const mockedHandleConfirmedCancel = jest.fn();
   const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
     isOpen: true,
@@ -14,9 +14,10 @@ test("CancelContentCreationAlertDialog renders a heading", () => {
   };
 
   render(
-    <CancelContentCreationAlertDialog
+    <CancelCreationAlertDialog
       cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
       handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="CONTENT"
     />
   );
 
@@ -24,7 +25,7 @@ test("CancelContentCreationAlertDialog renders a heading", () => {
   expect(heading).toBeInTheDocument();
 });
 
-test("CancelContentCreationAlertDialog renders a description", () => {
+test("CancelContentCreationAlertDialog renders a heading for 'PERSON'", () => {
   const mockedHandleConfirmedCancel = jest.fn();
   const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
     isOpen: true,
@@ -33,14 +34,57 @@ test("CancelContentCreationAlertDialog renders a description", () => {
   };
 
   render(
-    <CancelContentCreationAlertDialog
+    <CancelCreationAlertDialog
       cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
       handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="PERSON"
+    />
+  );
+
+  const heading = screen.getByText(/cancel person creation/i);
+  expect(heading).toBeInTheDocument();
+});
+
+test("CancelContentCreationAlertDialog renders a description for 'CONTENT'", () => {
+  const mockedHandleConfirmedCancel = jest.fn();
+  const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
+    isOpen: true,
+    onOpen: jest.fn(),
+    onClose: jest.fn(),
+  };
+
+  render(
+    <CancelCreationAlertDialog
+      cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
+      handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="CONTENT"
     />
   );
 
   const description = screen.getByText(
     "Are you sure you want to cancel creating new content? All entered data will be lost."
+  );
+  expect(description).toBeInTheDocument();
+});
+
+test("CancelContentCreationAlertDialog renders a description for 'PERSON'", () => {
+  const mockedHandleConfirmedCancel = jest.fn();
+  const mockedCancelAlertDialogDisclosure: CancelAlertDialogDisclosureType = {
+    isOpen: true,
+    onOpen: jest.fn(),
+    onClose: jest.fn(),
+  };
+
+  render(
+    <CancelCreationAlertDialog
+      cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
+      handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="PERSON"
+    />
+  );
+
+  const description = screen.getByText(
+    "Are you sure you want to cancel creating a new person? All entered data will be lost."
   );
   expect(description).toBeInTheDocument();
 });
@@ -54,9 +98,10 @@ test("CancelContentCreationAlertDialog renders a 'No' button which closes the Al
   };
 
   render(
-    <CancelContentCreationAlertDialog
+    <CancelCreationAlertDialog
       cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
       handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="CONTENT"
     />
   );
 
@@ -79,9 +124,10 @@ test("CancelContentCreationAlertDialog renders a 'Yes, Cancel' button which conf
   };
 
   render(
-    <CancelContentCreationAlertDialog
+    <CancelCreationAlertDialog
       cancelAlertDialogDisclosure={mockedCancelAlertDialogDisclosure}
       handleConfirmedCancel={mockedHandleConfirmedCancel}
+      entity="CONTENT"
     />
   );
 

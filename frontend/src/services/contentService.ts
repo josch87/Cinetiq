@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { ContentType } from "../model/contentModel.ts";
-import { ApiResponseType, InfoType } from "../model/apiModel.ts";
+import { ApiResponseType } from "../model/apiModel.ts";
 import { AppUserType } from "../model/userModel.ts";
 import { processSingleAppUser } from "./userService.ts";
 
@@ -32,11 +32,10 @@ export function getContent(): Promise<ApiResponseType<ContentType[]> | null> {
     .get("/api/content")
     .then((response) => {
       const content = processContentArray(response.data.data);
-      const returnValue: ApiResponseType<ContentType[]> = {
+      return {
         info: response.data.info,
         data: content,
       };
-      return returnValue;
     })
     .catch((error) => {
       console.error(error.message);
@@ -46,12 +45,16 @@ export function getContent(): Promise<ApiResponseType<ContentType[]> | null> {
 
 export function getContentById(
   id: string
-): Promise<{ info: InfoType; content: ContentType } | null> {
+): Promise<ApiResponseType<ContentType> | null> {
   return axios
     .get(`/api/content/${id}`)
     .then((response) => {
       const content = processSingleContent(response.data.data);
-      return { info: response.data.info, content };
+      const returnValue: ApiResponseType<ContentType> = {
+        info: response.data.info,
+        data: content,
+      };
+      return returnValue;
     })
     .catch((error: AxiosError) => {
       console.error(error.message);
