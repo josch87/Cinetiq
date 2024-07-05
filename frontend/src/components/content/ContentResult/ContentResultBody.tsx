@@ -18,8 +18,8 @@ export default function ContentResultBody({
     <Flex flexDirection="column" gap={4}>
       {isLoading
         ? skeletons.map((_, index) => (
-            <Skeleton isLoaded={!isLoading}>
-              <ContentCard key={index} content={contentMovie} />
+            <Skeleton key={index} isLoaded={!isLoading}>
+              <ContentCard content={contentMovie} />
             </Skeleton>
           ))
         : content.map((content) => {
