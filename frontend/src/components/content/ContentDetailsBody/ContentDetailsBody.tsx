@@ -2,6 +2,7 @@ import { ContentType } from "../../../model/contentModel.ts";
 import { Grid, Skeleton } from "@chakra-ui/react";
 import ContentPrimaryView from "../ContentPrimaryView/ContentPrimaryView.tsx";
 import ContentDetailsTabs from "../ContentDetailsTabs/ContentDetailsTabs.tsx";
+import { contentMovie } from "../../../model/contentTestData.ts";
 
 type ContentDetailsBodyProps = {
   content?: ContentType;
@@ -15,11 +16,13 @@ export default function ContentDetailsBody({
   return (
     <Grid templateColumns="2fr 3fr" gap={4}>
       <Skeleton isLoaded={!isLoading}>
-        {content && <ContentPrimaryView content={content} />}
+        <ContentPrimaryView content={content ? content : contentMovie} />
       </Skeleton>
-      {content && (
-        <ContentDetailsTabs content={content} isLoading={isLoading} />
-      )}
+
+      <ContentDetailsTabs
+        content={content ? content : contentMovie}
+        isLoading={isLoading}
+      />
     </Grid>
   );
 }
