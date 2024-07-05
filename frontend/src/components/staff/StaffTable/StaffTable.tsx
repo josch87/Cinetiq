@@ -68,14 +68,18 @@ export default function StaffTable({
                     <Text fontWeight="medium">
                       {appUser.githubUserProfileSynced.name}
                     </Text>
-                    <Tooltip label="GitHub Profile">
-                      <Link
-                        href={appUser.githubUserProfileSynced.html_url}
-                        isExternal
-                      >
-                        {appUser.githubUserProfileSynced.login}
-                      </Link>
-                    </Tooltip>
+                    {appUser.githubUserProfileActive ? (
+                      <Tooltip label="GitHub Profile">
+                        <Link
+                          href={appUser.githubUserProfileSynced.html_url}
+                          isExternal
+                        >
+                          {appUser.githubUserProfileSynced.login}
+                        </Link>
+                      </Tooltip>
+                    ) : (
+                      appUser.githubUserProfileSynced.login
+                    )}
                   </Box>
                 </HStack>
               </Td>
