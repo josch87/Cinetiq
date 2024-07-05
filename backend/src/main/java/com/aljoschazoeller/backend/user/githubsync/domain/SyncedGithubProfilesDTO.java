@@ -1,4 +1,4 @@
-package com.aljoschazoeller.backend.user.domain;
+package com.aljoschazoeller.backend.user.githubsync.domain;
 
 public record SyncedGithubProfilesDTO(
         int totalUsers,
