@@ -4,7 +4,7 @@ type SkeletonTableRowProps = {
   columnCount?: number;
 };
 
-export default function SkeletonTableRow({
+export default function SkeletonPersonTableRow({
   columnCount,
 }: Readonly<SkeletonTableRowProps>) {
   return (

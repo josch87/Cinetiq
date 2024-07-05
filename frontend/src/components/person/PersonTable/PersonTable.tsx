@@ -12,7 +12,7 @@ import {
 import { PersonType } from "../../../model/personModel.ts";
 import { IoArrowDown } from "react-icons/io5";
 import PersonTableRow from "./PersonTableRow.tsx";
-import SkeletonTableRow from "./SkeletonTableRow.tsx";
+import SkeletonPersonTableRow from "./SkeletonPersonTableRow.tsx";
 
 type PersonTableProps = {
   tableProps?: TableProps;
@@ -59,7 +59,7 @@ export default function PersonTable({
       <Tbody>
         {isLoading
           ? Array.from({ length: 5 }, (_, index) => (
-              <SkeletonTableRow key={index} columnCount={3} />
+              <SkeletonPersonTableRow key={index} columnCount={3} />
             ))
           : sortedPeople.map((person) => <PersonTableRow person={person} />)}
       </Tbody>
