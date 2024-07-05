@@ -1,12 +1,12 @@
 import { Badge, Skeleton, Td, Tr } from "@chakra-ui/react";
 
-type SkeletonTableRowProps = {
+type SkeletonPersonTableRowProps = {
   columnCount?: number;
 };
 
 export default function SkeletonPersonTableRow({
   columnCount,
-}: Readonly<SkeletonTableRowProps>) {
+}: Readonly<SkeletonPersonTableRowProps>) {
   return (
     <Tr>
       <Td colSpan={columnCount}>
