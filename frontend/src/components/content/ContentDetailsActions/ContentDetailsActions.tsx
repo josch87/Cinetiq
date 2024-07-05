@@ -13,33 +13,41 @@ import DeleteAlertDialog from "../../AlertDialogs/DeleteAlertDialog.tsx";
 
 type ContentDetailsActionsProps = {
   content: ContentType;
+  isLoading: boolean;
 };
 
 export default function ContentDetailsActions({
   content,
+  isLoading,
 }: Readonly<ContentDetailsActionsProps>) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Menu>
-        <MenuButton as={Button} rightIcon={<FiChevronDown />}>
+      {isLoading ? (
+        <Button rightIcon={<FiChevronDown />} isDisabled>
           Actions
-        </MenuButton>
-        <MenuList>
-          <MenuItem icon={<FaShareNodes />} isDisabled>
-            Share
-          </MenuItem>
-          <MenuItem icon={<FaFileExport />} isDisabled>
-            Export
-          </MenuItem>
-          {content.status === "ACTIVE" && (
-            <MenuItem icon={<FaTrash />} onClick={onOpen} color="red">
-              Delete
+        </Button>
+      ) : (
+        <Menu>
+          <MenuButton as={Button} rightIcon={<FiChevronDown />}>
+            Actions
+          </MenuButton>
+          <MenuList>
+            <MenuItem icon={<FaShareNodes />} isDisabled>
+              Share
             </MenuItem>
-          )}
-        </MenuList>
-      </Menu>
+            <MenuItem icon={<FaFileExport />} isDisabled>
+              Export
+            </MenuItem>
+            {content.status === "ACTIVE" && (
+              <MenuItem icon={<FaTrash />} onClick={onOpen} color="red">
+                Delete
+              </MenuItem>
+            )}
+          </MenuList>
+        </Menu>
+      )}
       <DeleteAlertDialog content={content} isOpen={isOpen} onClose={onClose} />
     </>
   );

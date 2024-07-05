@@ -53,7 +53,10 @@ export default function ContentDetailsHeader({
             {content && (
               <>
                 <ContentStatus content={content} />
-                <ContentDetailsActions content={content} />
+                <ContentDetailsActions
+                  content={content}
+                  isLoading={isLoading}
+                />
               </>
             )}
           </HStack>
