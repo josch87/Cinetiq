@@ -4,6 +4,7 @@ import com.aljoschazoeller.backend.exceptions.UserNotFoundException;
 import com.aljoschazoeller.backend.loginlog.LoginLogService;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import com.aljoschazoeller.backend.user.githubsync.GithubSyncService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -56,7 +57,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request, GithubSyncService githubSyncService) {
         Instant currentTime = Instant.now();
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
@@ -65,7 +66,7 @@ public class SecurityConfig {
 
             AppUser appUser;
             try {
-                appUser = userService.syncGithubUserProfile(oAuth2User);
+                appUser = githubSyncService.syncGithubUserProfile(oAuth2User);
                 loginLogService.logLogin(appUser, getIpAddress(request), getUserAgent(request), currentTime);
             } catch (UserNotFoundException exception) {
                 appUser = userService.register(oAuth2User, currentTime);
