@@ -1,13 +1,15 @@
-import { Box, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Skeleton, Stack, Text } from "@chakra-ui/react";
 import { PersonType } from "../../../model/personModel.ts";
 import { FaPerson } from "react-icons/fa6";
 
 type PersonDetailsHeaderProps = {
   person: PersonType;
+  isLoading: boolean;
 };
 
 export default function PersonDetailsHeader({
   person,
+  isLoading,
 }: Readonly<PersonDetailsHeaderProps>) {
   return (
     <Box as="section" pb={{ base: "12", md: "4" }}>
@@ -27,13 +29,17 @@ export default function PersonDetailsHeader({
           <Stack spacing="1">
             <Stack flexDirection="row" alignItems="center">
               <FaPerson />
-              <Heading fontSize="xl" fontWeight="bold">
-                {`${person.firstName} ${person.lastName}`}
-              </Heading>
+              <Skeleton isLoaded={!isLoading}>
+                <Heading fontSize="xl" fontWeight="bold">
+                  {`${person.firstName} ${person.lastName}`}
+                </Heading>
+              </Skeleton>
             </Stack>
-            <Text textStyle="sm" color="fg.muted">
-              {`Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`}
-            </Text>
+            <Skeleton isLoaded={!isLoading}>
+              <Text textStyle="sm" color="fg.muted">
+                {`Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`}
+              </Text>
+            </Skeleton>
           </Stack>
         </Stack>
       </Box>
