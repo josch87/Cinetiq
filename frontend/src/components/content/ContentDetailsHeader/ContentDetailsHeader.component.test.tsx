@@ -21,7 +21,7 @@ const content: ContentType = {
 test("ContentDetailsHeader renders the english title", () => {
   render(
     <MemoryRouter>
-      <ContentDetailsHeader content={content} />
+      <ContentDetailsHeader content={content} isLoading={false} />
     </MemoryRouter>
   );
   const title = screen.getByRole("heading", {

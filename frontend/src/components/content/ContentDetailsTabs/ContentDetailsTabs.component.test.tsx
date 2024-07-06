@@ -18,7 +18,7 @@ const contentMovie: ContentType = {
 };
 
 test("ContentDetailsTabs renders tab 'Basics'", () => {
-  render(<ContentDetailsTabs content={contentMovie} />);
+  render(<ContentDetailsTabs content={contentMovie} isLoading={false} />);
   const basicsTab = screen.getByRole("tab", {
     name: /basics/i,
   });
@@ -26,7 +26,7 @@ test("ContentDetailsTabs renders tab 'Basics'", () => {
 });
 
 test("ContentDetailsTabs renders tab 'Basics'", () => {
-  render(<ContentDetailsTabs content={contentMovie} />);
+  render(<ContentDetailsTabs content={contentMovie} isLoading={false} />);
   const basicsTab = screen.getByRole("tabpanel");
   expect(basicsTab).toBeInTheDocument();
 });
