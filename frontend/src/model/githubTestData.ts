@@ -12,6 +12,8 @@ export const githubUser: GithubUserSyncedType = {
   url: "url 1",
   html_url: "htmlUrl 1",
   name: "githubName one",
+  email: "mail@github.com",
+  bio: "I’m a waiter by day, an aspiring actor by night.",
   created_at: new Date("2023-12-07T14:10:02.523Z"),
   updated_at: new Date("2024-05-17T12:58:18.253Z"),
 };

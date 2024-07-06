@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ContentDetailsTabs from "./ContentDetailsTabs.tsx";
 import { ContentType } from "../../../model/contentModel.ts";
-import { appUser } from "../../../model/userTestData.ts";
+import { appUser1 } from "../../../model/userTestData.ts";
 
 const contentMovie: ContentType = {
   id: "1",
@@ -14,7 +14,7 @@ const contentMovie: ContentType = {
   englishTitle: "English title",
   germanTitle: "German title",
   createdAt: new Date("2024-06-20T18:20:05.208Z"),
-  createdBy: appUser,
+  createdBy: appUser1,
 };
 
 test("ContentDetailsTabs renders tab 'Basics'", () => {

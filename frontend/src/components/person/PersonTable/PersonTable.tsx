@@ -61,7 +61,9 @@ export default function PersonTable({
           ? Array.from({ length: 5 }, (_, index) => (
               <SkeletonPersonTableRow key={index} columnCount={3} />
             ))
-          : sortedPeople.map((person) => <PersonTableRow person={person} />)}
+          : sortedPeople.map((person) => (
+              <PersonTableRow key={person.id} person={person} />
+            ))}
       </Tbody>
     </Table>
   );

@@ -10,7 +10,7 @@ export default function PersonTableRow({
   person,
 }: Readonly<PersonTableRowProps>) {
   return (
-    <LinkBox as="tr" key={person.id}>
+    <LinkBox as="tr">
       <Td>
         <LinkOverlay
           as={RouterLink}
