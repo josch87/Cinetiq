@@ -10,15 +10,19 @@ import {
 } from "@chakra-ui/react";
 import { FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
+import { useLocation } from "react-router-dom";
+
+type MenuItem = {
+  id: number;
+  title: string;
+  onClick: () => void;
+  path?: string;
+};
 
 type CollapseProps = {
   title: string;
   icon: IconType;
-  menuItems: {
-    id: number;
-    title: string;
-    onClick: () => void;
-  }[];
+  menuItems: MenuItem[];
 };
 
 export default function NavigationSidebarCollapse({
@@ -27,6 +31,7 @@ export default function NavigationSidebarCollapse({
   menuItems,
 }: Readonly<CollapseProps>) {
   const { isOpen, onToggle } = useDisclosure();
+  const location = useLocation();
 
   return (
     <Box>
@@ -47,6 +52,7 @@ export default function NavigationSidebarCollapse({
           {menuItems.map((item) => (
             <Button
               key={item.id}
+              color={location.pathname === item.path ? "teal.500" : "inherit"}
               variant="tertiary"
               justifyContent="start"
               onClick={item.onClick}

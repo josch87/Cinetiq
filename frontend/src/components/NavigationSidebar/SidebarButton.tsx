@@ -1,10 +1,20 @@
 import { Button, ButtonProps } from "@chakra-ui/react";
 
-export const SidebarButton = (props: ButtonProps) => (
-  <Button
-    variant="tertiary"
-    justifyContent="start"
-    iconSpacing="3"
-    {...props}
-  />
-);
+type SidebarButtonProps = ButtonProps & {
+  isCurrentPage?: boolean;
+};
+
+export default function SidebarButton({
+  isCurrentPage = false,
+  ...props
+}: Readonly<SidebarButtonProps>) {
+  return (
+    <Button
+      color={isCurrentPage ? "teal.500" : "inherit"}
+      variant="tertiary"
+      justifyContent="start"
+      iconSpacing="3"
+      {...props}
+    />
+  );
+}
