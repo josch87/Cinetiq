@@ -48,7 +48,7 @@ export default function ContentDetailsHeader({
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
                 {content
-                  ? `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name || content.createdBy.githubUserProfileSynced.login}`
+                  ? `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ?? content.createdBy.githubUserProfileSynced.login}`
                   : "Created on Fri Jun 28 2024 by Chuck Norris"}
               </Text>
             </Skeleton>
