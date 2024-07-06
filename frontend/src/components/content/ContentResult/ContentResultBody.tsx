@@ -12,12 +12,10 @@ export default function ContentResultBody({
   content,
   isLoading,
 }: Readonly<ContentResultBodyProps>) {
-  const skeletons = [0, 1, 2];
-
   return (
     <Flex flexDirection="column" gap={4}>
       {isLoading
-        ? skeletons.map((_, index) => (
+        ? Array.from({ length: 3 }, (_, index) => (
             <Skeleton key={index} isLoaded={!isLoading}>
               <ContentCard content={contentMovie} />
             </Skeleton>
