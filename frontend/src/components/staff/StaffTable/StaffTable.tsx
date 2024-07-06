@@ -1,33 +1,35 @@
 import {
-  Avatar,
-  Badge,
-  Box,
   Checkbox,
   HStack,
   Icon,
-  Link,
   Table,
   TableProps,
   Tbody,
-  Td,
   Text,
   Th,
   Thead,
-  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { IoArrowDown } from "react-icons/io5";
 import { AppUserType } from "../../../model/userModel.ts";
+import StaffTableRow from "./StaffTableRow.tsx";
+import { appUser1 } from "../../../model/userTestData.ts";
 
 type StaffTableProps = {
   tableProps?: TableProps;
   appUsers: AppUserType[];
+  isLoading: boolean;
 };
 
 export default function StaffTable({
   tableProps,
   appUsers,
+  isLoading,
 }: Readonly<StaffTableProps>) {
+  const sortedAppUsers = appUsers
+    .slice()
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
   return (
     <Table {...tableProps} bgcolor="white" borderRadius="md">
       <Thead>
@@ -51,72 +53,21 @@ export default function StaffTable({
         </Tr>
       </Thead>
       <Tbody>
-        {appUsers
-          .slice()
-          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-          .map((appUser) => (
-            <Tr key={appUser.id}>
-              <Td>
-                <HStack spacing="3">
-                  <Checkbox />
-                  <Avatar
-                    name={appUser.githubUserProfileSynced.name}
-                    src={appUser.githubUserProfileSynced.avatar_url}
-                    boxSize="10"
-                  />
-                  <Box>
-                    <Text fontWeight="medium">
-                      {appUser.githubUserProfileSynced.name}
-                    </Text>
-                    <Tooltip label="GitHub Profile">
-                      <Link
-                        href={appUser.githubUserProfileSynced.html_url}
-                        isExternal
-                      >
-                        {appUser.githubUserProfileSynced.login}
-                      </Link>
-                    </Tooltip>
-                  </Box>
-                </HStack>
-              </Td>
-              <Td>
-                <Badge
-                  size="sm"
-                  colorScheme={appUser.status === "ACTIVE" ? "green" : "red"}
-                >
-                  {appUser.status}
-                </Badge>
-              </Td>
-              <Td>
-                <Text color="fg.muted">
-                  {appUser.githubUserProfileSynced.email}
-                </Text>
-              </Td>
-              <Td>
-                <Text color="fg.muted">
-                  {appUser.githubUserProfileSynced.bio}
-                </Text>
-              </Td>
-              <Td>
-                <Tooltip
-                  label={`${appUser.createdAt.toDateString()}, ${appUser.createdAt.toLocaleTimeString()}`}
-                >
-                  <Text color="fg.muted">
-                    {appUser.createdAt.toLocaleDateString()}
-                  </Text>
-                </Tooltip>
-              </Td>
-              <Td>
-                <Tooltip
-                  label={`${appUser.githubUserProfileSyncedAt.toDateString()}, ${appUser.githubUserProfileSyncedAt.toLocaleTimeString()}`}
-                >
-                  <Text color="fg.muted">
-                    {appUser.githubUserProfileSyncedAt.toLocaleDateString()}
-                  </Text>
-                </Tooltip>
-              </Td>
-            </Tr>
-          ))}
+        {isLoading
+          ? Array.from({ length: 5 }, (_, index) => (
+              <StaffTableRow
+                key={index}
+                appUser={appUser1}
+                isLoading={isLoading}
+              />
+            ))
+          : sortedAppUsers.map((appUser) => (
+              <StaffTableRow
+                key={appUser.id}
+                appUser={appUser}
+                isLoading={isLoading}
+              />
+            ))}
       </Tbody>
     </Table>
   );

@@ -25,7 +25,7 @@ import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContentType, NewContentType } from "../../../model/contentModel.ts";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelCreationAlertDialog/CancelCreationAlertDialog.tsx";
@@ -35,6 +35,7 @@ import { FaRegSquarePlus } from "react-icons/fa6";
 export default function ContentCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const firstDrawerField = useRef<HTMLSelectElement>(null);
   const contentCreationDrawerStore = useContentCreationDrawerStore();
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
@@ -56,6 +57,7 @@ export default function ContentCreationDrawer() {
   });
 
   function handleFormSubmit(data: NewContentType) {
+    setIsSaving(true);
     axios
       .post("/api/content", data)
       .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
@@ -71,6 +73,9 @@ export default function ContentCreationDrawer() {
       })
       .catch((error: AxiosError) => {
         console.error(error.message);
+      })
+      .finally(() => {
+        setIsSaving(false);
       });
   }
 
@@ -195,6 +200,7 @@ export default function ContentCreationDrawer() {
 
         <DrawerFooter>
           <Button
+            isDisabled={isSaving}
             variant="outline"
             mr={3}
             onClick={() => {
@@ -208,7 +214,13 @@ export default function ContentCreationDrawer() {
           >
             Cancel
           </Button>
-          <Button colorScheme="teal" type="submit" form="create-content-form">
+          <Button
+            isLoading={isSaving}
+            loadingText="Creating"
+            colorScheme="teal"
+            type="submit"
+            form="create-content-form"
+          >
             Create
           </Button>
         </DrawerFooter>

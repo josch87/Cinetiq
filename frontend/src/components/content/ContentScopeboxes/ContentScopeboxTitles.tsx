@@ -15,6 +15,7 @@ import ContentModalEditTitles from "../ContentModalEditTitles/ContentModalEditTi
 
 type ContentScopeboxTitlesProp = {
   content: ContentType;
+  isLoading: boolean;
 };
 
 const StyledTh = styled(Th)`
@@ -27,6 +28,7 @@ const StyledTd = styled(Td)`
 
 export default function ContentScopeboxTitles({
   content,
+  isLoading,
 }: Readonly<ContentScopeboxTitlesProp>) {
   const contentModalEditTitlesDisclosure = useDisclosure();
 
@@ -39,6 +41,7 @@ export default function ContentScopeboxTitles({
       <Scopebox
         heading="Titles"
         onEdit={content.status === "ACTIVE" ? handleEdit : undefined}
+        isLoading={isLoading}
       >
         <TableContainer>
           <Table size="sm">

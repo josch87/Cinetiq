@@ -12,7 +12,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { SidebarButton } from "./SidebarButton.tsx";
+import SidebarButton from "./SidebarButton.tsx";
 import {
   FaArrowRightFromBracket,
   FaBorderAll,
@@ -22,7 +22,7 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { logout } from "../../services/authService.ts";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
 import { GithubUserAuthType } from "../../model/githubModel.ts";
 import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
@@ -37,6 +37,7 @@ export default function NavigationSidebar({
   user,
 }: Readonly<NavigationSidebarProps>) {
   const navigate = useNavigate();
+  const location = useLocation();
   const onOpenContentCreationDrawer = useContentCreationDrawerStore(
     (state) => state.onOpen
   );
@@ -51,6 +52,7 @@ export default function NavigationSidebar({
       onClick: () => {
         navigate("/content");
       },
+      path: "/content",
     },
     {
       id: 2,
@@ -66,6 +68,7 @@ export default function NavigationSidebar({
       onClick: () => {
         navigate("/people");
       },
+      path: "/people",
     },
     {
       id: 2,
@@ -81,6 +84,7 @@ export default function NavigationSidebar({
       onClick: () => {
         navigate("/staff");
       },
+      path: "/staff",
     },
   ];
 
@@ -101,6 +105,7 @@ export default function NavigationSidebar({
           <Stack spacing="1">
             <SidebarButton
               leftIcon={<FaBorderAll />}
+              isCurrentPage={location.pathname === "/dashboard"}
               onClick={() => navigate("/dashboard")}
             >
               Dashboard

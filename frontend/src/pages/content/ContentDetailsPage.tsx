@@ -1,24 +1,26 @@
 import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/contentService.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 import ContentDetailsBody from "../../components/content/ContentDetailsBody/ContentDetailsBody.tsx";
 import { useContentStore } from "../../store/contentStore.ts";
-import { GithubUserAuthType } from "../../model/githubModel.ts";
 
-type ContentDetailsPageProps = {
-  user: GithubUserAuthType | null | undefined;
-};
-
-export default function ContentDetailsPage({
-  user,
-}: Readonly<ContentDetailsPageProps>) {
+export default function ContentDetailsPage() {
   const params = useParams();
   const id: string | undefined = params.id;
 
   const content = useContentStore((state) => state.content);
   const setContent = useContentStore((state) => state.setContent);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (content?.id !== id) {
+      setIsLoading(true);
+    } else if (content?.id === id) {
+      setIsLoading(false);
+    }
+  }, [content, id]);
 
   useEffect(() => {
     if (id) {
@@ -37,17 +39,18 @@ export default function ContentDetailsPage({
     }
   }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  if (content) {
-    return (
-      <DefaultPageTemplate
-        pageTitle={"Content Details"}
-        pageSubtitle="Display details of the content"
-        user={user}
-        warning={content.status != "ACTIVE"}
-      >
-        <ContentDetailsHeader content={content} />
-        <ContentDetailsBody content={content} />
-      </DefaultPageTemplate>
-    );
+  if (content === null) {
+    return <>An error occurred</>;
   }
+
+  return (
+    <DefaultPageTemplate
+      pageTitle="Content Details"
+      pageSubtitle="Display details of the content"
+      warning={content ? content?.status != "ACTIVE" : false}
+    >
+      <ContentDetailsHeader content={content} isLoading={isLoading} />
+      <ContentDetailsBody content={content} isLoading={isLoading} />
+    </DefaultPageTemplate>
+  );
 }

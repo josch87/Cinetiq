@@ -13,6 +13,7 @@ import { GithubUserAuthType } from "./model/githubModel.ts";
 import PersonCreationDrawer from "./components/person/PersonCreationDrawer/PersonCreationDrawer.tsx";
 import PeoplePage from "./pages/person/PeoplePage.tsx";
 import PersonDetailsPage from "./pages/person/PersonDetailsPage.tsx";
+import SidebarPageTemplate from "./pages/templates/SidebarPageTemplate.tsx";
 
 function App() {
   const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
@@ -28,18 +29,14 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route element={<ProtectedRoutes user={user} />}>
-          <Route path="/dashboard" element={<DashboardPage user={user} />} />
-          <Route path="/content" element={<ContentPage user={user} />} />
-          <Route
-            path="/content/:id"
-            element={<ContentDetailsPage user={user} />}
-          />
-          <Route path="/staff" element={<StaffPage user={user} />} />
-          <Route path="/people" element={<PeoplePage user={user} />} />
-          <Route
-            path="/people/:id"
-            element={<PersonDetailsPage user={user} />}
-          />
+          <Route element={<SidebarPageTemplate user={user} />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="/content/:id" element={<ContentDetailsPage />} />
+            <Route path="/staff" element={<StaffPage />} />
+            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/people/:id" element={<PersonDetailsPage />} />
+          </Route>
         </Route>
       </Routes>
       <ContentCreationDrawer />

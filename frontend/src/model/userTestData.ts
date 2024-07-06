@@ -1,7 +1,7 @@
 import { AppUserType } from "./userModel.ts";
 import { githubUser, githubUser2 } from "./githubTestData.ts";
 
-export const appUser: AppUserType = {
+export const appUser1: AppUserType = {
   id: "appUser-id-1",
   githubId: "github-id-1",
   githubUserProfileSynced: githubUser,
@@ -23,7 +23,7 @@ export const appUser2: AppUserType = {
   createdAt: new Date("2024-05-10T15:10:05.217Z"),
 };
 
-export const appUserArray: AppUserType[] = [appUser, appUser2];
+export const appUserArray: AppUserType[] = [appUser1, appUser2];
 
 export const appUsersSkeletonData: AppUserType[] = [
   {

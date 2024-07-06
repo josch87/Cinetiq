@@ -4,10 +4,12 @@ import ContentScopeboxTitles from "../ContentScopeboxes/ContentScopeboxTitles.ts
 
 type ContentDetailsProps = {
   content: ContentType;
+  isLoading: boolean;
 };
 
 export default function ContentDetailsTabs({
   content,
+  isLoading,
 }: Readonly<ContentDetailsProps>) {
   return (
     <Box>
@@ -17,7 +19,7 @@ export default function ContentDetailsTabs({
         </TabList>
         <TabPanels>
           <TabPanel px={0} pb={0} display="flex" flexDirection="column" gap={4}>
-            <ContentScopeboxTitles content={content} />
+            <ContentScopeboxTitles content={content} isLoading={isLoading} />
           </TabPanel>
         </TabPanels>
       </Tabs>
