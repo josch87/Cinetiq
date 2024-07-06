@@ -58,6 +58,11 @@
             <groupId>io.mongock</groupId>
             <artifactId>mongodb-springdata-v4-driver</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.logtail</groupId>
+            <artifactId>logback-logtail</artifactId>
+            <version>0.3.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
