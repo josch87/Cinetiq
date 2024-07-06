@@ -16,11 +16,11 @@ export default function ContentDetailsBody({
   return (
     <Grid templateColumns="2fr 3fr" gap={4}>
       <Skeleton isLoaded={!isLoading}>
-        <ContentPrimaryView content={content ? content : contentMovie} />
+        <ContentPrimaryView content={content || contentMovie} />
       </Skeleton>
 
       <ContentDetailsTabs
-        content={content ? content : contentMovie}
+        content={content || contentMovie}
         isLoading={isLoading}
       />
     </Grid>

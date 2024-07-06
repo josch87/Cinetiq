@@ -40,7 +40,7 @@ export default function PersonDetailsHeader({
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
                 {person
-                  ? `Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name ? person.createdBy.githubUserProfileSynced.name : person.createdBy.githubUserProfileSynced.login}`
+                  ? `Created on ${person.createdAt.toDateString()} by ${person.createdBy.githubUserProfileSynced.name || person.createdBy.githubUserProfileSynced.login}`
                   : "Created on Thu Jul 04 2024 by Chuck Norris"}
               </Text>
             </Skeleton>

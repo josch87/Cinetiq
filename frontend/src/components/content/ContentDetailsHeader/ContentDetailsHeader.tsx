@@ -41,22 +41,22 @@ export default function ContentDetailsHeader({
               </Skeleton>
               <Skeleton isLoaded={!isLoading}>
                 <Heading fontSize="xl" fontWeight="bold">
-                  <ContentTitle content={content ? content : contentMovie} />
+                  <ContentTitle content={content || contentMovie} />
                 </Heading>
               </Skeleton>
             </Stack>
             <Skeleton isLoaded={!isLoading}>
               <Text textStyle="sm" color="fg.muted">
                 {content
-                  ? `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name ? content.createdBy.githubUserProfileSynced.name : content.createdBy.githubUserProfileSynced.login}`
+                  ? `Created on ${content.createdAt.toDateString()} by ${content.createdBy.githubUserProfileSynced.name || content.createdBy.githubUserProfileSynced.login}`
                   : "Created on Fri Jun 28 2024 by Chuck Norris"}
               </Text>
             </Skeleton>
           </Stack>
           <HStack gap={6}>
-            <ContentStatus content={content ? content : contentMovie} />
+            <ContentStatus content={content || contentMovie} />
             <ContentDetailsActions
-              content={content ? content : contentMovie}
+              content={content || contentMovie}
               isLoading={isLoading}
             />
           </HStack>

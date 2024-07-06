@@ -2,11 +2,17 @@ import {
   Button,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaFileExport, FaShareNodes, FaTrash } from "react-icons/fa6";
+import {
+  FaCodeMerge,
+  FaFileExport,
+  FaShareNodes,
+  FaTrash,
+} from "react-icons/fa6";
 import { FiChevronDown } from "react-icons/fi";
 import { ContentType } from "../../../model/contentModel.ts";
 import DeleteAlertDialog from "../../AlertDialogs/DeleteAlertDialog.tsx";
@@ -39,6 +45,10 @@ export default function ContentDetailsActions({
             </MenuItem>
             <MenuItem icon={<FaFileExport />} isDisabled>
               Export
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem icon={<FaCodeMerge />} isDisabled>
+              Merge
             </MenuItem>
             {content.status === "ACTIVE" && (
               <MenuItem icon={<FaTrash />} onClick={onOpen} color="red">
