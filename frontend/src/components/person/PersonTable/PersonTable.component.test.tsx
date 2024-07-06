@@ -7,7 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 test("PersonTable renders the last name of the user", () => {
   render(
     <MemoryRouter>
-      <PersonTable people={peopleArray} />
+      <PersonTable people={peopleArray} isLoading={false} />
     </MemoryRouter>
   );
   const name = screen.getByText(/norris/i);
@@ -17,7 +17,7 @@ test("PersonTable renders the last name of the user", () => {
 test("PersonTable renders the first name of the user", () => {
   render(
     <MemoryRouter>
-      <PersonTable people={peopleArray} />
+      <PersonTable people={peopleArray} isLoading={false} />
     </MemoryRouter>
   );
   const name = screen.getByText(/chuck/i);
@@ -27,7 +27,7 @@ test("PersonTable renders the first name of the user", () => {
 test("PersonTable renders the status of the user", () => {
   render(
     <MemoryRouter>
-      <PersonTable people={peopleArray} />
+      <PersonTable people={peopleArray} isLoading={false} />
     </MemoryRouter>
   );
   const name = screen.getAllByText(/active/i);

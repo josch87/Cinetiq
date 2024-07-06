@@ -30,18 +30,12 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route element={<ProtectedRoutes user={user} />}>
           <Route element={<SidebarPageTemplate user={user} />}>
-            <Route path="/dashboard" element={<DashboardPage user={user} />} />
-            <Route path="/content" element={<ContentPage user={user} />} />
-            <Route
-              path="/content/:id"
-              element={<ContentDetailsPage user={user} />}
-            />
-            <Route path="/staff" element={<StaffPage user={user} />} />
-            <Route path="/people" element={<PeoplePage user={user} />} />
-            <Route
-              path="/people/:id"
-              element={<PersonDetailsPage user={user} />}
-            />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="/content/:id" element={<ContentDetailsPage />} />
+            <Route path="/staff" element={<StaffPage />} />
+            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/people/:id" element={<PersonDetailsPage />} />
           </Route>
         </Route>
       </Routes>

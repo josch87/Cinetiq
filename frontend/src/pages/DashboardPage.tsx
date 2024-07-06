@@ -1,18 +1,12 @@
 import DefaultPageTemplate from "./templates/DefaultPageTemplate.tsx";
 import { Grid, GridItem, Text } from "@chakra-ui/react";
 import DashboardWidget from "../components/DashboardWidget/DashboardWidget.tsx";
-import { GithubUserAuthType } from "../model/githubModel.ts";
 
-type DashboardPageProps = {
-  user: GithubUserAuthType | null | undefined;
-};
-
-export default function DashboardPage({ user }: Readonly<DashboardPageProps>) {
+export default function DashboardPage() {
   return (
     <DefaultPageTemplate
       pageTitle="Dashboard"
       pageSubtitle="Quick access and overview of all festival data"
-      user={user}
     >
       <Grid gridTemplateColumns={"2fr 1fr"} gap={4}>
         <GridItem>

@@ -7,7 +7,7 @@ import { contentArray } from "../../../model/contentTestData.ts";
 test("ContentResultBody renders three ContentCards when array of size three with the title", () => {
   render(
     <MemoryRouter>
-      <ContentResultBody content={contentArray} />
+      <ContentResultBody content={contentArray} isLoading={false} />
     </MemoryRouter>
   );
   const titleOfMovie = screen.getByText(/english movie title/i);
