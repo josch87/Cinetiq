@@ -11,6 +11,7 @@ import {
 import { FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 type MenuItem = {
   id: number;
@@ -30,8 +31,18 @@ export default function NavigationSidebarCollapse({
   icon,
   menuItems,
 }: Readonly<CollapseProps>) {
-  const { isOpen, onToggle } = useDisclosure();
   const location = useLocation();
+  const { isOpen, onToggle, onOpen } = useDisclosure();
+
+  useEffect(() => {
+    if (
+      menuItems.some(
+        (item) => item.path && location.pathname.startsWith(item.path)
+      )
+    ) {
+      onOpen();
+    }
+  }, [location.pathname, menuItems, onOpen]);
 
   return (
     <Box>
@@ -52,7 +63,11 @@ export default function NavigationSidebarCollapse({
           {menuItems.map((item) => (
             <Button
               key={item.id}
-              color={location.pathname === item.path ? "teal.500" : "inherit"}
+              color={
+                item.path && location.pathname.startsWith(item.path)
+                  ? "teal.500"
+                  : "inherit"
+              }
               variant="tertiary"
               justifyContent="start"
               onClick={item.onClick}
