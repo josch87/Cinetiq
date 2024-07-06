@@ -23,10 +23,10 @@ import {
   NewContentType,
   UpdateContentTitlesType,
 } from "../../../model/contentModel.ts";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiResponseType } from "../../../model/apiModel.ts";
-import { FaPen } from "react-icons/fa6";
+import { FaFloppyDisk, FaPen } from "react-icons/fa6";
 import { useContentStore } from "../../../store/contentStore.ts";
 import { processSingleContent } from "../../../services/contentService.ts";
 
@@ -45,6 +45,7 @@ export default function ContentModalEditTitles({
   const initialRef = useRef<HTMLButtonElement>(null);
   const content = useContentStore((state) => state.content);
   const setContent = useContentStore((state) => state.setContent);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const {
     register,
@@ -74,6 +75,7 @@ export default function ContentModalEditTitles({
   }
 
   function handleFormSubmit(data: UpdateContentTitlesType) {
+    setIsSaving(true);
     axios // @ts-expect-error Component wil always have content
       .patch(`/api/content/${content.id}`, data)
       .then((response: AxiosResponse<ApiResponseType<ContentType>>) => {
@@ -84,6 +86,9 @@ export default function ContentModalEditTitles({
       })
       .catch((error: AxiosError) => {
         console.error(error.message);
+      })
+      .finally(() => {
+        setIsSaving(false);
       });
   }
 
@@ -181,6 +186,7 @@ export default function ContentModalEditTitles({
         </ModalBody>
         <ModalFooter>
           <Button
+            isDisabled={isSaving}
             ref={initialRef}
             variant="outline"
             mr={3}
@@ -193,6 +199,9 @@ export default function ContentModalEditTitles({
             isDisabled={isDirty && Object.keys(errors).length === 0}
           >
             <Button
+              isLoading={isSaving}
+              loadingText="Saving"
+              leftIcon={<FaFloppyDisk />}
               colorScheme="teal"
               type="submit"
               form="update-content-title-form"

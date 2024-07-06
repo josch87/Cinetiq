@@ -21,7 +21,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CancelCreationAlertDialog, {
   CancelAlertDialogDisclosureType,
 } from "../../AlertDialogs/CancelCreationAlertDialog/CancelCreationAlertDialog.tsx";
@@ -33,6 +33,7 @@ import { usePersonCreationDrawerStore } from "../../../store/personStore.ts";
 export default function PersonCreationDrawer() {
   const toast = useToast();
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const firstDrawerField = useRef<HTMLInputElement>(null);
   const personCreationDrawerStore = usePersonCreationDrawerStore();
   const cancelAlertDialogDisclosure: CancelAlertDialogDisclosureType =
@@ -52,6 +53,7 @@ export default function PersonCreationDrawer() {
   });
 
   function handleFormSubmit(data: NewPersonType) {
+    setIsSaving(true);
     axios
       .post("/api/people", data)
       .then((response: AxiosResponse<ApiResponseType<PersonType>>) => {
@@ -67,6 +69,9 @@ export default function PersonCreationDrawer() {
       })
       .catch((error: AxiosError) => {
         console.error(error.message);
+      })
+      .finally(() => {
+        setIsSaving(false);
       });
   }
 
@@ -176,6 +181,7 @@ export default function PersonCreationDrawer() {
 
         <DrawerFooter>
           <Button
+            isDisabled={isSaving}
             variant="outline"
             mr={3}
             onClick={() => {
@@ -189,7 +195,13 @@ export default function PersonCreationDrawer() {
           >
             Cancel
           </Button>
-          <Button colorScheme="teal" type="submit" form="create-content-form">
+          <Button
+            isLoading={isSaving}
+            loadingText="Creating"
+            colorScheme="teal"
+            type="submit"
+            form="create-content-form"
+          >
             Create
           </Button>
         </DrawerFooter>
