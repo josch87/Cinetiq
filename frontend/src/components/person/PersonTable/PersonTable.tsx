@@ -28,16 +28,16 @@ export default function PersonTable({
   const sortedPeople = people
     .slice()
     .sort((a, b) => {
-      if (a.firstName > b.firstName) {
+      if (a.firstName.toLowerCase() > b.firstName.toLowerCase()) {
         return 1;
-      } else if (a.firstName < b.firstName) {
+      } else if (a.firstName.toLowerCase() < b.firstName.toLowerCase()) {
         return -1;
       } else return 0;
     })
     .sort((a, b) => {
-      if (a.lastName > b.lastName) {
+      if (a.lastName.toLowerCase() > b.lastName.toLowerCase()) {
         return 1;
-      } else if (a.lastName < b.lastName) {
+      } else if (a.lastName.toLowerCase() < b.lastName.toLowerCase()) {
         return -1;
       } else return 0;
     });
