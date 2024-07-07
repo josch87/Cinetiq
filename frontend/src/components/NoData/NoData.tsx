@@ -1,5 +1,12 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
+type ImageType = "RANDOM_DATA_DOG" | "SNIFFING_DOG";
+
+type NoDataProps = {
+  text?: string;
+  image?: ImageType;
+};
+
 function getRandomDog() {
   const dogs: string[] = [
     "no-data-dog-001.svg",
@@ -10,14 +17,31 @@ function getRandomDog() {
   const randomDog = dogs[Math.floor(Math.random() * dogs.length)];
   return "/illustrations/" + randomDog;
 }
-type NoDataProps = {
-  text?: string;
-};
 
-export default function NoData({ text = "No data found" }: NoDataProps) {
+function getDog(type: ImageType): string {
+  let dog;
+
+  switch (type) {
+    case "RANDOM_DATA_DOG":
+      dog = getRandomDog();
+      break;
+    case "SNIFFING_DOG":
+      dog = "/illustrations/sniffing-dog.svg";
+      break;
+    default:
+      dog = "";
+  }
+
+  return dog;
+}
+
+export default function NoData({
+  text = "No data found",
+  image = "RANDOM_DATA_DOG",
+}: NoDataProps) {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
-      <Image src={getRandomDog()} boxSize="sm" />
+      <Image src={getDog(image)} boxSize="sm" />
       <Text as="em" fontSize="lg">
         {text}
       </Text>
