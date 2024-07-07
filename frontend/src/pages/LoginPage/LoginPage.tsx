@@ -24,6 +24,7 @@ export default function LoginPage() {
           objectFit="cover"
           width="100%"
           height="100%"
+          draggable={false}
         />
       </Box>
       <Flex
@@ -38,8 +39,13 @@ export default function LoginPage() {
             src="/logo/cinetiq-logo.svg"
             alt="Logo of Cinetiq"
             boxSize="150px"
+            draggable={false}
           />
-          <Image src="/logo/cinetiq-lettering.svg" alt="Lettering of Cinetiq" />
+          <Image
+            src="/logo/cinetiq-lettering.svg"
+            alt="Lettering of Cinetiq"
+            draggable={false}
+          />
         </VStack>
         <Button
           leftIcon={<FaGithub />}
