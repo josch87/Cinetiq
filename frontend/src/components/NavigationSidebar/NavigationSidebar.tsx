@@ -21,7 +21,7 @@ import {
   FaFilm,
   FaUserGroup,
 } from "react-icons/fa6";
-import { logout } from "../../services/authService.ts";
+import { authCheck, isLoggedIn, logout } from "../../services/authService.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
 import { GithubUserAuthType } from "../../model/githubModel.ts";
@@ -57,7 +57,13 @@ export default function NavigationSidebar({
     {
       id: 2,
       title: "Create content",
-      onClick: onOpenContentCreationDrawer,
+      onClick: () => {
+        isLoggedIn().then((response) => {
+          if (response) {
+            onOpenContentCreationDrawer();
+          }
+        });
+      },
     },
   ];
 
@@ -73,7 +79,13 @@ export default function NavigationSidebar({
     {
       id: 2,
       title: "Create person",
-      onClick: onOpenPersonCreationDrawer,
+      onClick: () => {
+        isLoggedIn().then((response) => {
+          if (response) {
+            onOpenPersonCreationDrawer();
+          }
+        });
+      },
     },
   ];
 

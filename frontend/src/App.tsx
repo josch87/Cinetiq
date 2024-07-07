@@ -1,6 +1,6 @@
 import "./App.css";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import { useEffect, useState } from "react";
 import { loadUser } from "./services/authService.ts";
@@ -15,11 +15,34 @@ import PeoplePage from "./pages/person/PeoplePage.tsx";
 import PersonDetailsPage from "./pages/person/PersonDetailsPage.tsx";
 import SidebarPageTemplate from "./pages/templates/SidebarPageTemplate.tsx";
 import NotFoundPage from "./pages/error/NotFoundPage.tsx";
+import LoginModal from "./components/modal/LoginModal.tsx";
+import { useLoginModalStore } from "./store/authStore.ts";
+import axios from "axios";
 
 function App() {
   const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
     undefined
   );
+  const location = useLocation();
+  const { onOpen: onLoginModalOpen } = useLoginModalStore();
+
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (error.response.status === 401 && location.pathname !== "/") {
+          onLoginModalOpen();
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, [location, onLoginModalOpen]);
 
   useEffect(() => {
     loadUser().then(setUser);
@@ -43,6 +66,7 @@ function App() {
       </Routes>
       <ContentCreationDrawer />
       <PersonCreationDrawer />
+      <LoginModal />
     </>
   );
 }
