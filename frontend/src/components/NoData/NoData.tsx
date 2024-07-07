@@ -8,15 +8,18 @@ function getRandomDog() {
   ];
 
   const randomDog = dogs[Math.floor(Math.random() * dogs.length)];
-  return "illustrations/" + randomDog;
+  return "/illustrations/" + randomDog;
 }
+type NoDataProps = {
+  text?: string;
+};
 
-export default function NoData() {
+export default function NoData({ text = "No data found" }: NoDataProps) {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
       <Image src={getRandomDog()} boxSize="sm" />
       <Text as="em" fontSize="lg">
-        No data found
+        {text}
       </Text>
     </Flex>
   );

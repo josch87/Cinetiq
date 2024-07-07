@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { getPersonById } from "../../services/personService.ts";
 import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import PersonDetailsHeader from "../../components/person/PersonDetailsHeader/PersonDetailsHeader.tsx";
+import { VStack } from "@chakra-ui/react";
+import NoData from "../../components/NoData/NoData.tsx";
 
 export default function PersonDetailsPage() {
   const params = useParams();
@@ -39,12 +41,22 @@ export default function PersonDetailsPage() {
   }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (person === null) {
-    return <>An error occurred</>;
+    return (
+      <DefaultPageTemplate
+        pageTitle="Person Details"
+        pageSubtitle="Display details of the person"
+        warning={false}
+      >
+        <VStack gap={8}>
+          <NoData text={`Could not find person with ID '${id}'`} />
+        </VStack>
+      </DefaultPageTemplate>
+    );
   }
 
   return (
     <DefaultPageTemplate
-      pageTitle={"Person Details"}
+      pageTitle="Person Details"
       pageSubtitle="Display details of the person"
       warning={person ? person.status != "ACTIVE" : false}
     >
