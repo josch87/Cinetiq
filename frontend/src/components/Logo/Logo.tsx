@@ -2,7 +2,7 @@ import { HStack, Image } from "@chakra-ui/react";
 
 export default function Logo() {
   return (
-    <HStack>
+    <HStack gap={3} justifyContent="center">
       <Image
         src="/logo/cinetiq-logo.svg"
         alt="Logo of Cinetiq"
@@ -11,7 +11,7 @@ export default function Logo() {
       <Image
         src="/logo/cinetiq-lettering.svg"
         alt="Lettering of Cinetiq"
-        width="150px"
+        width="130px"
       />
     </HStack>
   );
