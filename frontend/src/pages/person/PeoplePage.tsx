@@ -43,7 +43,7 @@ export default function PeoplePage() {
       {peopleResponse?.info.count === 0 ? (
         <VStack gap={8}>
           <NoData />
-          <Button colorScheme="teal" onClick={onPersonCreationDrawerStore}>
+          <Button colorScheme="brand" onClick={onPersonCreationDrawerStore}>
             Create a person
           </Button>
         </VStack>

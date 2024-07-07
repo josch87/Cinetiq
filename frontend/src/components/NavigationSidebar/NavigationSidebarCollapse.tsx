@@ -65,7 +65,7 @@ export default function NavigationSidebarCollapse({
               key={item.id}
               color={
                 item.path && location.pathname.startsWith(item.path)
-                  ? "teal.500"
+                  ? "brand.500"
                   : "inherit"
               }
               variant="tertiary"

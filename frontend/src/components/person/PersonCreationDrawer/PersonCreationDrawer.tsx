@@ -92,11 +92,14 @@ export default function PersonCreationDrawer() {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader color="teal" display="flex" alignItems="center" gap={2}>
+        <DrawerHeader
+          color="brand.600"
+          display="flex"
+          alignItems="center"
+          gap={2}
+        >
           <Icon as={FaPerson} />
-          <Heading fontSize="2xl" color="teal.600">
-            Create new person
-          </Heading>
+          <Heading fontSize="2xl">Create new person</Heading>
         </DrawerHeader>
 
         <DrawerBody>
@@ -115,7 +118,7 @@ export default function PersonCreationDrawer() {
                 borderRadius="md"
                 spacing={4}
               >
-                <FormLabel as="legend" fontSize="lg" color="teal.600">
+                <FormLabel as="legend" fontSize="lg" color="brand.600">
                   Names
                 </FormLabel>
 
@@ -142,7 +145,7 @@ export default function PersonCreationDrawer() {
                         {...field}
                         ref={firstDrawerField}
                         type="text"
-                        focusBorderColor="teal.600"
+                        focusBorderColor="brand.600"
                       />
                     )}
                   />
@@ -168,7 +171,7 @@ export default function PersonCreationDrawer() {
                       },
                     })}
                     type="text"
-                    focusBorderColor="teal.600"
+                    focusBorderColor="brand.600"
                   />
                   <FormErrorMessage>
                     {errors.lastName?.message}
@@ -181,6 +184,7 @@ export default function PersonCreationDrawer() {
 
         <DrawerFooter>
           <Button
+            colorScheme="brand"
             isDisabled={isSaving}
             variant="outline"
             mr={3}
@@ -198,7 +202,7 @@ export default function PersonCreationDrawer() {
           <Button
             isLoading={isSaving}
             loadingText="Creating"
-            colorScheme="teal"
+            colorScheme="brand"
             type="submit"
             form="create-content-form"
           >

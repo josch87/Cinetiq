@@ -106,10 +106,16 @@ export default function ContentModalEditTitles({
       isOpen={disclosure.isOpen}
       motionPreset="slideInBottom"
       initialFocusRef={initialRef}
+      colorScheme="brand"
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="teal" display="flex" alignItems="center" gap={2}>
+        <ModalHeader
+          color="brand.600"
+          display="flex"
+          alignItems="center"
+          gap={2}
+        >
           <Icon as={FaPen} />
           <Heading fontSize="2xl">Edit titles</Heading>
         </ModalHeader>
@@ -137,7 +143,7 @@ export default function ContentModalEditTitles({
                     },
                   })}
                   type="text"
-                  focusBorderColor="teal.600"
+                  focusBorderColor="brand.600"
                 />
                 <FormErrorMessage>
                   {errors.originalTitle?.message}
@@ -156,7 +162,7 @@ export default function ContentModalEditTitles({
                     },
                   })}
                   type="text"
-                  focusBorderColor="teal.600"
+                  focusBorderColor="brand.600"
                 />
                 <FormErrorMessage>
                   {errors.englishTitle?.message}
@@ -175,7 +181,7 @@ export default function ContentModalEditTitles({
                     },
                   })}
                   type="text"
-                  focusBorderColor="teal.600"
+                  focusBorderColor="brand.600"
                 />
                 <FormErrorMessage>
                   {errors.germanTitle?.message}
@@ -186,6 +192,7 @@ export default function ContentModalEditTitles({
         </ModalBody>
         <ModalFooter>
           <Button
+            colorScheme="brand"
             isDisabled={isSaving}
             ref={initialRef}
             variant="outline"
@@ -202,7 +209,7 @@ export default function ContentModalEditTitles({
               isLoading={isSaving}
               loadingText="Saving"
               leftIcon={<FaFloppyDisk />}
-              colorScheme="teal"
+              colorScheme="brand"
               type="submit"
               form="update-content-title-form"
               isDisabled={!isDirty || Object.keys(errors).length > 0}

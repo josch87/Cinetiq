@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, VStack } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa6";
 import { isLoggedIn, login } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
@@ -33,14 +33,17 @@ export default function LoginPage() {
         justifyContent="space-around"
         alignItems="center"
       >
-        <Image
-          src="logo/login-logo.jpeg"
-          alt="Logo of Cinetiq"
-          boxSize="150px"
-        />
+        <VStack gap={5}>
+          <Image
+            src="/logo/cinetiq-logo.svg"
+            alt="Logo of Cinetiq"
+            boxSize="150px"
+          />
+          <Image src="/logo/cinetiq-lettering.svg" alt="Lettering of Cinetiq" />
+        </VStack>
         <Button
           leftIcon={<FaGithub />}
-          colorScheme="teal"
+          colorScheme="brand"
           variant="outline"
           onClick={login}
         >

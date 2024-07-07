@@ -13,7 +13,7 @@ export default function ContentDetailsTabs({
 }: Readonly<ContentDetailsProps>) {
   return (
     <Box>
-      <Tabs size="md" variant="enclosed" colorScheme="teal">
+      <Tabs size="md" variant="enclosed" colorScheme="brand">
         <TabList flexWrap="wrap">
           <Tab>Basics</Tab>
         </TabList>

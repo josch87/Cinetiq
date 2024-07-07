@@ -43,7 +43,7 @@ export default function ContentPage() {
       {contentResponse && contentResponse.info.count === 0 ? (
         <VStack gap={8}>
           <NoData />
-          <Button colorScheme="teal" onClick={onContentCreationDrawerOpen}>
+          <Button colorScheme="brand" onClick={onContentCreationDrawerOpen}>
             Create content
           </Button>
         </VStack>

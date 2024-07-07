@@ -39,7 +39,7 @@ export default function Scopebox({
                 size="xs"
                 icon={<FaEdit />}
                 variant="outline"
-                colorScheme="teal"
+                colorScheme="brand"
                 onClick={onEdit}
               />
             </Tooltip>
