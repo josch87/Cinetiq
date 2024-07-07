@@ -12,7 +12,7 @@ export default function NotFoundPage() {
       <VStack gap={8}>
         <NoData
           image="SNIFFING_DOG"
-          text="Sniffed around everywhere but couldn't find a site at that address."
+          text="Sniffed around everywhere but couldn't find a page at that address."
         />
       </VStack>
     </DefaultPageTemplate>
