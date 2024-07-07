@@ -38,7 +38,7 @@ function getDog(type: ImageType): string {
 export default function NoData({
   text = "No data found",
   image = "RANDOM_DATA_DOG",
-}: NoDataProps) {
+}: Readonly<NoDataProps>) {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
       <Image src={getDog(image)} boxSize="sm" />
