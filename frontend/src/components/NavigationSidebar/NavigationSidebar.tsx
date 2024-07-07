@@ -22,7 +22,11 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { logout } from "../../services/authService.ts";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  Link as ReactRouterLink,
+} from "react-router-dom";
 import Logo from "../Logo/Logo.tsx";
 import { GithubUserAuthType } from "../../model/githubModel.ts";
 import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
@@ -100,7 +104,9 @@ export default function NavigationSidebar({
         justifyContent="space-between"
       >
         <Stack spacing="8">
-          <Logo />
+          <ReactRouterLink to="/dashboard">
+            <Logo />
+          </ReactRouterLink>
 
           <Stack spacing="1">
             <SidebarButton
