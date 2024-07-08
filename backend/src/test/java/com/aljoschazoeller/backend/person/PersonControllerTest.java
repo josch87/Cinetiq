@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -137,7 +138,6 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void getPersonByIdTest_whenPersonInDatabase_thenReturnPerson() throws Exception {
         AppUser user = AppUser.builder()
@@ -149,6 +149,9 @@ class PersonControllerTest {
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/people")
+                        .with(oidcLogin()
+                                .userInfoToken((builder) -> builder.claim("id", 1212))
+                        )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
