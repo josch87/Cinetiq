@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -25,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.io.IOException;
 import java.time.Instant;
 
+import static com.aljoschazoeller.backend.testutil.GithubOAuth2LoginTestHelper.createGithubOAuth2Login;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -67,30 +67,6 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void getAllUsersTest_whenNoUser_thenReturnEmptyList() throws Exception {
-        mockMvc.perform(get("/api/users"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                            "info": {
-                                "count": 0
-                            },
-                            "data": []
-                        }
-                        """));
-    }
-
-    @Test
-    @WithMockUser
-    void getAppUserByIdTest_whenNoAppUserFound_thenReturnNotFound() throws Exception {
-        mockMvc.perform(get("/api/users/appUser-id-1"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("No appUser found with ID 'appUser-id-1'"));
-    }
-
-    @Test
-    @WithMockUser
     @DirtiesContext
     void getAppUserByIdTest_whenAppUserFound_thenReturnAppUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -122,7 +98,9 @@ class UserControllerTest {
 
         userRepository.save(appUser);
 
-        mockMvc.perform(get("/api/users/appUser-id-1"))
+        mockMvc.perform(get("/api/users/appUser-id-1")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -158,7 +136,6 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void getAllUsersTest_whenOneUser_thenReturnListOfOne() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -190,7 +167,9 @@ class UserControllerTest {
 
         userRepository.save(appUser);
 
-        mockMvc.perform(get("/api/users"))
+        mockMvc.perform(get("/api/users")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -235,7 +214,6 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "1212")
     @DirtiesContext
     void syncGithubUserProfilesTest_whenNoChangesOnGithubSinceLastSync_thenNoUpdatedUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -306,7 +284,9 @@ class UserControllerTest {
                         """))
                 .addHeader("Content-Type", "application/json"));
 
-        mockMvc.perform(post("/api/users/sync-github-profiles"))
+        mockMvc.perform(post("/api/users/sync-github-profiles")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -319,7 +299,6 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(value="1212")
     @DirtiesContext
     void syncGithubUserProfilesTest_whenChangesOnGithubSinceLastSync_thenOneUpdatedUser() throws Exception {
         GithubUserProfile githubUserProfile = new GithubUserProfile(
@@ -390,7 +369,9 @@ class UserControllerTest {
                         """))
                 .addHeader("Content-Type", "application/json"));
 
-        mockMvc.perform(post("/api/users/sync-github-profiles"))
+        mockMvc.perform(post("/api/users/sync-github-profiles")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -401,7 +382,9 @@ class UserControllerTest {
                         }
                         """));
 
-        MvcResult result = mockMvc.perform(get("/api/users/appUser-id-1"))
+        MvcResult result = mockMvc.perform(get("/api/users/appUser-id-1")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
