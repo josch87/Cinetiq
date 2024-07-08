@@ -4,6 +4,7 @@ import {
   Flex,
   HStack,
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -127,8 +128,19 @@ export default function NavigationSidebar({
             />
           </Stack>
         </Stack>
+
         <Stack spacing="4" divider={<StackDivider />}>
-          <Box />
+          <Stack alignItems="center">
+            <Link
+              as={ReactRouterLink}
+              color="gray.500"
+              fontSize="xs"
+              to="/about"
+              textTransform="uppercase"
+            >
+              About
+            </Link>
+          </Stack>
           <HStack spacing="3" justify="space-between">
             <HStack spacing="3">
               <Avatar boxSize="10" src={user.avatarUrl} name={user.name} />
