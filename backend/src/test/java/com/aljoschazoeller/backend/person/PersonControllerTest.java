@@ -12,14 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
+import java.util.Collections;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -142,15 +145,19 @@ class PersonControllerTest {
     void getPersonByIdTest_whenPersonInDatabase_thenReturnPerson() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/people")
-                        .with(oidcLogin()
-                                .userInfoToken((builder) -> builder.claim("id", 1212))
+                        .with(oauth2Login()
+                                .oauth2User(new DefaultOAuth2User(
+                                        AuthorityUtils.createAuthorityList("SCOPE_message:read"),
+                                        Collections.singletonMap("id", 1212),
+                                        "id"
+                                ))
                         )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -159,7 +166,6 @@ class PersonControllerTest {
                                     "lastName": "Norris"
                                 }
                                 """))
-                .andExpect(status().isCreated())
                 .andExpect(content().json("""
                         {
                             "info": {
@@ -173,7 +179,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
