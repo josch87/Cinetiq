@@ -8,4 +8,5 @@ GITHUB_SECRET={secret_of_your_github_app}
 APP_URL=http://localhost:5173
 
 # LOGGING
+logging.level.root=INFO
 BETTERSTACK_TOKEN_BACKEND=your_betterstack_token
