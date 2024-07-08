@@ -100,7 +100,7 @@ export default function NavigationSidebar({
         justifyContent="space-between"
       >
         <Stack spacing="8">
-          <Logo />
+          <Logo onClick={() => navigate("/dashboard")} cursor="pointer" />
 
           <Stack spacing="1">
             <SidebarButton

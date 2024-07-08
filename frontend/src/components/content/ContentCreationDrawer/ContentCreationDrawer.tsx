@@ -96,11 +96,14 @@ export default function ContentCreationDrawer() {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader color="teal" display="flex" alignItems="center" gap={2}>
+        <DrawerHeader
+          color="brand.600"
+          display="flex"
+          alignItems="center"
+          gap={2}
+        >
           <Icon as={FaRegSquarePlus} />
-          <Heading fontSize="2xl" color="teal.600">
-            Create new content
-          </Heading>
+          <Heading fontSize="2xl">Create new content</Heading>
         </DrawerHeader>
 
         <DrawerBody>
@@ -121,7 +124,7 @@ export default function ContentCreationDrawer() {
                     <Select
                       {...field}
                       placeholder="Select a type"
-                      focusBorderColor="teal.600"
+                      focusBorderColor="brand.600"
                       ref={firstDrawerField}
                     >
                       <option value="MOVIE">Movie</option>
@@ -144,7 +147,7 @@ export default function ContentCreationDrawer() {
                 borderRadius="md"
                 spacing={4}
               >
-                <FormLabel as="legend" fontSize="lg" color="teal.600">
+                <FormLabel as="legend" fontSize="lg" color="brand.600">
                   Titles
                 </FormLabel>
 
@@ -163,7 +166,7 @@ export default function ContentCreationDrawer() {
                       },
                     })}
                     type="text"
-                    focusBorderColor="teal.600"
+                    focusBorderColor="brand.600"
                   />
                   <FormErrorMessage>
                     {errors.originalTitle?.message}
@@ -175,7 +178,7 @@ export default function ContentCreationDrawer() {
                   <Input
                     {...register("englishTitle")}
                     type="text"
-                    focusBorderColor="teal.600"
+                    focusBorderColor="brand.600"
                   />
                   <FormErrorMessage>
                     {errors.englishTitle?.message}
@@ -187,7 +190,7 @@ export default function ContentCreationDrawer() {
                   <Input
                     {...register("germanTitle")}
                     type="text"
-                    focusBorderColor="teal.600"
+                    focusBorderColor="brand.600"
                   />
                   <FormErrorMessage>
                     {errors.germanTitle?.message}
@@ -200,6 +203,7 @@ export default function ContentCreationDrawer() {
 
         <DrawerFooter>
           <Button
+            colorScheme="brand"
             isDisabled={isSaving}
             variant="outline"
             mr={3}
@@ -217,7 +221,7 @@ export default function ContentCreationDrawer() {
           <Button
             isLoading={isSaving}
             loadingText="Creating"
-            colorScheme="teal"
+            colorScheme="brand"
             type="submit"
             form="create-content-form"
           >

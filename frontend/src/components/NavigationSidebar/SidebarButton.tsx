@@ -10,7 +10,7 @@ export default function SidebarButton({
 }: Readonly<SidebarButtonProps>) {
   return (
     <Button
-      color={isCurrentPage ? "teal.500" : "inherit"}
+      color={isCurrentPage ? "brand.500" : "inherit"}
       variant="tertiary"
       justifyContent="start"
       iconSpacing="3"

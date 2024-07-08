@@ -18,21 +18,21 @@ function getRandomDog() {
   return "/illustrations/" + randomDog;
 }
 
-function getDog(type: ImageType): string {
-  let dog;
+function getImage(type: ImageType): string {
+  let image;
 
   switch (type) {
     case "RANDOM_DATA_DOG":
-      dog = getRandomDog();
+      image = getRandomDog();
       break;
     case "SNIFFING_DOG":
-      dog = "/illustrations/sniffing-dog.svg";
+      image = "/illustrations/sniffing-dog.svg";
       break;
     default:
-      dog = "";
+      image = "";
   }
 
-  return dog;
+  return image;
 }
 
 export default function NoData({
@@ -41,7 +41,7 @@ export default function NoData({
 }: Readonly<NoDataProps>) {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
-      <Image src={getDog(image)} boxSize="sm" />
+      <Image src={getImage(image)} boxSize="sm" draggable={false} />
       <Text as="em" fontSize="lg">
         {text}
       </Text>
