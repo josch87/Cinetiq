@@ -14,6 +14,7 @@ import PersonCreationDrawer from "./components/person/PersonCreationDrawer/Perso
 import PeoplePage from "./pages/person/PeoplePage.tsx";
 import PersonDetailsPage from "./pages/person/PersonDetailsPage.tsx";
 import SidebarPageTemplate from "./pages/templates/SidebarPageTemplate.tsx";
+import NotFoundPage from "./pages/error/NotFoundPage.tsx";
 
 function App() {
   const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
@@ -36,6 +37,7 @@ function App() {
             <Route path="/staff" element={<StaffPage />} />
             <Route path="/people" element={<PeoplePage />} />
             <Route path="/people/:id" element={<PersonDetailsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>
       </Routes>

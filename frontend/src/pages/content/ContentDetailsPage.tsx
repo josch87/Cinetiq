@@ -5,6 +5,8 @@ import DefaultPageTemplate from "../templates/DefaultPageTemplate.tsx";
 import ContentDetailsHeader from "../../components/content/ContentDetailsHeader/ContentDetailsHeader.tsx";
 import ContentDetailsBody from "../../components/content/ContentDetailsBody/ContentDetailsBody.tsx";
 import { useContentStore } from "../../store/contentStore.ts";
+import NoData from "../../components/NoData/NoData.tsx";
+import { VStack } from "@chakra-ui/react";
 
 export default function ContentDetailsPage() {
   const params = useParams();
@@ -40,7 +42,17 @@ export default function ContentDetailsPage() {
   }, [id]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (content === null) {
-    return <>An error occurred</>;
+    return (
+      <DefaultPageTemplate
+        pageTitle="Content Details"
+        pageSubtitle="Display details of the content"
+        warning={false}
+      >
+        <VStack gap={8}>
+          <NoData text={`Could not find content with ID '${id}'`} />
+        </VStack>
+      </DefaultPageTemplate>
+    );
   }
 
   return (
