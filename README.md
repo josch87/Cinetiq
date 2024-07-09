@@ -38,39 +38,41 @@ Make sure you have the following installed:
 - MongoDB
 
 ### Installation
+#### Backend Setup with IntelliJ IDEA:
 
-1. **Clone the repository:**
+1. **Clone the repository directly in IntelliJ IDEA:**
+   - Open IntelliJ IDEA.
+   - Select `File -> New -> Project from Version Control`.
+   - In the dialog that appears, enter the URL of the repository:
+     ```bash
+     https://github.com/josch87/Cinetiq.git
+     ```
+   - Click `Clone`.
+
+2. **Set up the development properties file:**
+   - Navigate to `backend/src/main/resources` in the Project tool window.
+   - Copy `application-development.properties.sample` and rename the copy to `application-development.properties`.
+   - Open `application-development.properties` and fill in the required values.
+
+3. **Import the Maven project:**
+   - IntelliJ IDEA should automatically detect the `pom.xml` file in the `backend` directory and prompt you to import the Maven project. If not, right-click on the `pom.xml` file and select `Add as Maven Project`.
+
+4. **Run the Spring Boot application:**
+   - Open the `Maven` tool window (`View -> Tool Windows -> Maven`).
+   - Expand the project's lifecycle in the Maven tool window.
+   - Double-click on `spring-boot:run` to start the application.
+
+#### Frontend Setup:
+
+1. **Navigate to the `frontend` directory:**
     ```bash
-    git clone https://github.com/josch87/Cinetiq.git
-    cd Cinetiq
+    cd frontend
     ```
-
-2. **Backend Setup:**
-    - Navigate to the `backend` directory:
-        ```bash
-        cd backend
-        ```
-    - Copy the sample properties file and rename it:
-        ```bash
-        cp src/main/resources/application-development.properties.sample src/main/resources/application-development.properties
-        ```
-    - Open `src/main/resources/application-development.properties` and fill in the required values.
-    - Install dependencies and run the Spring Boot application:
-        ```bash
-        ./mvnw clean install
-        ./mvnw spring-boot:run
-        ```
-
-3. **Frontend Setup:**
-    - Navigate to the `frontend` directory:
-        ```bash
-        cd ../frontend
-        ```
-    - Install dependencies and start the Vite development server:
-        ```bash
-        npm install
-        npm run dev
-        ```
+2. **Install dependencies and start the Vite development server:**
+    ```bash
+    npm install
+    npm run dev
+    ```
 
 ### Running the Application
 
@@ -79,38 +81,19 @@ Make sure you have the following installed:
 - Start the frontend server as described in the Frontend Setup section.
 - Open your web browser and go to `http://localhost:5173` to access Cinetiq.
 
-### Running with Docker (Optional for Local Development)
-
-You can also run the entire application using Docker. Docker is used in the CI/CD pipeline with GitHub Actions but is not required for local development.
-
-1. **Build and run the Docker containers:**
-    ```bash
-    docker-compose up --build
-    ```
-
-2. Open your web browser and go to `http://localhost:5173` to access Cinetiq.
-
 ### Running Tests and Applications
 
 In IntelliJ IDEA, you can directly run the following `.xml` files located in the `.run` folder in the root directory to facilitate various operations:
 
 - **Frontend Tests**: Execute the corresponding `.xml` file to run frontend tests.
 - **Backend Tests**: Execute the corresponding `.xml` file to run backend tests.
-- **Backend Tests (Coverage)**: Execute the `BackendTests (Coverage).run.xml` file to run backend tests with coverage analysis.
+- **Backend Tests (Coverage)**: Execute the corresponding `.xml` file to run backend tests with coverage analysis.
 - **Backend Application**: Execute the `.xml` file to start the backend application.
 - **Frontend Application**: Execute the `.xml` file to start the frontend application.
 
 ## GitHub API Integration
 
 - **Scheduled Data Retrieval**: GitHub API is integrated into the backend to retrieve data periodically from registered GitHub users within the application using scheduling.
-
-## Contributing
-
-We welcome contributions! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgments
 
