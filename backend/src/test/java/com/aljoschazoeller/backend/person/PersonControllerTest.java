@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
 
+import static com.aljoschazoeller.backend.testutil.GithubOAuth2LoginTestHelper.createGithubOAuth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,9 +40,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getPeopleTest_whenNoPersonInDatabase_thenReturnEmptyList() throws Exception {
-        mockMvc.perform(get("/api/people"))
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("1212")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(get("/api/people")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -55,17 +64,17 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getPeopleTest_whenOnePersonInDatabase_thenReturnListOfOne() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/people")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -87,7 +96,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -101,7 +110,9 @@ class PersonControllerTest {
         });
         Person returnedPerson = apiResponse.getData();
 
-        mockMvc.perform(get("/api/people"))
+        mockMvc.perform(get("/api/people")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -118,7 +129,7 @@ class PersonControllerTest {
                                     "lastName": "Norris",
                                     "createdBy": {
                                         "id": "appUser-id-1",
-                                        "githubId": "user",
+                                        "githubId": "1212",
                                         "createdAt": "2024-06-20T15:10:05.022Z"
                                     }
                                 }
@@ -137,18 +148,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void getPersonByIdTest_whenPersonInDatabase_thenReturnPerson() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/people")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -170,7 +181,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -184,7 +195,9 @@ class PersonControllerTest {
         });
         Person returnedPerson = apiResponse.getData();
 
-        mockMvc.perform(get("/api/people/" + returnedPerson.id()))
+        mockMvc.perform(get("/api/people/" + returnedPerson.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -199,7 +212,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -208,9 +221,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getPersonById_whenPersonNotInDatabase_thenReturnNotFound() throws Exception {
-        mockMvc.perform(get("/api/people/non-existing-id"))
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("1212")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(get("/api/people/non-existing-id")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("No person found with ID 'non-existing-id'."));
     }
@@ -230,18 +252,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void createPersonTest_whenAuthenticated_thenSaveContentInDatabase() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/people")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -263,7 +285,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -278,7 +300,9 @@ class PersonControllerTest {
         });
         Person returnedPerson = apiResponse.getData();
 
-        mockMvc.perform(get("/api/people/" + returnedPerson.id()))
+        mockMvc.perform(get("/api/people/" + returnedPerson.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -293,7 +317,7 @@ class PersonControllerTest {
                                 "lastName": "Norris",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -302,18 +326,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void createPersonTest_whenFirstAndLastNameEmptyString_thenReturnBadRequest() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         mockMvc.perform(post("/api/people")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -333,18 +357,18 @@ class PersonControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void createPersonTest_whenLeadingOrTrailingSpaces_thenTrimString() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         mockMvc.perform(post("/api/people")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -366,7 +390,7 @@ class PersonControllerTest {
                                 "lastName": "l",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }

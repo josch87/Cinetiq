@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.Instant;
 
+import static com.aljoschazoeller.backend.testutil.GithubOAuth2LoginTestHelper.createGithubOAuth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,9 +39,18 @@ class ContentControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getContentTest_whenNoContentInDatabase_thenReturnEmptyArray() throws Exception {
-        mockMvc.perform(get("/api/content"))
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("1212")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(get("/api/content")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -54,19 +63,18 @@ class ContentControllerTest {
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void getContentTest_whenOneContentInDatabase_thenReturnArrayWithOne() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
-
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -84,7 +92,9 @@ class ContentControllerTest {
         });
         Content savedContent = apiResponse.getData();
 
-        mockMvc.perform(get("/api/content"))
+        mockMvc.perform(get("/api/content")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -116,26 +126,35 @@ class ContentControllerTest {
     }
 
     @Test
-    @WithMockUser
     void getContentByIdTest_whenIdNotFound_thenReturnNotFound() throws Exception {
-        mockMvc.perform(get("/api/content/-1"))
+        AppUser user = AppUser.builder()
+                .id("appUser-id-1")
+                .githubId("1212")
+                .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(get("/api/content/-1")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("No content found with ID '-1'."));
     }
 
     @Test
-    @WithMockUser
     @DirtiesContext
     void getContentByIdTest_whenIdFound_thenReturnContent() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -154,7 +173,9 @@ class ContentControllerTest {
         });
         Content content = apiResponse.getData();
 
-        mockMvc.perform(get("/api/content/" + content.id()))
+        mockMvc.perform(get("/api/content/" + content.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -168,7 +189,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -195,18 +216,17 @@ class ContentControllerTest {
     }
 
     @Test
-    @WithMockUser
-    @DirtiesContext
     void createContentTest_whenAuthenticated_thenSaveContentInDatabase() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -229,7 +249,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -245,7 +265,9 @@ class ContentControllerTest {
         });
         Content savedContent = apiResponse.getData();
 
-        mockMvc.perform(get("/api/content"))
+        mockMvc.perform(get("/api/content")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -260,7 +282,7 @@ class ContentControllerTest {
                                     "germanTitle": "German Title",
                                     "createdBy": {
                                         "id": "appUser-id-1",
-                                        "githubId": "user",
+                                        "githubId": "1212",
                                         "createdAt": "2024-06-20T15:10:05.022Z"
                                     }
                                 }
@@ -282,17 +304,17 @@ class ContentControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
     void updateContentByIdTest_whenAuthenticated_thenUpdateContentInDatabase() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -315,7 +337,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -331,8 +353,8 @@ class ContentControllerTest {
         });
         Content oldContent = apiResponse.getData();
 
-
         mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -354,12 +376,12 @@ class ContentControllerTest {
                                 "germanTitle": "New German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 },
                                 "lastUpdatedBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -367,7 +389,9 @@ class ContentControllerTest {
                         """))
                 .andExpect(jsonPath("$.data.lastUpdatedAt").exists());
 
-        mockMvc.perform(get("/api/content/" + oldContent.id()))
+        mockMvc.perform(get("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -381,12 +405,12 @@ class ContentControllerTest {
                                 "germanTitle": "New German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 },
                                 "lastUpdatedBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -397,17 +421,17 @@ class ContentControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
     void updateContentByIdTest_whenOriginalTitleEmptyString_thenReturnBadRequest() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -430,7 +454,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -446,8 +470,8 @@ class ContentControllerTest {
         });
         Content oldContent = apiResponse.getData();
 
-
         mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -467,7 +491,9 @@ class ContentControllerTest {
                 .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
                 .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
 
-        mockMvc.perform(get("/api/content/" + oldContent.id()))
+        mockMvc.perform(get("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -481,7 +507,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -493,17 +519,17 @@ class ContentControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
     void updateContentByIdTest_whenContentDeleted_thenReturnBadRequest() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -526,7 +552,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -542,11 +568,14 @@ class ContentControllerTest {
         });
         Content oldContent = apiResponse.getData();
 
-        mockMvc.perform(delete("/api/content/" + oldContent.id()))
+        mockMvc.perform(delete("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
 
         mockMvc.perform(patch("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -560,7 +589,9 @@ class ContentControllerTest {
                 .andExpect(jsonPath("$.data.lastUpdatedAt").doesNotExist())
                 .andExpect(jsonPath("$.data.lastUpdatedBy").doesNotExist());
 
-        mockMvc.perform(get("/api/content/" + oldContent.id()))
+        mockMvc.perform(get("/api/content/" + oldContent.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -574,7 +605,7 @@ class ContentControllerTest {
                                 "germanTitle": "German Title",
                                 "createdBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user",
+                                    "githubId": "1212",
                                     "createdAt": "2024-06-20T15:10:05.022Z"
                                 }
                             }
@@ -594,17 +625,17 @@ class ContentControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
     void softDeleteContentByIdTest_whenAuthenticated_thenChangeStatusToDeleted() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -623,11 +654,15 @@ class ContentControllerTest {
         });
         Content content = apiResponse.getData();
 
-        mockMvc.perform(delete("/api/content/" + content.id()))
+        mockMvc.perform(delete("/api/content/" + content.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
 
-        mockMvc.perform(get("/api/content/" + content.id()))
+        mockMvc.perform(get("/api/content/" + content.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -638,7 +673,7 @@ class ContentControllerTest {
                                 "status": "DELETED",
                                 "statusUpdatedBy": {
                                     "id": "appUser-id-1",
-                                    "githubId": "user"
+                                    "githubId": "1212"
                                 },
                                 "contentType": "MOVIE",
                                 "originalTitle": "Original Title",
@@ -652,17 +687,17 @@ class ContentControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
     void softDeleteContentByIdTest_whenDeleted_thenNotInArray() throws Exception {
         AppUser user = AppUser.builder()
                 .id("appUser-id-1")
-                .githubId("user")
+                .githubId("1212")
                 .createdAt(Instant.parse("2024-06-20T15:10:05.022Z"))
                 .build();
 
         userRepository.save(user);
 
         MvcResult result = mockMvc.perform(post("/api/content")
+                        .with(createGithubOAuth2Login(1212))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -681,11 +716,15 @@ class ContentControllerTest {
         });
         Content content = apiResponse.getData();
 
-        mockMvc.perform(delete("/api/content/" + content.id()))
+        mockMvc.perform(delete("/api/content/" + content.id())
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
 
-        mockMvc.perform(get("/api/content"))
+        mockMvc.perform(get("/api/content")
+                        .with(createGithubOAuth2Login(1212))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {

@@ -6,3 +6,8 @@ MONGODB_DATABASE={your_database_name>}
 GITHUB_ID={id_of_your_github_app}
 GITHUB_SECRET={secret_of_your_github_app}
 APP_URL=http://localhost:5173
+
+# LOGGING
+logging.level.root=INFO
+BETTERSTACK_TOKEN_BACKEND_PRODUCTION=your_betterstack_token
+BETTERSTACK_TOKEN_BACKEND_TESTS=your_betterstack_token_for_automation_tests

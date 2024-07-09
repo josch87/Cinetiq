@@ -8,6 +8,8 @@ import com.aljoschazoeller.backend.exceptions.InvalidContentStatusException;
 import com.aljoschazoeller.backend.exceptions.UnauthorizedRequestException;
 import com.aljoschazoeller.backend.user.UserService;
 import com.aljoschazoeller.backend.user.domain.AppUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,9 +22,11 @@ import java.util.List;
 
 @Service
 public class ContentService {
+    private static final Logger log = LoggerFactory.getLogger(ContentService.class);
     private final ContentRepository contentRepository;
     private final UserService userService;
     private final MongoTemplate mongoTemplate;
+
 
     public ContentService(ContentRepository contentRepository, UserService userService, MongoTemplate mongoTemplate) {
         this.contentRepository = contentRepository;
@@ -35,17 +39,22 @@ public class ContentService {
     }
 
     public Content getContentById(String id) {
-        return contentRepository.findById(id)
-                .orElseThrow(() -> new ContentNotFoundException("No content found with ID '" + id + "'."));
+        Content content = contentRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Could not find content with ID '{}'", id);
+                    return new ContentNotFoundException("No content found with ID '" + id + "'.");
+                });
+        log.info("Successfully found content with ID '{}‘", id);
+        return content;
     }
 
     public Content createContent(Content content) {
         if (content.id() != null) {
+            log.error("ID '{}' must be NULL in order to create new content.", content.id());
             throw new IllegalArgumentException("ID must be NULL in order to create new content.");
         }
         return contentRepository.insert(content);
     }
-
 
     public Content updateContentById(String id, UpdateContentDTO updates, Principal principal) {
         Instant currentTime = Instant.now();
@@ -57,6 +66,7 @@ public class ContentService {
         Content oldContent = this.getContentById(id);
 
         if (oldContent.status() != ContentStatus.ACTIVE) {
+            log.error("Content with ID '{}‘ is currently not active and can not be updated.", id);
             throw new InvalidContentStatusException("Content with ID '" + id + "' is currently not active and can not be updated.");
         }
 
@@ -78,7 +88,10 @@ public class ContentService {
         query.addCriteria(Criteria.where("id").is(id));
 
         mongoTemplate.updateFirst(query, update, Content.class);
-        return mongoTemplate.findOne(query, Content.class);
+        Content savedContent = mongoTemplate.findOne(query, Content.class);
+
+        log.info("Updated content with ID '{}'", id);
+        return savedContent;
     }
 
     public void softDeleteContentById(String id, Principal principal) {
@@ -99,5 +112,7 @@ public class ContentService {
                 .withStatusUpdatedBy(appUser);
 
         contentRepository.save(contentToUpdate);
+
+        log.info("Soft deleted content with ID '{}'", id);
     }
 }
