@@ -18,9 +18,7 @@ jobs:
           java-version: '22'
           distribution: 'temurin'
           cache: maven
+      - name: Set env variable
+        run: echo "BETTERSTACK_TOKEN_BACKEND_TESTS=${{ secrets.BETTERSTACK_TOKEN_BACKEND_TESTS }}" >> $GITHUB_ENV
       - name: Build with Maven
-        run: | 
-          echo "-------------TOKEN--------------"
-          echo "BETTERSTACK_TOKEN_BACKEND_TESTS: ${{ secrets.BETTERSTACK_TOKEN_BACKEND_TESTS }}"
-          echo "GITHUB_CONTEXT: ${{ toJson(github) }}"
-          mvn -B package --file backend/pom.xml
+        run: mvn -B package --file backend/pom.xml
