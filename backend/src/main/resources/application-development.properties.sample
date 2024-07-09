@@ -9,4 +9,5 @@ APP_URL=http://localhost:5173
 
 # LOGGING
 logging.level.root=INFO
-BETTERSTACK_TOKEN_BACKEND=your_betterstack_token
+BETTERSTACK_TOKEN_BACKEND_PRODUCTION=your_betterstack_token
+BETTERSTACK_TOKEN_BACKEND_TESTS=your_betterstack_token_for_automation_tests
