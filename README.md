@@ -1,7 +1,7 @@
 # Cinetiq
 
-<img align="right" alt="Mockup of Cinetiq" src="/.github/images/cinetiq-mockup_release1.0.0.png" style="margin-bottom: 20px"/>
-
+<img align="right" alt="Mockup of Cinetiq" src="/.github/images/cinetiq-mockup_release1.0.0.png"/>
+<br/><br/>
 Cinetiq is an application designed to help film festival staff organize and plan their festivals. With Cinetiq, users can manage content such as films, series, and exhibitions, as well as handle details for various individuals involved in the festival, including film guests, accredited professionals, press representatives, and more.
 
 [&#x1F517; Visit Cinetiq](https://app.cinetiq.aljoschazoeller.com/)
