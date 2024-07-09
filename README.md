@@ -38,6 +38,7 @@ Make sure you have the following installed:
 - MongoDB
 
 ### Installation
+
 #### Backend Setup with IntelliJ IDEA:
 
 1. **Clone the repository directly in IntelliJ IDEA:**
@@ -57,10 +58,10 @@ Make sure you have the following installed:
 3. **Import the Maven project:**
    - IntelliJ IDEA should automatically detect the `pom.xml` file in the `backend` directory and prompt you to import the Maven project. If not, right-click on the `pom.xml` file and select `Add as Maven Project`.
 
-4. **Run the Spring Boot application:**
-   - Open the `Maven` tool window (`View -> Tool Windows -> Maven`).
-   - Expand the project's lifecycle in the Maven tool window.
-   - Double-click on `spring-boot:run` to start the application.
+4. **Run the Spring Boot application using IntelliJ run configuration:**
+   - The `BackendApplication` run configuration is pre-configured in the `.run` folder.
+   - Open the `Run/Debug Configurations` dialog (`Run -> Edit Configurations`).
+   - Select the `BackendApplication` configuration and click `Run`.
 
 #### Frontend Setup:
 
@@ -68,28 +69,33 @@ Make sure you have the following installed:
     ```bash
     cd frontend
     ```
-2. **Install dependencies and start the Vite development server:**
+2. **Install dependencies:**
     ```bash
     npm install
-    npm run dev
     ```
+3. **Start the Vite development server using IntelliJ run configuration:**
+   - The `FrontendApplication` run configuration is pre-configured in the `.run` folder.
+   - Open the `Run/Debug Configurations` dialog (`Run -> Edit Configurations`).
+   - Select the `FrontendApplication` configuration and click `Run`.
 
 ### Running the Application
 
 - Ensure MongoDB is running on your machine.
-- Start the backend server as described in the Backend Setup section.
-- Start the frontend server as described in the Frontend Setup section.
+- **Start the backend server:**
+   - Follow the steps in the Backend Setup section to run the Spring Boot application using the IntelliJ run configuration.
+- **Start the frontend server:**
+   - Follow the steps in the Frontend Setup section to start the Vite development server using the IntelliJ run configuration.
 - Open your web browser and go to `http://localhost:5173` to access Cinetiq.
 
 ### Running Tests and Applications
 
-In IntelliJ IDEA, you can directly run the following `.xml` files located in the `.run` folder in the root directory to facilitate various operations:
+In IntelliJ IDEA, you can run the following operations using pre-configured run configurations located in the `.run` folder in the root directory:
 
-- **Frontend Tests**: Execute the corresponding `.xml` file to run frontend tests.
-- **Backend Tests**: Execute the corresponding `.xml` file to run backend tests.
-- **Backend Tests (Coverage)**: Execute the corresponding `.xml` file to run backend tests with coverage analysis.
-- **Backend Application**: Execute the `.xml` file to start the backend application.
-- **Frontend Application**: Execute the `.xml` file to start the frontend application.
+- **Frontend Tests**: Execute the `FrontendTests` configuration to run frontend tests.
+- **Backend Tests**: Execute the `BackendTests` configuration to run backend tests.
+- **Backend Tests (Coverage)**: Execute the `BackendTests (Coverage)` configuration to run backend tests with coverage analysis.
+- **Backend Application**: Execute the `BackendApplication` configuration to start the backend application.
+- **Frontend Application**: Execute the `FrontendApplication` configuration to start the frontend application.
 
 ## GitHub API Integration
 
