@@ -33,7 +33,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 Make sure you have the following installed:
 
-- Java JDK
+- Java JDK 22
 - Node.js
 - MongoDB
 
@@ -101,9 +101,18 @@ In IntelliJ IDEA, you can run the following operations using pre-configured run 
 
 - **Scheduled Data Retrieval**: GitHub API is integrated into the backend to retrieve data periodically from registered GitHub users within the application using scheduling.
 
-## Acknowledgments
+## Credits
 
-- Thanks to the open-source community for the tools and frameworks used in this project.
+- **Development**: [Aljoscha Zöller](https://github.com/josch87)
+- **Logo Design**: [Nastassia Volkus](https://nastassiavolkus.com/)
+
+### Special Thanks
+
+- [Florian Weber](https://github.com/Flooooooooooorian)
+- [Elvedin Turkovic](https://github.com/bitbytejoy)
+- [Martin Pagels](https://github.com/mpagels)
+
+Thanks to the open-source community for the tools and frameworks used in this project.
 
 ## Contact
 
