@@ -151,7 +151,7 @@ export default function NavigationSidebar({
                 <Text textStyle="sm" fontWeight="medium">
                   {user.name}
                 </Text>
-                <Text textStyle="sm" color="fg.muted">
+                <Text textStyle="sm" color="fg.muted" fontSize="sm">
                   {user.username}
                 </Text>
               </Box>
