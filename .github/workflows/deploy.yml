@@ -46,6 +46,8 @@ jobs:
 
       - name: Build with maven
         run: mvn -B package --file backend/pom.xml
+        env:
+          BETTERSTACK_TOKEN_BACKEND_TESTS: ${{ secrets.BETTERSTACK_TOKEN_BACKEND_TESTS}}
 
       - uses: actions/upload-artifact@v4
         with:
