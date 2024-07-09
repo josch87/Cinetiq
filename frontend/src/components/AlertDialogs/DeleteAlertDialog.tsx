@@ -12,6 +12,7 @@ import axios, { AxiosError } from "axios";
 import { ContentType } from "../../model/contentModel.ts";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
+import { APP_ROUTES } from "../../constants/routes.ts";
 
 type DeleteContentAlertDialogProps = {
   content: ContentType;
@@ -32,7 +33,7 @@ export default function DeleteAlertDialog({
     axios
       .delete(`/api/content/${content.id}`)
       .then(() => {
-        navigate("/content");
+        navigate(APP_ROUTES.CONTENT);
         toast({
           title: "Success",
           description: "Deleted content",

@@ -3,6 +3,7 @@ import { FaGithub } from "react-icons/fa6";
 import { isLoggedIn, login } from "../../services/authService.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { APP_ROUTES } from "../../constants/routes.ts";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function LoginPage() {
   useEffect(() => {
     isLoggedIn().then((isLoggedIn) => {
       if (isLoggedIn) {
-        navigate("/dashboard");
+        navigate(APP_ROUTES.DASHBOARD);
       }
     });
   }, [navigate]);

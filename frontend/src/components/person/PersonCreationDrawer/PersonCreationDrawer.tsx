@@ -29,6 +29,7 @@ import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaPerson } from "react-icons/fa6";
 import { NewPersonType, PersonType } from "../../../model/personModel.ts";
 import { usePersonCreationDrawerStore } from "../../../store/personStore.ts";
+import { APP_ROUTES } from "../../../constants/routes.ts";
 
 export default function PersonCreationDrawer() {
   const toast = useToast();
@@ -63,7 +64,7 @@ export default function PersonCreationDrawer() {
           status: "success",
           isClosable: true,
         });
-        navigate(`/people/${response.data.data.id}`);
+        navigate(`${APP_ROUTES.PEOPLE}/${response.data.data.id}`);
         personCreationDrawerStore.onClose();
         reset();
       })

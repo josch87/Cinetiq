@@ -4,7 +4,6 @@ import {
   Flex,
   HStack,
   IconButton,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -29,6 +28,7 @@ import { GithubUserAuthType } from "../../model/githubModel.ts";
 import { useContentCreationDrawerStore } from "../../store/contentStore.ts";
 import NavigationSidebarCollapse from "./NavigationSidebarCollapse.tsx";
 import { usePersonCreationDrawerStore } from "../../store/personStore.ts";
+import { APP_ROUTES } from "../../constants/routes.ts";
 
 type NavigationSidebarProps = {
   user: GithubUserAuthType;
@@ -51,9 +51,9 @@ export default function NavigationSidebar({
       id: 1,
       title: "All Content",
       onClick: () => {
-        navigate("/content");
+        navigate(APP_ROUTES.CONTENT);
       },
-      path: "/content",
+      path: APP_ROUTES.CONTENT,
     },
     {
       id: 2,
@@ -67,9 +67,9 @@ export default function NavigationSidebar({
       id: 1,
       title: "All people",
       onClick: () => {
-        navigate("/people");
+        navigate(APP_ROUTES.PEOPLE);
       },
-      path: "/people",
+      path: APP_ROUTES.PEOPLE,
     },
     {
       id: 2,
@@ -83,9 +83,9 @@ export default function NavigationSidebar({
       id: 1,
       title: "Staff",
       onClick: () => {
-        navigate("/staff");
+        navigate(APP_ROUTES.STAFF);
       },
-      path: "/staff",
+      path: APP_ROUTES.STAFF,
     },
   ];
 
@@ -101,13 +101,16 @@ export default function NavigationSidebar({
         justifyContent="space-between"
       >
         <Stack spacing="8">
-          <Logo onClick={() => navigate("/dashboard")} cursor="pointer" />
+          <Logo
+            onClick={() => navigate(APP_ROUTES.DASHBOARD)}
+            cursor="pointer"
+          />
 
           <Stack spacing="1">
             <SidebarButton
               leftIcon={<FaBorderAll />}
-              isCurrentPage={location.pathname === "/dashboard"}
-              onClick={() => navigate("/dashboard")}
+              isCurrentPage={location.pathname === APP_ROUTES.DASHBOARD}
+              onClick={() => navigate(APP_ROUTES.DASHBOARD)}
             >
               Dashboard
             </SidebarButton>
@@ -131,15 +134,15 @@ export default function NavigationSidebar({
 
         <Stack spacing="4" divider={<StackDivider />}>
           <Stack alignItems="center">
-            <Link
-              as={ReactRouterLink}
-              color="gray.500"
+            <Text
               fontSize="xs"
-              to="/about"
+              color="gray.500"
               textTransform="uppercase"
+              onClick={() => navigate(APP_ROUTES.ABOUT)}
+              cursor="pointer"
             >
               About
-            </Link>
+            </Text>
           </Stack>
           <HStack spacing="3" justify="space-between">
             <HStack spacing="3">

@@ -31,6 +31,7 @@ import CancelCreationAlertDialog, {
 } from "../../AlertDialogs/CancelCreationAlertDialog/CancelCreationAlertDialog.tsx";
 import { ApiResponseType } from "../../../model/apiModel.ts";
 import { FaRegSquarePlus } from "react-icons/fa6";
+import { APP_ROUTES } from "../../../constants/routes.ts";
 
 export default function ContentCreationDrawer() {
   const toast = useToast();
@@ -67,7 +68,7 @@ export default function ContentCreationDrawer() {
           status: "success",
           isClosable: true,
         });
-        navigate(`/content/${response.data.data.id}`);
+        navigate(`${APP_ROUTES.CONTENT}/${response.data.data.id}`);
         contentCreationDrawerStore.onClose();
         reset();
       })
