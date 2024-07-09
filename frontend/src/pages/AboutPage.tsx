@@ -12,6 +12,8 @@ import {
   CardBody,
   Grid,
   Heading,
+  Button,
+  VStack,
 } from "@chakra-ui/react";
 import { FaArrowUpRightFromSquare, FaGithub } from "react-icons/fa6";
 import styled from "@emotion/styled";
@@ -40,20 +42,30 @@ export default function AboutPage() {
             <Heading size="md">History</Heading>
           </CardHeader>
           <CardBody pt={0}>
-            <Text mb={6}>
-              Version 1.0.0 of Cinetiq was developed as a capstone project as
-              part of the Java Fullstack Bootcamp.
-            </Text>
-            <Link
-              href="https://github.com/josch87/Cinetiq"
-              isExternal
-              display="flex"
-              alignItems="center"
-            >
-              <Text mr={2}>Cinetiq on</Text>
-              <FaGithub />
-              <Text ml={1}>GitHub</Text>
-            </Link>
+            <VStack gap={6} alignItems="flex-start">
+              <Text>
+                Cinetiq is an application designed to help film festival staff
+                organize and plan their festivals. With Cinetiq, users can
+                manage content such as films, series, and exhibitions, as well
+                as handle details for various individuals involved in the
+                festival, including film guests, accredited professionals, press
+                representatives, and more.
+              </Text>
+              <Text>
+                Version 1.0.0 of Cinetiq was developed by Aljoscha Zöller within
+                a four-week timeframe as part of a Java Development Bootcamp at
+                neuefische in June/July 2024.
+              </Text>
+              <Button
+                colorScheme="brand"
+                leftIcon={<FaGithub />}
+                onClick={() =>
+                  window.open("https://github.com/josch87/Cinetiq", "_blank")
+                }
+              >
+                Cinetiq on GitHub
+              </Button>
+            </VStack>
           </CardBody>
         </Card>
 
