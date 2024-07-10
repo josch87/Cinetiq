@@ -32,7 +32,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
         log.error("PRINCIPAL {}", authentication.getPrincipal());
 
         if (
-                authentication != null &&
                 authentication.getPrincipal() instanceof OAuth2User oAuth2User &&
                 oAuth2User.getAttribute("id") instanceof Integer githubId
         ) {
