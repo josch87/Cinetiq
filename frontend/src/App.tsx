@@ -15,6 +15,8 @@ import PeoplePage from "./pages/person/PeoplePage.tsx";
 import PersonDetailsPage from "./pages/person/PersonDetailsPage.tsx";
 import SidebarPageTemplate from "./pages/templates/SidebarPageTemplate.tsx";
 import NotFoundPage from "./pages/error/NotFoundPage.tsx";
+import AboutPage from "./pages/AboutPage.tsx";
+import { APP_ROUTES } from "./constants/routes.ts";
 
 function App() {
   const [user, setUser] = useState<GithubUserAuthType | null | undefined>(
@@ -28,15 +30,22 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path={APP_ROUTES.HOME} element={<LoginPage />} />
         <Route element={<ProtectedRoutes user={user} />}>
           <Route element={<SidebarPageTemplate user={user} />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/content" element={<ContentPage />} />
-            <Route path="/content/:id" element={<ContentDetailsPage />} />
-            <Route path="/staff" element={<StaffPage />} />
-            <Route path="/people" element={<PeoplePage />} />
-            <Route path="/people/:id" element={<PersonDetailsPage />} />
+            <Route path={APP_ROUTES.DASHBOARD} element={<DashboardPage />} />
+            <Route path={APP_ROUTES.CONTENT} element={<ContentPage />} />
+            <Route
+              path={APP_ROUTES.CONTENT_DETAILS}
+              element={<ContentDetailsPage />}
+            />
+            <Route path={APP_ROUTES.STAFF} element={<StaffPage />} />
+            <Route path={APP_ROUTES.PEOPLE} element={<PeoplePage />} />
+            <Route
+              path={APP_ROUTES.PERSON_DETAILS}
+              element={<PersonDetailsPage />}
+            />
+            <Route path={APP_ROUTES.ABOUT} element={<AboutPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>

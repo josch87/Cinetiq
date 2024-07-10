@@ -1,6 +1,7 @@
 import { Badge, LinkBox, LinkOverlay, Td, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { PersonType } from "../../../model/personModel.ts";
+import { APP_ROUTES } from "../../../constants/routes.ts";
 
 type PersonTableRowProps = {
   person: PersonType;
@@ -14,7 +15,7 @@ export default function PersonTableRow({
       <Td>
         <LinkOverlay
           as={RouterLink}
-          to={`/people/${person.id}`}
+          to={`${APP_ROUTES.PEOPLE}/${person.id}`}
           fontWeight="medium"
         >
           {person.lastName}

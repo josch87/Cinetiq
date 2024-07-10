@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner.tsx";
 import { GithubUserAuthType } from "../model/githubModel.ts";
+import { APP_ROUTES } from "../constants/routes.ts";
 
 type ProtectedRoutesProps = {
   user: GithubUserAuthType | null | undefined;
@@ -13,5 +14,5 @@ export default function ProtectedRoutes({
     return <LoadingSpinner />;
   }
 
-  return user ? <Outlet /> : <Navigate to="/" />;
+  return user ? <Outlet /> : <Navigate to={APP_ROUTES.HOME} />;
 }

@@ -28,8 +28,8 @@ export default function DefaultPageTemplate({
         <Box
           as="section"
           bg="bg.surface"
-          pt={{ base: "2", md: "2" }}
-          pb={{ base: "2", md: "2" }}
+          pt={{ base: "2", md: "6" }}
+          pb={{ base: "2", md: "6" }}
         >
           <Container>
             <Stack spacing="1">
