@@ -59,9 +59,14 @@ export default function AboutPage() {
               <Button
                 colorScheme="brand"
                 leftIcon={<FaGithub />}
-                onClick={() =>
-                  window.open("https://github.com/josch87/Cinetiq", "_blank")
-                }
+                onClick={() => {
+                  const newWindow = window.open(
+                    "https://github.com/josch87/Cinetiq",
+                    "_blank",
+                    "noopener, noreferrer"
+                  );
+                  if (newWindow) newWindow.opener = null;
+                }}
               >
                 Cinetiq on GitHub
               </Button>
