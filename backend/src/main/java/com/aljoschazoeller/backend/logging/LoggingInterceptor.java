@@ -29,6 +29,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     private Optional<Integer> getAuthenticatedGithubId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.error("PRINCIPAL {}", authentication.getPrincipal());
 
         if (
                 authentication != null &&
