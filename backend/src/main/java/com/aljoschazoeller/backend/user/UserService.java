@@ -45,6 +45,7 @@ public class UserService {
     }
 
     public AppUser register(OAuth2User oAuth2User, Instant registeredAt) {
+        log.info("Register new apoUser with Github ID '{}'", oAuth2User.getAttributes().get("id"));
         GithubUserProfile githubUserProfile = GithubMapper.mapOAuth2UserToGithubUserProfile(oAuth2User);
 
         AppUser appUserToSave = new AppUser(

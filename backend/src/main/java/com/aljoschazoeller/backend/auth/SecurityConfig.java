@@ -58,10 +58,10 @@ public class SecurityConfig {
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(UserService userService, LoginLogService loginLogService, HttpServletRequest request, GithubSyncService githubSyncService) {
-        Instant currentTime = Instant.now();
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
         return userRequest -> {
+            Instant currentTime = Instant.now();
             OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
 
             AppUser appUser;
